@@ -10,4 +10,3 @@ while True:
         for element in data:
             client_socket, addres, data = element #data is saved like this (client_socket,address,recved_data)
             Server.send_data(data,client_socket)
-

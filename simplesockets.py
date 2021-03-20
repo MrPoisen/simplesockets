@@ -249,3 +249,6 @@ class TCPServer:
         for thread in self.__allthreads.values():
             thread.join()
 
+    def shutdown(self):
+        self.__kill = True
+
