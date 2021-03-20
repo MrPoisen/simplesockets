@@ -19,7 +19,7 @@ class TCPClient:
 
         self.__allthreads = [self.__autorecv_thread]
 
-    def setup(self, target_ip, target_port=25567,recv_buffer = 2048):
+    def setup(self, target_ip, target_port=25567, recv_buffer=2048):
         self.__target_ip = target_ip
         self.__target_port = target_port
         self.__recv_buffer = recv_buffer
@@ -30,15 +30,15 @@ class TCPClient:
 
     def connect(self):
         try:
-            self.socket.connect((self.__target_ip,self.__target_port))
+            self.socket.connect((self.__target_ip, self.__target_port))
             self.is_connected = True
-            #self.socket.setblocking(False)
+            # self.socket.setblocking(False)
 
         except Exception as e:
             self.__all_exceptions.append((traceback.format_exc(), e))
             self.exception = True
 
-    def send_data(self,data:bytes):
+    def send_data(self, data: bytes):
         data_length = len(data)
         sended_length = 0
         while sended_length < data_length:
@@ -60,7 +60,7 @@ class TCPClient:
         while self.__autorecv:
             try:
                 recved = self.recv_data()
-                if len(recved)>0:
+                if len(recved) > 0:
                     self.recved_data.append(recved)
                     self.new_data_recved = True
 
@@ -105,6 +105,7 @@ class TCPClient:
             except Exception:
                 pass
 
+
 class TCPServer:
 
     def __init__(self, max_connections=None):
@@ -125,7 +126,7 @@ class TCPServer:
 
         self.max_connections = max_connections
 
-        self.__allthreads = {None:self.__accepting_thread}
+        self.__allthreads = {None: self.__accepting_thread}
 
     # Prepares the Server
     def setup(self, ip=socket.gethostname(), port=25567, listen=5, recv_buffer=2048, handle_client=None):
@@ -138,7 +139,7 @@ class TCPServer:
         else:
             self.__start_target = self.__handle_client
 
-        self.__accepting_thread.start() #starts the accepting thread while the while loop is still false
+        self.__accepting_thread.start()  # starts the accepting thread while the while loop is still false
 
     # Sends bytes to a target
     def send_data(self, data: bytes, client_socket):
@@ -169,7 +170,7 @@ class TCPServer:
 
         return b''.join(chunks)
 
-    #returns all received data and clears self.recved_data and sets new_data_recved to False
+    # returns all received data and clears self.recved_data and sets new_data_recved to False
     def return_recved_data(self):
         self.new_data_recved = False
         data = self.recved_data.copy()
@@ -183,7 +184,7 @@ class TCPServer:
                 recved = self.recv_data(client_socket)
                 if len(recved) > 0:
                     self.new_data_recved = True
-                    self.recved_data.append((client_socket,address,recved))
+                    self.recved_data.append((client_socket, address, recved))
 
         except Exception as e:
             self.__all_exceptions.append((traceback.format_exc(), e))
@@ -195,23 +196,22 @@ class TCPServer:
             if self.max_connections is not None and len(self.clients) < self.max_connections:
                 self.run = True
 
-
     def __accept_clients(self):
         while self.__kill is False:
             time.sleep(2)
             while self.run:
-                #print("while_accepting")
+                # print("while_accepting")
                 client_socket, address = self.socket.accept()
-                #print("accepted connection")
+                # print("accepted connection")
                 ct = threading.Thread(target=self.__start_target, args=(client_socket, address))
                 self.clients[address] = [ct, client_socket]
                 ct.start()
 
-                self.__allthreads[address] = ct #add thread to all threads dict
+                self.__allthreads[address] = ct  # add thread to all threads dict
 
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
-                #client_socket.setblocking(False)
+                # client_socket.setblocking(False)
 
     # starts the server
     def start(self):
@@ -233,8 +233,8 @@ class TCPServer:
     def killed(self):
         return self.__kill
 
-    def disconnect(self,client_cocket):
-        client_cocket.close()
+    def disconnect(self, client_socket):
+        client_socket.close()
 
     def return_exceptions(self, delete=True, reset_exception=True):
         exceptions = self.__all_exceptions.copy()
@@ -251,4 +251,3 @@ class TCPServer:
 
     def shutdown(self):
         self.__kill = True
-

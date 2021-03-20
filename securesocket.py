@@ -5,8 +5,8 @@ import traceback
 import uuid
 
 
-class TCPClient_secure():
-    def __init__(self,key_length = 2048):
+class TCPClient_secure:
+    def __init__(self, key_length=2048):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.recved_data = []
         self.__autorecv = False
@@ -21,21 +21,26 @@ class TCPClient_secure():
         from support_files import cipher
         self.__cipher = cipher
         private, public = self.__cipher.gen_asym_keys(key_length)
-        self.own_keys = [private, public] #private, public
+        self.own_keys = [private, public]  # private, public
         self.__keys_by_synonym = {}
-        self.__keys_by_synonym
 
         self.__public_server_key = None
 
         self.id = None
 
-        self.types = ["keys_by_id","file","msg"]
+        self.types = ["keys_by_id", "file", "msg"]
 
-        self.seperators = [b'prefixuHOCvqQjMf',b'type_targ_sepLnpEwEljZi',b'targ_data_sepcLkGqydgGY']
+        self.seperators = [b'prefixuHOCvqQjMf', b'type_targ_sepLnpEwEljZi', b'targ_data_sepcLkGqydgGY']
 
         self.__allthreads = [self.__autorecv_thread]
 
-    def setup(self, target_ip, target_port=25567,recv_buffer = 2048):
+        self.__target_ip = None
+        self.__target_port = None
+        self.__recv_buffer = None
+
+        self.__start_target = None
+
+    def setup(self, target_ip, target_port=25567, recv_buffer=2048):
         self.__target_ip = target_ip
         self.__target_port = target_port
         self.__recv_buffer = recv_buffer
@@ -49,7 +54,7 @@ class TCPClient_secure():
 
     def connect(self):
         try:
-            self.socket.connect((self.__target_ip,self.__target_port))
+            self.socket.connect((self.__target_ip, self.__target_port))
             self.is_connected = True
             self.send_data(self.__cipher.export_asym_key(self.own_keys[1]))
             self.__public_server_key = self.__cipher.import_asym_key(self.recv_data())
@@ -60,7 +65,7 @@ class TCPClient_secure():
             self.exception = True
 
     def send_data(self, data: bytes):
-        if self.seperators[0] not in data: #if b'prefixuHOCvqQjMf' not in data
+        if self.seperators[0] not in data:  # if b'prefixuHOCvqQjMf' not in data
             data = b'unsecure' + self.seperators[0] + data
 
         data_length = len(data)
@@ -72,28 +77,28 @@ class TCPClient_secure():
                 self.exception = True
             sended_length += sent
 
-    def send_secure_data(self, data: bytes, type: str, target: bytes, public_key, encrypt_data :bool =False):
+    def send_secure_data(self, data: bytes, type: str, target: bytes, public_key, encrypt_data: bool = False):
         if type not in self.types:
             return False
         prefix = b"secure"
         if encrypt_data:
             data = self.__cipher.encr_data(data, public_key)
-        type = self.__cipher.encr_data(type.encode(),self.__public_server_key)
-        target = self.__cipher.encr_data(target,self.__public_server_key)
+        type = self.__cipher.encr_data(type.encode(), self.__public_server_key)
+        target = self.__cipher.encr_data(target, self.__public_server_key)
         data = prefix + self.seperators[0] + type + self.seperators[1] + target + self.seperators[2] + data
         self.send_data(data)
         return True
 
-    def decrypt_data(self, data:bytes):
+    def decrypt_data(self, data: bytes):
         prefix, rest = data.split(self.seperators[0])
         if prefix is b'unsecure':
             return rest
         type, rest = rest.split(self.seperators[1])
         target, data = rest.split(self.seperators[2])
-        type = self.__cipher.decr_data(type,self.own_keys[0])
-        target = self.__cipher.decr_data(target,self.own_keys[0],output="bytes")
-        data = self.__cipher.decr_data(data,self.own_keys[0],output="bytes")
-        return (type,target,data)
+        type = self.__cipher.decr_data(type, self.own_keys[0])
+        target = self.__cipher.decr_data(target, self.own_keys[0], output="bytes")
+        data = self.__cipher.decr_data(data, self.own_keys[0], output="bytes")
+        return (type, target, data)
 
     def return_recved_data(self):
         self.new_data_recved = False
@@ -105,10 +110,10 @@ class TCPClient_secure():
         while self.__autorecv:
             try:
                 recved = self.recv_data()
-                if len(recved)>0:
+                if len(recved) > 0:
                     print("SOme data recved")
                     if b'keys_by_id' in recved:
-                        recved = recved.replace(b'keys_by_id',b'')
+                        recved = recved.replace(b'keys_by_id', b'')
                         self.__keys_by_synonym = dict(eval(recved.decode()))
                         continue
                     self.recved_data.append(recved)
@@ -153,7 +158,7 @@ class TCPClient_secure():
             thread.join()
 
 
-class TCPServer_secure():
+class TCPServer_secure:
 
     def __init__(self, max_connections=None, key_length=2048):
         self.run = True
@@ -176,16 +181,22 @@ class TCPServer_secure():
         from support_files import cipher
         self.__cipher = cipher
         private, public = self.__cipher.gen_asym_keys(key_length)
-        self.own_keys = [private,public]
+        self.own_keys = [private, public]
         self.__keys = {}
         self.__keys_by_synonym = {}
         self.__special_keys_by_synonym = {}
 
-        self.types = ["keys_by_id","file","msg"]
+        self.__addr_by_id = {}
+
+        self.types = ["keys_by_id", "file", "msg"]
 
         self.seperators = [b'prefixuHOCvqQjMf', b'type_targ_sepLnpEwEljZi', b'targ_data_sepcLkGqydgGY']
 
-        self.__allthreads = {None:self.__accepting_thread}
+        self.__allthreads = {None: self.__accepting_thread}
+
+        self.__recv_buffer = None
+
+        self.__start_target = None
 
     # Prepares the Server
     def setup(self, ip=socket.gethostname(), port=25567, listen=5, recv_buffer=2048, handle_client=None):
@@ -200,13 +211,13 @@ class TCPServer_secure():
 
         self.__accepting_thread.start()  # starts the accepting thread while the while loop is still false
 
-    def add_types(self,types : list):
+    def add_types(self, types: list):
         self.types.extend(types)
 
-    def return_key_by_addr(self,addr):
+    def return_key_by_addr(self, addr):
         return self.__keys.get(addr)
 
-    def return_key_by_id(self,id):
+    def return_key_by_id(self, id):
         return self.__keys_by_synonym.get(id)
 
     # Sends bytes to a target
@@ -244,7 +255,7 @@ class TCPServer_secure():
         type = self.__cipher.encr_data(type.encode(), public_key)
         target = self.__cipher.encr_data(target, public_key)
         data = prefix + self.seperators[0] + type + self.seperators[1] + target + self.seperators[2] + data
-        self.send_data(data,client_socket)
+        self.send_data(data, client_socket)
         return True
 
     def decrypt_data(self, data: bytes):
@@ -267,30 +278,30 @@ class TCPServer_secure():
     def __key_management(self):
         for client in self.clients.values():
             try:
-                self.send_data((b'keys_by_id' + str(self.__special_keys_by_synonym).encode()),client[1])
+                self.send_data((b'keys_by_id' + str(self.__special_keys_by_synonym).encode()), client[1])
             except Exception as e:
                 self.exception = True
-                self.__all_exceptions.append([traceback.format_exc(),e])
-
+                self.__all_exceptions.append([traceback.format_exc(), e])
 
     # handles the connection
     def __handle_client(self, client_socket, address):
         try:
-            client_public_key = self.recv_data(client_socket) #gets public key in bytes
+            client_public_key = self.recv_data(client_socket)  # gets public key in bytes
 
-            client_public_key = client_public_key[8:] #removes b'unsecure'
+            client_public_key = client_public_key[8:]  # removes b'unsecure'
 
-            self.__keys[address] = self.__cipher.import_asym_key(client_public_key) #imports and saves key to address
+            self.__keys[address] = self.__cipher.import_asym_key(client_public_key)  # imports and saves key to address
 
-            self.send_data(self.__cipher.export_asym_key(self.own_keys[1]),client_socket) #sends server key
+            self.send_data(self.__cipher.export_asym_key(self.own_keys[1]), client_socket)  # sends server key
 
             id = str(uuid.uuid4())
             self.__keys_by_synonym[id] = self.__cipher.import_asym_key(client_public_key)
             self.__special_keys_by_synonym[id] = client_public_key
-            self.send_data(self.__cipher.encr_data(id,self.__cipher.import_asym_key(client_public_key)),client_socket)
+            self.__addr_by_id[id] = address
+            self.send_data(self.__cipher.encr_data(id, self.__cipher.import_asym_key(client_public_key)), client_socket)
 
             t = threading.Thread(target=self.__key_management)
-            t.start() #sends all public keys by synonym to the clients
+            t.start()  # sends all public keys by synonym to the clients
 
             while True:
                 recved = self.recv_data(client_socket)
@@ -305,6 +316,8 @@ class TCPServer_secure():
             self.clients.pop(address)
             self.__keys.pop(address)
             self.__keys_by_synonym.pop(id)
+            self.__addr_by_id.pop(id)
+            self.__special_keys_by_synonym.pop(id)
             self.__allthreads.pop(address)
 
             if self.max_connections is not None and len(self.clients) < self.max_connections:
@@ -350,8 +363,18 @@ class TCPServer_secure():
     def killed(self):
         return self.__kill
 
-    def disconnect(self, client_cocket):
-        client_cocket.close()
+    def disconnect(self, addr):
+        def get_key(dictionary: dict, value):
+            return list(dictionary.keys())[list(dictionary.values()).index(value)]
+
+        client_socket = self.clients.pop(addr)[1]
+        id = get_key(self.__addr_by_id, addr)
+        self.__keys.pop(addr)
+        self.__special_keys_by_synonym.pop(id)
+        self.__keys_by_synonym.pop(id)
+        thread = self.__allthreads.pop(addr)
+        client_socket.close()
+        thread.join()
 
     def return_exceptions(self, delete=True, reset_exception=True):
         exceptions = self.__all_exceptions.copy()
@@ -364,3 +387,9 @@ class TCPServer_secure():
     def exit(self):
         for thread in self.__allthreads:
             thread.join()
+
+    def get_prefix(self, data: bytes):
+        if self.seperators[0] not in data:
+            return None
+        prefix, rest = data.split(self.seperators[0])
+        return (prefix, rest)
