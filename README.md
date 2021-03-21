@@ -40,6 +40,6 @@ if __name__ == "__main__":
         if Server.new_data_recved: #checks if any data recved
             data = Server.return_recved_data() #returns the recved data as a list
             for element in data:
-                client_socket, addres, data = element #data is saved like this (client_socket,address,recved_data)
-                Server.send_data(data,client_socket)
+                client_socket, address, data = element #data is saved like this (client_socket,address,recved_data)
+                Server.send_data(data, client_socket)
 ````

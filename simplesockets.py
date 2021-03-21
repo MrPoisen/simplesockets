@@ -19,6 +19,12 @@ class TCPClient:
 
         self.__allthreads = [self.__autorecv_thread]
 
+        self.__target_ip = None
+        self.__target_port = None
+        self.__recv_buffer = None
+
+        self.__start_taregt = None
+
     def setup(self, target_ip, target_port=25567, recv_buffer=2048):
         self.__target_ip = target_ip
         self.__target_port = target_port
@@ -99,11 +105,11 @@ class TCPClient:
         return exceptions
 
     def exit(self):
-        for thread in self.__allthreads:
+        for number, thread in enumerate(self.__allthreads):
             try:
                 thread.join()
             except Exception:
-                pass
+                self.__allthreads.pop(number)
 
 
 class TCPServer:
@@ -127,6 +133,8 @@ class TCPServer:
         self.max_connections = max_connections
 
         self.__allthreads = {None: self.__accepting_thread}
+
+        self.__start_target = None
 
     # Prepares the Server
     def setup(self, ip=socket.gethostname(), port=25567, listen=5, recv_buffer=2048, handle_client=None):
@@ -233,7 +241,8 @@ class TCPServer:
     def killed(self):
         return self.__kill
 
-    def disconnect(self, client_socket):
+    @staticmethod
+    def disconnect(client_socket):
         client_socket.close()
 
     def return_exceptions(self, delete=True, reset_exception=True):
@@ -248,6 +257,7 @@ class TCPServer:
     def exit(self):
         for thread in self.__allthreads.values():
             thread.join()
+        self.__kill = True
 
     def shutdown(self):
         self.__kill = True
