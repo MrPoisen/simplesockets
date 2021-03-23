@@ -39,10 +39,11 @@ class TCPClient:
             self.socket.connect((self.__target_ip, self.__target_port))
             self.is_connected = True
             # self.socket.setblocking(False)
-
+            return True
         except Exception as e:
             self.__all_exceptions.append((traceback.format_exc(), e))
             self.exception = True
+            return False
 
     def send_data(self, data: bytes):
         data_length = len(data)
@@ -78,7 +79,11 @@ class TCPClient:
     def autorecv(self):
         if self.__autorecv is False:
             self.__autorecv = True
-            self.__autorecv_thread.start()
+            try:
+                self.__autorecv_thread.start()
+            except Exception:
+                self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic)
+                self.__autorecv_thread.start()
 
     def shutdown(self):
         self.__autorecv = False

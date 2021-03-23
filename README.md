@@ -3,6 +3,8 @@ This library allows to easily create TCP Servers and Clients using Python socket
 If you want a secure connection, use the secure variant `securesockets`. It uses the 
 [pycryptodome](https://pypi.org/project/pycryptodome/) library. It should be clear, that you need to install said library to use 
 the secure variant.  
+If you have encountered a bug or have an idea, share it on [github](https://github.com/MrPoisen/simplesockets). For more help look 
+up the [docs]()
 This package also contains an example, an echo Server and Client:
 
 echoclient.py
