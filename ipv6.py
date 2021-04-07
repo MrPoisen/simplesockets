@@ -49,3 +49,7 @@ class TCPServer_ipv6(TCPServer):
 class TCPClient_secure_ipv6(TCPClient_secure):
     def __init__(self):
         pass
+
+class TCPServer_secure_ipv6(TCPServer_secure):
+    def __init__(self, max_connections):
+        pass

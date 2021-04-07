@@ -40,10 +40,17 @@ class TCPClient_secure:
 
         self.__start_target = None
 
-    def setup(self, target_ip, target_port=25567, recv_buffer=2048):
+        self.on_connect = None
+        self.on_receive = None
+        self.on_disconnect = None
+
+    def setup(self, target_ip, target_port=25567, recv_buffer=2048, on_connect=None, on_disconnect=None, on_receive=None):
         self.__target_ip = target_ip
         self.__target_port = target_port
         self.__recv_buffer = recv_buffer
+        self.on_connect = on_connect
+        self.on_disconnect = on_disconnect
+        self.on_receive = on_receive
 
     def reconnect(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -59,6 +66,9 @@ class TCPClient_secure:
             self.send_data(self.__cipher.export_asym_key(self.own_keys[1]))
             self.__public_server_key = self.__cipher.import_asym_key(self.recv_data())
             self.id = self.__cipher.decr_data(self.recv_data(), self.own_keys[0], output="bytes")
+
+            if callable(self.on_connect):
+                self.on_connect()
 
         except Exception as e:
             self.__all_exceptions.append((traceback.format_exc(), e))
@@ -111,7 +121,8 @@ class TCPClient_secure:
             try:
                 recved = self.recv_data()
                 if len(recved) > 0:
-                    print("SOme data recved")
+                    if callable(self.on_receive):
+                        self.on_receive(recved)
                     if b'keys_by_id' in recved:
                         recved = recved.replace(b'keys_by_id', b'')
                         self.__keys_by_synonym = dict(eval(recved.decode()))
@@ -123,6 +134,9 @@ class TCPClient_secure:
                 self.__all_exceptions.append((traceback.format_exc(), e))
                 self.exception = True
                 self.is_connected = False
+
+                if callable(self.on_disconnect):
+                    self.on_disconnect()
 
     def autorecv(self):
         if self.__autorecv is False:
@@ -160,7 +174,7 @@ class TCPClient_secure:
 
 class TCPServer_secure:
 
-    def __init__(self, max_connections=None, key_length=2048):
+    def __init__(self, max_connections=None, key_lenght=2048):
         self.run = True
         self.__kill = False
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -180,7 +194,7 @@ class TCPServer_secure:
 
         from support_files import cipher
         self.__cipher = cipher
-        private, public = self.__cipher.gen_asym_keys(key_length)
+        private, public = self.__cipher.gen_asym_keys(key_lenght)
         self.own_keys = [private, public]
         self.__keys = {}
         self.__keys_by_synonym = {}
@@ -198,11 +212,17 @@ class TCPServer_secure:
 
         self.__start_target = None
 
+        self.on_connect = None
+        self.on_disconnect = None
+
     # Prepares the Server
-    def setup(self, ip=socket.gethostname(), port=25567, listen=5, recv_buffer=2048, handle_client=None):
+    def setup(self, ip=socket.gethostname(), port=25567, listen=5, recv_buffer=2048, handle_client=None,
+              on_connect=None, on_disconnect=None):
         self.socket.bind((ip, port))
         self.socket.listen(listen)
         self.__recv_buffer = recv_buffer
+        self.on_connect = on_connect
+        self.on_disconnect = on_disconnect
 
         if handle_client is not None:
             self.__start_target = handle_client
@@ -303,6 +323,9 @@ class TCPServer_secure:
             t = threading.Thread(target=self.__key_management)
             t.start()  # sends all public keys by synonym to the clients
 
+            if callable(self.on_connect):
+                self.on_connect(address, id)
+
             while True:
                 recved = self.recv_data(client_socket)
                 if len(recved) > 0:
@@ -323,13 +346,14 @@ class TCPServer_secure:
             if self.max_connections is not None and len(self.clients) < self.max_connections:
                 self.run = True
 
+            if callable(self.on_disconnect):
+                self.on_disconnect(address, id)
+
     def __accept_clients(self):
         while self.__kill is False:
             time.sleep(2)
             while self.run:
-                print("while_accepting")
                 client_socket, address = self.socket.accept()
-                print("accepted connection")
                 ct = threading.Thread(target=self.__start_target, args=(client_socket, address))
                 self.clients[address] = [ct, client_socket]
 
