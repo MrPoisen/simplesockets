@@ -2,9 +2,6 @@ from Crypto.Cipher import PKCS1_OAEP, Salsa20
 from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 
-from easy_cryptography.Exceptions import *
-
-
 def gen_asym_keys(length=2048):
     ''' Generates RSA keys
 
@@ -160,8 +157,6 @@ def export_asym_key(key):
 
 import hashlib
 import os
-
-from easy_cryptography.Exceptions import *
 
 
 def gen_hash(text, predefined_salt=None, hash_type='sha512', iterations=100000, data_type='hex'):
