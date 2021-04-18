@@ -1,6 +1,9 @@
-from Crypto.Cipher import PKCS1_OAEP, Salsa20
-from Crypto.PublicKey import RSA
-from Crypto.Random import get_random_bytes
+try:
+    from Crypto.Cipher import PKCS1_OAEP, Salsa20
+    from Crypto.PublicKey import RSA
+    from Crypto.Random import get_random_bytes
+except ImportError:
+    pass
 
 def gen_asym_keys(length=2048):
     ''' Generates RSA keys
@@ -27,7 +30,7 @@ def encrypt_asym(text, pubkey):
     elif type(text) == bytes or type(text) == bytearray:
         pass
     else:
-        raise WrongTypeError(text, "It should be str, hex or bytes.")
+        raise TypeError("text should be str, hex or bytes.")
     cypher = PKCS1_OAEP.new(pubkey)
     encrmsg = cypher.encrypt(text)
     return encrmsg
@@ -45,7 +48,7 @@ def decrypt_asym(text, prkey):
     elif type(text) == bytes:
         pass
     else:
-        raise WrongTypeError(text, "Type is not suported for decryption. It should be str, hex or bytes.")
+        raise TypeError("Text type is not supported for decryption. It should be str, hex or bytes.")
     cypher = PKCS1_OAEP.new(prkey)
     decrmsg = cypher.decrypt(text)
     return decrmsg
@@ -75,7 +78,7 @@ def encrypt_sym(text, key):
     elif type(text) == bytes or type(text) == bytearray:
         pass
     else:
-        raise WrongTypeError(text, "It should be str, hex or bytes.")
+        raise TypeError("Text should be str, hex or bytes.")
     cipher = Salsa20.new(key=key)
     ciphertext = cipher.encrypt(text)
     msg = cipher.nonce + ciphertext
@@ -94,7 +97,7 @@ def decrypt_sym(text, key):
     elif type(text) == bytes:
         pass
     else:
-        raise WrongTypeError(text, "It should be str, hex or bytes.")
+        raise TypeError("Text should be str, hex or bytes.")
     cipher = Salsa20.new(key=key, nonce=text[:8])
     pl = cipher.decrypt(text[8:])
     return pl
@@ -112,14 +115,14 @@ def encr_data(data, pubkey, bytes=32, output="bytes"):
     key = get_sym_keys(bytes)
     d = encrypt_sym(data, key)
     k = encrypt_asym(key, pubkey)
-    space = b'$$$$'
+    space = b'$$$%%$'
     all = k + space + d
     if output == "hex":
         all = all.hex()
     elif output == "bytes":
         pass
     else:
-        raise WrongTypeError(output, "The requested outputtype was invalid", "s")
+        raise TypeError("The requested outputtype was invalid")
     return all
 
 
@@ -137,8 +140,8 @@ def decr_data(data, prkey, output="str"):
     elif type(data) == bytes:
         pass
     else:
-        raise WrongTypeError(data, "It should be str, hex or bytes.")
-    key, da = data.split(b'$$$$')
+        raise TypeError("data should be str, hex or bytes.")
+    key, da = data.split(b'$$%%$$')
     key = decrypt_asym(key, prkey)
     msg = decrypt_sym(da, key)
     if output == "bytes":
@@ -146,7 +149,7 @@ def decr_data(data, prkey, output="str"):
     elif output == "str":
         msg = msg.decode('utf-8')
     else:
-        raise WrongTypeError(output, "The requested outputtype was invalid", "s")
+        raise TypeError("The requested outputtype was invalid")
     return msg
 
 def import_asym_key(key):

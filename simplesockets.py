@@ -27,7 +27,7 @@ class TCPClient:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.recved_data = []
         self.__autorecv = False
-        self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic)
+        self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
 
         self.event = set_events()
 
@@ -127,12 +127,12 @@ class TCPClient:
             except Exception as e:
                 self.event.exception.list.append((traceback.format_exc(), e))
                 self.event.exception.occurred = True
-                self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic)
+                self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
                 self.__autorecv_thread.start()
 
     def shutdown(self):
         self.__autorecv = False
-        self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic)
+        self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
         self.socket.close()
 
     def recv_data(self) -> bytes:
@@ -187,7 +187,7 @@ class TCPServer:
         self.clients = {}  # key: address, value : [client_thread,client_socket]
         self.__recv_buffer = 2048
 
-        self.__accepting_thread = threading.Thread(target=self.__accept_clients)
+        self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
 
         self.recved_data = []
 
@@ -279,7 +279,7 @@ class TCPServer:
                     self.recved_data.append((client_socket, address, recved))
 
                     if callable(self.on_receive):
-                        self.on_receive(recved)
+                        self.on_receive(client_socket, address, recved)
 
         except Exception as e:
             self.event.exception.list.append((traceback.format_exc(), e))
@@ -299,7 +299,7 @@ class TCPServer:
             time.sleep(0.1)
             while self.event.accepting_thread.run:
                 client_socket, address = self.socket.accept()
-                ct = threading.Thread(target=self.__start_target, args=(client_socket, address))
+                ct = threading.Thread(target=self.__start_target, args=(client_socket, address), daemon=True)
                 self.clients[address] = [ct, client_socket]
 
                 if callable(self.on_connect):
@@ -323,7 +323,7 @@ class TCPServer:
     def restart(self):
         if self.__kill:
             self.__kill = False
-            self.__accepting_thread = threading.Thread(target=self.__accept_clients)
+            self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
             self.__accepting_thread.start()
 
         elif self.__kill is False:

@@ -13,15 +13,19 @@ class Client_(TCPClient):
         self.own_keys = [private, public] #0:private, 1:public
 
         self.server_key = None
-        self.__users_keys = {} #Key: username, value: public key
+        self.users_keys = {} #Key: username, value: public key
 
         self.__first_keys = True
+
+    @property
+    def connected_users(self):
+        return list(self.users_keys.keys())
 
     def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect=None,
               on_disconnect=None, on_receive=None):
 
         if on_connect is None:
-            on_connect = self.__on_connect
+            on_connect = self.on_connect
 
         super().setup(target_ip, target_port, recv_buffer, on_connect, on_disconnect, on_receive)
 
@@ -30,7 +34,7 @@ class Client_(TCPClient):
         self.pw = pw
         return super().connect()
 
-    def __on_connect(self) -> bool:
+    def on_connect(self) -> bool:
         # Exchange
         recved = super().recv_data()
         self.server_key = cipher.import_asym_key(recved)
@@ -56,7 +60,7 @@ class Client_(TCPClient):
                     if len(pair) > 0:
                         user, key = pair.split(b'user-key')
                         keys[user.decode()] = cipher.import_asym_key(key)
-                self.__users_keys = keys.copy()
+                self.users_keys = keys.copy()
             except Exception as e:
                 print(e)
             return True
@@ -68,7 +72,7 @@ class Client_(TCPClient):
 
         #Decrypt
         type = cipher.decrypt_asym(type, self.own_keys[0])
-        target = cipher.decr_data(target, prkey=self.own_keys[0], output="str")
+        target = cipher.decr_data(target, prkey=self.own_keys[0], output="bytes")
         data = cipher.decr_data(data, prkey=self.own_keys[0], output="bytes")
 
         return (target, type, data)
@@ -78,7 +82,7 @@ class Client_(TCPClient):
         if key is not None and username is None:
             pass
         elif key is None and username is not None:
-            key = self.__users_keys.get(username)
+            key = self.users_keys.get(username)
         else:
             return False
 
@@ -93,4 +97,4 @@ class Client_(TCPClient):
         return super().send_data(to_send)
 
     def get_key(self, username:str):
-        return self.__users_keys.get(username)
+        return self.users_keys.get(username)

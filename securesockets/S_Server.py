@@ -2,7 +2,6 @@ from simplesockets._support_files import cipher
 from simplesockets.simplesockets import TCPServer
 
 import json
-import threading
 import socket
 import time
 
@@ -15,8 +14,8 @@ class Server_(TCPServer):
         private, public = cipher.gen_asym_keys()
 
         self.own_keys = [private, public]  # 0 is private, 1 is public
-        self.__client_keys = {}  # Key: username, value: public key
-        self.__to_send_client_keys = {}  # Key: username, value: public key as bytes
+        self.client_keys = {}  # Key: username, value: public key
+        self.to_send_client_keys = {}  # Key: username, value: public key as bytes
 
         self.seperators = [b'type_targ_sepLnpEwEljZi', b'targ_data_sepcLkGqydgGY']
 
@@ -28,39 +27,17 @@ class Server_(TCPServer):
               recv_buffer: int = 2048, handle_client=None, on_connect=None, on_disconnect=None, on_receive=None):
 
         if on_connect is None:
-            on_connect = self.__on_connect
+            on_connect = self.on_connect
 
         if on_disconnect is None:
-            on_disconnect = self.__on_disconnect
+            on_disconnect = self.on_disconnect
 
         self.filepath = filepath
 
         super().setup(ip, port, listen, recv_buffer, handle_client, on_connect=on_connect,
                       on_disconnect=on_disconnect, on_receive=on_receive)
 
-    def __on_connect(self, address):
-        def spread_keys(ip, port):
-            address_ = (ip, port)
-            clients_keys_to_send = str(self.__to_send_client_keys.copy()).encode()
-            clients = self.clients.copy()
-            users = self.users.copy()
-            client_keys = self.__client_keys.copy()
-            for address, username in users.items():
-
-                if address == address_:
-                    continue
-
-                client_socket_ = clients.get(address)[1]
-                try:
-                    self.send_data(target=b'Server', type=b'keys', data=clients_keys_to_send,
-                                   key=client_keys.get(username), client_socket=client_socket_)
-                except Exception:
-                    self.clients.pop(address)
-                    self.__client_keys.pop(username)
-                    self.__to_send_client_keys.pop(username)
-
-        t = threading.Thread(target=spread_keys, args=(address), daemon=True)
-
+    def on_connect(self, address):
         # exchange keys
         client_socket = self.clients.get(address)[1]
         super().send_data(cipher.export_asym_key(self.own_keys[0]), client_socket=client_socket)
@@ -74,13 +51,12 @@ class Server_(TCPServer):
         check = self.check_user(user, pw)
 
         if check:
-            t.start()
 
-            self.__client_keys[user] = cipher.import_asym_key(public_key)
-            self.__to_send_client_keys[user] = public_key
+            self.client_keys[user] = cipher.import_asym_key(public_key)
+            self.to_send_client_keys[user] = public_key
             self.users[address] = user
             time.sleep(0.05)
-            to_send_keys = self.__to_send_client_keys.copy()
+            to_send_keys = self.to_send_client_keys.copy()
             client_keys = b''
             for user, key in to_send_keys.items():
                 client_keys = client_keys + user.encode() + b'user-key' + key + b'!!next!!'
@@ -89,37 +65,14 @@ class Server_(TCPServer):
         else:
             self.send_data(target=b'Client', type=b'Rejected', data=b'Rejected',
                            key=cipher.import_asym_key(public_key), client_socket=client_socket)
-            self.clients.pop(address)
-            self.__allthreads.pop(address)
-            self.disconnect(client_socket)
 
-    def __on_disconnect(self, address):
-        def spread_keys(ip, port):
-            address_ = (ip, port)
-            clients_keys_to_send = str(self.__to_send_client_keys.copy()).encode()
-            clients = self.clients.copy()
-            users = self.users.copy()
-            client_keys = self.__client_keys.copy()
-            for address, username in users.items():
+            self.disconnect(address)
 
-                if address == address_:
-                    continue
-
-                client_socket_ = clients.get(address)[1]
-                try:
-                    self.send_data(target=b'Server', type=b'keys', data=clients_keys_to_send,
-                                   key=client_keys.get(username), client_socket=client_socket_)
-                except Exception:
-                    self.clients.pop(address)
-                    self.__client_keys.pop(username)
-                    self.__to_send_client_keys.pop(username)
-
+    def on_disconnect(self, address):
         username = self.users.pop(address)
-        self.__client_keys.pop(username)
-        self.__to_send_client_keys.pop(username)
+        self.client_keys.pop(username)
+        self.to_send_client_keys.pop(username)
         print(f"User {username} disconnected")
-        t = threading.Thread(target=spread_keys, args=(address), daemon=True)
-        t.start()
 
     def load_users(self, get: str = None) -> dict:  # json
         with open(self.filepath, 'r') as file:
@@ -158,7 +111,7 @@ class Server_(TCPServer):
         return list(self.users.keys())[list(self.users.values()).index(user)]
 
     def get_public_key(self, username: str):
-        return self.__client_keys.get(username)
+        return self.client_keys.get(username)
 
     def recv_data(self, client_socket: socket.socket) -> tuple:
         recv: bytes = super().recv_data(client_socket)
@@ -177,7 +130,7 @@ class Server_(TCPServer):
         if key is not None and client_socket is not None and username is None:
             pass
         elif key is None and client_socket is None and username is not None:
-            key = self.__client_keys.get(username)
+            key = self.client_keys.get(username)
             client_socket = self.clients.get(self.get_address_by_user(username))[1]
         else:
             self.event.exception.occurred = True
@@ -193,4 +146,7 @@ class Server_(TCPServer):
         return super().send_data(to_send, client_socket)
 
     def get_client_keys(self):
-        return self.__to_send_client_keys.copy()
+        return self.to_send_client_keys.copy()
+
+    def decrypt_data(self, data: bytes):
+        return cipher.decr_data(data, self.own_keys[0])
