@@ -149,7 +149,7 @@ def decr_data(data, prkey, output="str"):
     elif output == "str":
         msg = msg.decode('utf-8')
     else:
-        raise TypeError("The requested outputtype was invalid")
+        raise TypeError("The requested output type was invalid")
     return msg
 
 def import_asym_key(key):

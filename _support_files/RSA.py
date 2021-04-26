@@ -1,6 +1,7 @@
 import secrets
 import random
 import os
+from simplesockets._support_files import error
 
 
 class RSA_Public_Key:
@@ -64,7 +65,7 @@ class RSA_Public_Key:
     def unofficial_export(self):
         b = self.bytes
         s = f'-----BEGIN RSA PUBLIC KEY-----\n{b}\n-----END RSA PUBLIC KEY-----'
-        return s
+        return s.encode()
 
 
 class RSA_Private_Key:
@@ -131,7 +132,7 @@ class RSA_Private_Key:
         b = f'p={self.__p}|q={self.__q}|n={self.__n}|d={self.__d}|e={self.__d}'.encode()
         b = base64.b64encode(b)
         s = f'-----BEGIN RSA PRIVATE KEY-----\n{b}\n-----END RSA PRIVATE KEY-----'
-        return s
+        return s.encode()
 
 
 def import_public_bytes(key_info: bytes):
@@ -258,18 +259,18 @@ def get_private_key(key_length: int = 4096) -> RSA_Private_Key:
     d = get_d(phi, e)
 
     if check_d(phi, d, e) is False:
-        raise Exception("Calculating d resulted in an Error")
+        raise error.RSACalcKeyError("Calculating d resulted in an Error")
 
     return RSA_Private_Key(p, q, n, d, e)
 
 
 def import_key(key: bytes):
-    import base64
-    dec_ = base64.b64decode(key)
 
-    if b'-----BEGIN RSA PRIVATE KEY-----' in dec_:
-        dec_ = dec_.strip(b'-----BEGIN RSA PRIVATE KEY-----')
-        dec_ = dec_.strip(b'-----END RSA PRIVATE KEY-----')
+    if '-----BEGIN RSA PRIVATE KEY-----' in key.decode():
+        import base64
+        key = key.strip(b'-----BEGIN RSA PRIVATE KEY-----\nb')
+        key = key.strip(b"\n'-----END RSA PRIVATE KEY-----")
+        dec_ = base64.b64decode(key)
 
         info = []
 
@@ -278,15 +279,15 @@ def import_key(key: bytes):
 
         return RSA_Private_Key(info[0], info[1], info[2], info[3], info[4])
 
-    elif b'-----BEGIN RSA PUBLIC KEY-----' in dec_:
-        dec_ = dec_.strip(b'-----BEGIN RSA PUBLIC KEY-----')
-        dec_ = dec_.strip(b'-----END RSA PUBLIC KEY-----')
-
+    elif '-----BEGIN RSA PUBLIC KEY-----' in key.decode():
+        import base64
+        key = key.strip(b'-----BEGIN RSA PUBLIC KEY-----\nb')
+        key = key.strip(b"\n'-----END RSA PUBLIC KEY-----")
+        dec_ = base64.b64decode(key)
         info = []
 
         for part in dec_.split(b'|'):
             info.append(part[2:])
-
         return RSA_Public_Key(info[0], info[1])
     else:
-        raise Exception("Couldn't identify key")
+        raise error.RSAImportKeyError("Couldn't identify key")
