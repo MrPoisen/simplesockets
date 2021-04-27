@@ -18,3 +18,8 @@ class VeginerError(error):
 
 class VPadError(VeginerError): pass
 
+
+class SocketError(error):
+    pass
+
+class SetupError(SocketError): pass

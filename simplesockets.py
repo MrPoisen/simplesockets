@@ -3,12 +3,20 @@ import threading
 import time
 import traceback
 from typing import Callable
+from simplesockets._support_files.error import SetupError
 
 
 class TCPClient:
     '''
     This class contains functions for connecting and keeping connections alive
     '''
+
+    EVENT_EXCEPTION = "--EXCEPTION--"
+    EVENT_RECEIVED = "--RECEIVED--"
+    EVENT_TIMEOUT = "--TIMEOUT--"
+    EVENT_DISCONNECT = "--DISCONNECT--"
+    EVENT_CONNECTED = "--CONNECTED--"
+
     def __init__(self):
 
         def set_events():
@@ -47,6 +55,11 @@ class TCPClient:
         self.on_disconnect = None
         self.on_receive = None
 
+        self.__setup_flag = False
+
+        self.__connected = False
+        self.__disconnected = False
+
     def __str__(self):
         return f'[socket : {str(self.socket)}, target address : ({self.__target_ip},{self.__target_port}), ' \
                f'receive buffer: {self.__recv_buffer}]'
@@ -57,6 +70,35 @@ class TCPClient:
     @property
     def Address(self):
         return (self.__target_ip, self.__target_port)
+
+    def await_(self, timeout: int = 0):
+        '''
+        waits till an event occurs
+
+        :param timeout: time till timeout in milliseconds
+        :return: returns avent and its value(s)
+        '''
+        from time import time
+        start_time = time()
+        timeout = timeout / 1000
+
+        while True:
+            if self.event.exception.occurred:
+                return self.EVENT_EXCEPTION, self.return_exceptions()
+
+            if self.event.new_data:
+                return self.EVENT_RECEIVED, self.return_recved_data()
+
+            if self.__connected:
+                self.__connected = False
+                return self.EVENT_CONNECTED, None
+
+            if self.__disconnected:
+                self.__disconnected = False
+                return self.EVENT_DISCONNECT, None
+
+            if timeout > 0 and time() > start_time + timeout:
+                return self.EVENT_TIMEOUT, None
 
     def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect: Callable = None,
               on_disconnect: Callable = None, on_receive: Callable = None):
@@ -77,6 +119,8 @@ class TCPClient:
         self.on_disconnect = on_disconnect
         self.on_receive = on_receive
 
+        self.__setup_flag = True
+
     def reconnect(self) -> bool:
         '''
         tries to reconnect to the Server
@@ -94,11 +138,14 @@ class TCPClient:
 
         :return: returns a bool if the connecting was successful
         '''
+        if self.__setup_flag is False:
+            raise SetupError("Server isn't setup")
         try:
             self.socket.connect((self.__target_ip, self.__target_port))
 
             self.event.is_connected = True
             self.event.connected = True
+            self.__connected = True
             # self.socket.setblocking(False)
             if callable(self.on_connect):
                 self.on_connect()
@@ -154,6 +201,7 @@ class TCPClient:
                 self.event.exception.occurred = True
                 self.event.disconnected = True
                 self.event.is_connected = False
+                self.__disconnected = True
 
                 if callable(self.on_disconnect):
                     self.on_disconnect()
@@ -224,6 +272,9 @@ class TCPClient:
         try:
             self.socket.shutdown(1)
             self.socket.close()
+            self.event.is_connected = False
+            self.event.disconnected = True
+            self.__disconnected = True
             return True
         except Exception as e:
             self.event.exception.occurred = True
@@ -235,6 +286,11 @@ class TCPServer:
     '''
     This class contains functions for accepting connections and keeping connections alive
     '''
+
+    EVENT_EXCEPTION = "--EXCEPTION--"
+    EVENT_RECEIVED = "--RECEIVED--"
+    EVENT_TIMEOUT = "--TIMEOUT--"
+
     def __init__(self, max_connections=None):
         def get_event():
             class Exceptions:
@@ -277,6 +333,8 @@ class TCPServer:
 
         self.__PORT = None
         self.__IP = None
+
+        self.__setup_flag = False
 
     def __str__(self):
         return f'[socket : {str(self.socket)}, address : ({self.__IP},{self.__PORT}), ' \
@@ -327,6 +385,7 @@ class TCPServer:
 
         self.__accepting_thread.start()  # starts the accepting thread while the while loop is still false
 
+        self.__setup_flag = True
     # Sends bytes to a target
     def send_data(self, data: bytes, client_socket: socket.socket) -> bool:
         '''
@@ -418,11 +477,35 @@ class TCPServer:
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
 
+    def await_(self, timeout: int = 0):
+        '''
+        waits till an event occurs
+
+        :param timeout: time till timeout in milliseconds
+        :return: returns avent and its value(s)
+        '''
+        from time import time
+        start_time = time()
+        timeout = timeout / 1000
+
+        while True:
+            if self.event.exception.occurred:
+                return self.EVENT_EXCEPTION, self.return_exceptions()
+
+            if self.event.new_data:
+                return self.EVENT_RECEIVED, self.return_recved_data()
+
+            if timeout > 0 and time() > start_time + timeout:
+                return self.EVENT_TIMEOUT, None
+
     # starts the server
     def start(self):
         '''
         starts the accepting thread
         '''
+        if self.__setup_flag is False:
+            raise SetupError("Server isn't setup")
+
         self.event.accepting_thread.run = True
 
     # stops the server
