@@ -1,4 +1,4 @@
-from simplesockets.simplesockets import TCPServer, TCPClient
+from simplesockets.simple_sockets import TCPServer, TCPClient
 from simplesockets.securesockets import PyCryptodome_Socket
 import socket
 import traceback

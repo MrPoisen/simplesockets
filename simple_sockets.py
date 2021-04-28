@@ -7,9 +7,6 @@ from simplesockets._support_files.error import SetupError
 
 
 class TCPClient:
-    """
-    This class contains functions for connecting and keeping connections alive
-    """
 
     EVENT_EXCEPTION = "--EXCEPTION--"
     EVENT_RECEIVED = "--RECEIVED--"
@@ -18,21 +15,39 @@ class TCPClient:
     EVENT_CONNECTED = "--CONNECTED--"
 
     def __init__(self):
+        """
+            This class contains functions for connecting and keeping connections alive
+
+            Attributes:
+                self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
+                self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
+                self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
+                self.EVENT_DISCONNECT (str): Returned by `await_event()` if client disconnected
+                self.EVENT_CONNECTED (str): Returned by `await_event()` if client connected
+                self.event.new_data (bool): Is True if the Client received new data
+                self.event.disconnected (bool): Is True if the Client disconnected
+                self.event.is_connected (bool): Is True if the Client is connected to the Server
+                self.event.connected (bool): Is True if the Client connected
+                self.event.exception.occurred: Is True if an exception got caught
+                self.event.exception.list (list): contains all caught exceptions
+                self.recved_data (list): contains all received data
+
+            """
 
         def set_events():
             class Exceptions:
-                occurred = False
+                occurred: bool = False
                 list = []
 
             class Event:
                 # Exceptions
                 exception = Exceptions()
                 # Data
-                new_data = False
+                new_data: bool = False
                 # Connection
-                disconnected = False
-                connected = False
-                is_connected = False
+                disconnected: bool = False
+                connected: bool = False
+                is_connected: bool = False
 
             return Event()
 
@@ -55,6 +70,7 @@ class TCPClient:
         self.on_disconnect = None
         self.on_receive = None
 
+
         self.__setup_flag = False
 
         self.__connected = False
@@ -68,7 +84,8 @@ class TCPClient:
         return f'[{str(self.socket)},({self.__target_ip},{self.__target_port}),{self.__recv_buffer}]'
 
     @property
-    def Address(self):
+    def Address(self) -> tuple:
+        """Address of the Client, containing it's ip and port"""
         return (self.__target_ip, self.__target_port)
 
     def await_event(self, timeout: int = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
@@ -76,7 +93,7 @@ class TCPClient:
         waits till an event occurs
 
         :param timeout: time till timeout in milliseconds
-        :return: returns avent and its value(s)
+        :return: returns event and its value(s)
         """
         from time import time
         start_time = time()
@@ -237,7 +254,7 @@ class TCPClient:
 
     def recv_data(self) -> bytes:
         """
-        function collects all incoming data
+        function collects incoming data
 
         :return: returns received data as bytes
         """
@@ -292,6 +309,24 @@ class TCPServer:
     EVENT_TIMEOUT = "--TIMEOUT--"
 
     def __init__(self, max_connections: int = None):
+        """
+        This class contains functions for connecting and keeping connections alive
+
+        Args:
+            max_connections: how many Clients can connect to the Server
+
+        Attributes:
+            self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
+            self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
+            self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
+            self.event.new_data (bool): Is True if the Client received new data
+            self.event.exception.occurred: Is True if an exception got caught
+            self.event.exception.list (list): contains all caught exceptions
+            self.recved_data (list): contains all received data
+            self.socket: is the Server Socket
+            self.clients (dict): contains the address as the key and the client thread and socket as a list as the values
+
+        """
         def get_event():
             class Exceptions:
                 occurred = False
@@ -311,7 +346,7 @@ class TCPServer:
             return Event()
 
         self.__kill = False
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.clients = {}  # key: address, value : [client_thread,client_socket]
         self.__recv_buffer = 2048
 
@@ -412,7 +447,7 @@ class TCPServer:
     # recv data from a target
     def recv_data(self, client_socket: socket.socket) -> bytes:
         """
-        function collects all incoming data
+        function collects incoming data
 
         :return: returns received data as bytes
         """
@@ -482,7 +517,7 @@ class TCPServer:
         waits till an event occurs
 
         :param timeout: time till timeout in milliseconds
-        :return: returns avent and its value(s)
+        :return: returns event and its value(s)
         """
         from time import time
         start_time = time()

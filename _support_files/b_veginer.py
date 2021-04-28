@@ -1,7 +1,7 @@
 import secrets
 import os
 from typing import Tuple
-import error
+import simplesockets._support_files.error as error
 
 
 class Key:
