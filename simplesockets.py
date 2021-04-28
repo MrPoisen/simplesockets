@@ -2,14 +2,14 @@ import socket
 import threading
 import time
 import traceback
-from typing import Callable
+from typing import Callable, Union, Tuple, List
 from simplesockets._support_files.error import SetupError
 
 
 class TCPClient:
-    '''
+    """
     This class contains functions for connecting and keeping connections alive
-    '''
+    """
 
     EVENT_EXCEPTION = "--EXCEPTION--"
     EVENT_RECEIVED = "--RECEIVED--"
@@ -71,13 +71,13 @@ class TCPClient:
     def Address(self):
         return (self.__target_ip, self.__target_port)
 
-    def await_(self, timeout: int = 0):
-        '''
+    def await_event(self, timeout: int = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+        """
         waits till an event occurs
 
         :param timeout: time till timeout in milliseconds
         :return: returns avent and its value(s)
-        '''
+        """
         from time import time
         start_time = time()
         timeout = timeout / 1000
@@ -102,7 +102,7 @@ class TCPClient:
 
     def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect: Callable = None,
               on_disconnect: Callable = None, on_receive: Callable = None):
-        '''
+        """
         function sets up the Client
 
         :param target_ip: IP the Client should connect to
@@ -111,7 +111,7 @@ class TCPClient:
         :param on_connect: function that will be executed on connection, it takes not arguments
         :param on_disconnect: function that will be executed on disconnection, it takes no arguments
         :param on_receive: function that will be executed on receive, it takes the received data as an argument
-        '''
+        """
         self.__target_ip = target_ip
         self.__target_port = target_port
         self.__recv_buffer = recv_buffer
@@ -122,22 +122,22 @@ class TCPClient:
         self.__setup_flag = True
 
     def reconnect(self) -> bool:
-        '''
+        """
         tries to reconnect to the Server
 
         :return: returns a bool if the connecting was successful
-        '''
+        """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.event.connected = False
         self.event.disconnected = False
         return self.connect()
 
     def connect(self) -> bool:
-        '''
+        """
         tries to connect to the Server
 
         :return: returns a bool if the connecting was successful
-        '''
+        """
         if self.__setup_flag is False:
             raise SetupError("Server isn't setup")
         try:
@@ -156,12 +156,12 @@ class TCPClient:
             return False
 
     def send_data(self, data: bytes) -> bool:
-        '''
+        """
         tries to send data to the Server
 
         :param data: data that should be send
         :return: returns True if the sending was successful
-        '''
+        """
         data_length = len(data)
         sended_length = 0
         while sended_length < data_length:
@@ -173,12 +173,12 @@ class TCPClient:
             sended_length += sent
         return True
 
-    def return_recved_data(self) -> list:
-        '''
+    def return_recved_data(self) -> List[bytes]:
+        """
         returns received data
 
         :return: returns a list of the received data
-        '''
+        """
         self.event.new_data = False
         data = self.recved_data.copy()
         self.recved_data = []
@@ -207,9 +207,9 @@ class TCPClient:
                     self.on_disconnect()
 
     def autorecv(self) -> bool:
-        '''
+        """
         function which activates the auto-receiving thread, automatically saving all incoming data
-        '''
+        """
         if self.__autorecv is False:
             self.__autorecv = True
             try:
@@ -228,19 +228,19 @@ class TCPClient:
         return False
 
     def shutdown(self):
-        '''
+        """
         sets the flag in the autorecv thread to False and closes the socket
-        '''
+        """
         self.__autorecv = False
         self.socket.shutdown(1)
         self.socket.close()
 
     def recv_data(self) -> bytes:
-        '''
+        """
         function collects all incoming data
 
         :return: returns received data as bytes
-        '''
+        """
         chunks = []
         recv_data = True
         while recv_data:
@@ -250,14 +250,14 @@ class TCPClient:
                 recv_data = False
         return b''.join(chunks)
 
-    def return_exceptions(self, delete: bool = True, reset_exceptions: bool = True) -> list:
-        '''
+    def return_exceptions(self, delete: bool = True, reset_exceptions: bool = True) -> List[tuple]:
+        """
         this function returns all collected exceptions
 
         :param delete: if the list which collected the exceptions should be cleared
         :param reset_exceptions: if the exception occurred variable should be reset (set to False)
         :return: returns a list of all collected exceptions
-        '''
+        """
         exceptions = self.event.exception.list.copy()
         if delete:
             self.event.exception.list = []
@@ -266,9 +266,9 @@ class TCPClient:
         return exceptions
 
     def disconnect(self) -> bool:
-        '''
+        """
         tries to disconnect from the Server
-        '''
+        """
         try:
             self.socket.shutdown(1)
             self.socket.close()
@@ -283,15 +283,15 @@ class TCPClient:
 
 
 class TCPServer:
-    '''
+    """
     This class contains functions for accepting connections and keeping connections alive
-    '''
+    """
 
     EVENT_EXCEPTION = "--EXCEPTION--"
     EVENT_RECEIVED = "--RECEIVED--"
     EVENT_TIMEOUT = "--TIMEOUT--"
 
-    def __init__(self, max_connections=None):
+    def __init__(self, max_connections: int = None):
         def get_event():
             class Exceptions:
                 occurred = False
@@ -343,7 +343,7 @@ class TCPServer:
     def __repr__(self):
         return f'[{str(self.socket)},({self.__IP},{self.__PORT}),{self.__recv_buffer}]'
 
-    def __perfom_disconnect(self, address):
+    def __perfom_disconnect(self, address: tuple):
         self.clients.pop(address)
         self.__allthreads.pop(address)
 
@@ -355,8 +355,9 @@ class TCPServer:
 
     # Prepares the Server
     def setup(self, ip: str = socket.gethostname(), port: int = 25567, listen: int = 5, recv_buffer: int = 2048,
-              handle_client=None, on_connect=None, on_disconnect=None, on_receive=None):
-        '''
+              handle_client: Callable = None, on_connect: Callable = None, on_disconnect: Callable = None,
+              on_receive: Callable = None):
+        """
         function prepares the Server
 
         :param ip: IP of the Server
@@ -368,7 +369,7 @@ class TCPServer:
         :param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
         :param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data
         as an argument
-        '''
+        """
         self.__PORT = port
         self.__IP = ip
         self.socket.bind((ip, port))
@@ -386,15 +387,16 @@ class TCPServer:
         self.__accepting_thread.start()  # starts the accepting thread while the while loop is still false
 
         self.__setup_flag = True
+
     # Sends bytes to a target
     def send_data(self, data: bytes, client_socket: socket.socket) -> bool:
-        '''
+        """
         function for sending data to a specific clientsocket
 
         :param data: data which should be send
         :param client_socket: the clientsocket from to which the data should be send to
         :return:
-        '''
+        """
         data_length = len(data)
         sended_length = 0
         while sended_length < data_length:
@@ -409,11 +411,11 @@ class TCPServer:
 
     # recv data from a target
     def recv_data(self, client_socket: socket.socket) -> bytes:
-        '''
+        """
         function collects all incoming data
 
         :return: returns received data as bytes
-        '''
+        """
         chunks = []
         recv_data = True
         chunk = client_socket.recv(self.__recv_buffer)
@@ -428,19 +430,19 @@ class TCPServer:
         return b''.join(chunks)
 
     # returns all received data and clears self.recved_data and sets new_data_recved to False
-    def return_recved_data(self):
-        '''
+    def return_recved_data(self) -> List[bytes]:
+        """
         returns received data
 
         :return: returns a list of the received data
-        '''
+        """
         self.event.new_data = False
         data = self.recved_data.copy()
         self.recved_data = []
         return data
 
     # handles the connection
-    def __handle_client(self, client_socket, address):
+    def __handle_client(self, client_socket: socket.socket, address: tuple):
         try:
             while True:
                 recved = self.recv_data(client_socket)
@@ -451,8 +453,6 @@ class TCPServer:
                     if callable(self.on_receive):
                         self.on_receive(client_socket, address, recved)
 
-        except ConnectionResetError as e:
-            pass
         except Exception as e:
             self.event.exception.list.append((traceback.format_exc(), e))
             self.event.exception.occurred = True
@@ -477,13 +477,13 @@ class TCPServer:
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
 
-    def await_(self, timeout: int = 0):
-        '''
+    def await_event(self, timeout: int = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+        """
         waits till an event occurs
 
         :param timeout: time till timeout in milliseconds
         :return: returns avent and its value(s)
-        '''
+        """
         from time import time
         start_time = time()
         timeout = timeout / 1000
@@ -500,9 +500,9 @@ class TCPServer:
 
     # starts the server
     def start(self):
-        '''
+        """
         starts the accepting thread
-        '''
+        """
         if self.__setup_flag is False:
             raise SetupError("Server isn't setup")
 
@@ -510,15 +510,15 @@ class TCPServer:
 
     # stops the server
     def stop(self):
-        '''
+        """
         stops the accepting thread
-        '''
+        """
         self.event.accepting_thread.run = False
 
     def restart(self):
-        '''
+        """
         function tries to restart the accepting thread
-        '''
+        """
         if self.__kill:
             self.__kill = False
             self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
@@ -529,17 +529,17 @@ class TCPServer:
 
     @property
     def killed(self) -> bool:
-        '''
+        """
         :return: returns if the accepting thread got killed
-        '''
+        """
         return self.__kill
 
     def disconnect(self, address: tuple):
-        '''
+        """
         disconnects a socket from the Server
 
         :param address: the address of the client which you want to disconnect
-        '''
+        """
         try:
             client_socket = self.clients.get(address)[1]
             self.clients.pop(address)
@@ -554,13 +554,13 @@ class TCPServer:
             self.on_disconnect(address)
 
     def return_exceptions(self, delete: bool = True, reset_exception: bool = True) -> list:
-        '''
+        """
         this function returns all collected exceptions
 
         :param delete: if the list which collected the exceptions should be cleared
-        :param reset_exceptions: if the exception occurred variable should be reset (set to False)
+        :param reset_exception: if the exception occurred variable should be reset (set to False)
         :return: returns a list of all collected exceptions
-        '''
+        """
         exceptions = self.event.exception.list.copy()
         if delete:
             self.event.exception.list = []
@@ -570,8 +570,8 @@ class TCPServer:
         return exceptions
 
     def exit_accept(self):
-        '''
+        """
         stops and kills the accepting thread
-        '''
+        """
         self.__kill = True
         self.event.accepting_thread.run = False

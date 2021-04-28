@@ -1,11 +1,11 @@
-from simplesockets._support_files import RSA, b_veginer
-from simplesockets.simplesockets import TCPClient, TCPServer
 from simplesockets._support_files import cipher
+from simplesockets.simplesockets import TCPClient, TCPServer
 
-import socket, time, json
+import json
+import socket
+import time
 
-
-class Client_(TCPClient):
+class SecureClient(TCPClient):
     def __init__(self):
         super().__init__()
         self.user = ""
@@ -13,11 +13,10 @@ class Client_(TCPClient):
 
         self.seperators = [b'type_targ_sepLnpEwEljZi', b'targ_data_sepcLkGqydgGY']
 
-        private = RSA.get_private_key()
-        public = private.public_key()
+        private, public = cipher.gen_asym_keys()
         self.own_keys = [private, public] #0:private, 1:public
 
-        self.server_key: RSA.RSA_Public_Key = None
+        self.server_key = None
         self.users_keys = {} #Key: username, value: public key
 
         self.__first_keys = True
@@ -25,18 +24,6 @@ class Client_(TCPClient):
     @property
     def connected_users(self):
         return list(self.users_keys.keys())
-
-    def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
-        pad = b_veginer.Pad(b_veginer.get_key())
-        encrypted = pad.encrypt(data)
-        encr_key = key.encrypt(pad.bytes, 1)
-        return b''.join([encrypted, b'$$$$', encr_key])
-
-    def __decypt_data(self, data: bytes, prkey: RSA.RSA_Private_Key) -> bytes:
-        pad, enrcypted = data.split(b'$$$$')
-        pad = prkey.decrypt(pad, 1)
-        pad = b_veginer.import_pad(pad)
-        return pad.decrypt(enrcypted)
 
     def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect=None,
               on_disconnect=None, on_receive=None):
@@ -73,8 +60,8 @@ class Client_(TCPClient):
         '''
         # Exchange
         recved = super().recv_data()
-        self.server_key = RSA.import_key(recved)
-        self.send_data(target=b'Server', type=b'key', data=self.own_keys[1].unofficial_export(), key=self.server_key)
+        self.server_key = cipher.import_asym_key(recved)
+        self.send_data(target=b'Server', type=b'key', data=cipher.export_asym_key(self.own_keys[1]), key=self.server_key)
 
         #Login
 
@@ -95,13 +82,13 @@ class Client_(TCPClient):
                 for pair in pairs:
                     if len(pair) > 0:
                         user, key = pair.split(b'user-key')
-                        keys[user.decode()] = RSA.import_key(key)
+                        keys[user.decode()] = cipher.import_asym_key(key)
                 self.users_keys = keys.copy()
             except Exception as e:
                 print(e)
             return True
 
-    def recv_data(self):
+    def recv_data(self) -> tuple:
         '''
         function collects all incoming data
 
@@ -112,13 +99,13 @@ class Client_(TCPClient):
         target, data = rest.split(self.seperators[1])
 
         #Decrypt
-        type = self.own_keys[0].decrypt(type, 1)
-        target = self.__decypt_data(target, self.own_keys[0]).decode()
-        data = self.__decypt_data(data, self.own_keys[0])
+        type = cipher.decrypt_asym(type, self.own_keys[0])
+        target = cipher.decr_data(target, prkey=self.own_keys[0], output="bytes")
+        data = cipher.decr_data(data, prkey=self.own_keys[0], output="bytes")
 
         return (target, type, data)
 
-    def send_data(self, target: bytes, type: bytes, data: bytes, username:str=None, key=None) -> bool:
+    def send_data(self, target: bytes, type: bytes, data: bytes, username: str = None, key=None) -> bool:
         '''
         function sends encrypted data to a user or socket
 
@@ -129,7 +116,6 @@ class Client_(TCPClient):
         :param key: the RSA Public Key used for encryption,  if not given, you must give an username
         :return: returns True if the sending was successful
         '''
-
         if key is not None and username is None:
             pass
         elif key is None and username is not None:
@@ -140,9 +126,9 @@ class Client_(TCPClient):
         if key is None:
             return False
 
-        target = self.__enrcypt_data(target, self.server_key)
-        type = self.server_key.encrypt(type, 1)
-        data = self.__enrcypt_data(data, key)
+        target = cipher.encr_data(target, self.server_key)
+        type = cipher.encrypt_asym(type, self.server_key)
+        data = cipher.encr_data(data, key)
 
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send)
@@ -157,13 +143,12 @@ class Client_(TCPClient):
         return self.users_keys.get(username)
 
 
-class Server_(TCPServer):
+class SecureServer(TCPServer):
     def __init__(self, max_connections=None):
         super().__init__(max_connections)
         self.users = {}  # Key: address, value: username
 
-        private = RSA.get_private_key()
-        public = private.public_key()
+        private, public = cipher.gen_asym_keys()
 
         self.own_keys = [private, public]  # 0 is private, 1 is public
         self.client_keys = {}  # Key: username, value: public key
@@ -175,34 +160,22 @@ class Server_(TCPServer):
 
         self.indent = 4
 
-    def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
-        pad = b_veginer.Pad(b_veginer.get_key())
-        encrypted = pad.encrypt(data)
-        encr_key = key.encrypt(pad.bytes, 1)
-        return b''.join([encrypted, b'$$$$', encr_key])
-
-    def __decypt_data(self, data: bytes, prkey: RSA.RSA_Private_Key) -> bytes:
-        pad, enrcypted = data.split(b'$$$$')
-        pad = prkey.decrypt(pad, 1)
-        pad = b_veginer.import_pad(pad)
-        return pad.decrypt(enrcypted)
-
     def setup(self, filepath: str, ip: str = socket.gethostname(), port: int = 25567, listen: int = 5,
               recv_buffer: int = 2048, handle_client=None, on_connect=None, on_disconnect=None, on_receive=None):
         '''
-         function prepares the Server
+        function prepares the Server
 
-         :param filepath: absolut Path of the json file containing usernames and their passwords
-         :param ip: IP of the Server
-         :param port: PORT the Server should listen on
-         :param listen: parameter for socket.listen()
-         :param recv_buffer: the receive buffer used for socket.recv()
-         :param handle_client: the function for handling the Clients, should be left as None
-         :param on_connect: function that will be executed on connection, it takes the address(tuple) as an argument
-         :param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
-         :param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data
-         as an argument
-         '''
+        :param filepath: absolut Path of the json file containing usernames and their passwords
+        :param ip: IP of the Server
+        :param port: PORT the Server should listen on
+        :param listen: parameter for socket.listen()
+        :param recv_buffer: the receive buffer used for socket.recv()
+        :param handle_client: the function for handling the Clients, should be left as None
+        :param on_connect: function that will be executed on connection, it takes the address(tuple) as an argument
+        :param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
+        :param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data
+        as an argument
+        '''
         if on_connect is None:
             on_connect = self.on_connect
 
@@ -220,19 +193,19 @@ class Server_(TCPServer):
         '''
         # exchange keys
         client_socket = self.clients.get(address)[1]
-        super().send_data(self.own_keys[1].unofficial_export(), client_socket=client_socket)
+        super().send_data(cipher.export_asym_key(self.own_keys[0]), client_socket=client_socket)
         target, type_, data = self.recv_data(client_socket)
-        public_key: bytes = (self.__decypt_data(data, self.own_keys[0]))
+        public_key = cipher.decr_data(data, prkey=self.own_keys[0], output="bytes")
         # login
 
         target, type_, login_data = self.recv_data(client_socket)
-        login_data = self.__decypt_data(login_data, self.own_keys[0]).decode()
+        login_data: str = cipher.decr_data(login_data, prkey=self.own_keys[0])
         user, pw = login_data.split('%|%')
         check = self.check_user(user, pw)
 
         if check:
 
-            self.client_keys[user] = RSA.import_key(public_key)
+            self.client_keys[user] = cipher.import_asym_key(public_key)
             self.to_send_client_keys[user] = public_key
             self.users[address] = user
             time.sleep(0.05)
@@ -244,7 +217,8 @@ class Server_(TCPServer):
 
         else:
             self.send_data(target=b'Client', type=b'Rejected', data=b'Rejected',
-                           key=RSA.import_key(public_key), client_socket=client_socket)
+                           key=cipher.import_asym_key(public_key), client_socket=client_socket)
+
             self.disconnect(address)
 
     def on_disconnect(self, address):
@@ -345,8 +319,8 @@ class Server_(TCPServer):
         target, data = rest.split(self.seperators[1])
 
         # Decrypt
-        type = self.own_keys[0].decrypt(type, 1)
-        target = self.__decypt_data(target, self.own_keys[0])
+        type = cipher.decrypt_asym(type, self.own_keys[0])
+        target = cipher.decr_data(target, prkey=self.own_keys[0], output="bytes")
 
         return (target, type, data)
 
@@ -367,17 +341,17 @@ class Server_(TCPServer):
         if key is not None and client_socket is not None and username is None:
             pass
         elif key is None and client_socket is None and username is not None:
-            key: RSA.RSA_Public_Key = self.__client_keys.get(username)
+            key = self.client_keys.get(username)
             client_socket = self.clients.get(self.get_address_by_user(username))[1]
         else:
             self.event.exception.occurred = True
             self.event.exception.list.append((Exception("You must give an username or key and clientsocket")))
             return False
 
-        target = self.__enrcypt_data(target, key)
-        type = key.encrypt(type, 1)
+        target = cipher.encr_data(target, key)
+        type = cipher.encrypt_asym(type, key)
         if encr_data:
-            data = self.__enrcypt_data(data, key)
+            data = cipher.encr_data(data, key)
 
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send, client_socket)
@@ -395,4 +369,4 @@ class Server_(TCPServer):
         :param data: data which should be decrypted
         :return: returns decrypted data
         '''
-        return self.__decypt_data(data, self.own_keys[0])
+        return cipher.decr_data(data, self.own_keys[0])

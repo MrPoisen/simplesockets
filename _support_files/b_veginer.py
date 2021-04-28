@@ -1,5 +1,4 @@
 import secrets
-import string
 import os
 from typing import Tuple
 import error
@@ -74,7 +73,7 @@ class Pad:
     def encrypt(self, data: bytes):
         beginn_pad = self.__beginn_pad[0] + secrets.randbelow(self.__beginn_pad[1] - self.__beginn_pad[0])
         end_pad = self.__end_pad[0] + secrets.randbelow(self.__end_pad[1] - self.__end_pad[0])
-        paddad =  self.__padding(data, beginn_pad, end_pad)
+        paddad = self.__padding(data, beginn_pad, end_pad)
 
         return self.__key.encrypt(paddad)
 
@@ -97,6 +96,7 @@ class Pad:
     def bytes(self):
         return b''.join([b'b=', str(self.__beginn_pad).encode(), b'||k=', self.__key.key, b'||e=', str(self.__end_pad).encode()])
 
+
 def import_pad(pad_: bytes):
     list_ = []
     for element in pad_.split(b'||'):
@@ -107,10 +107,11 @@ def import_pad(pad_: bytes):
 
     return Pad(Key(list_[1]), tuple(list_[0]), tuple(list_[2]))
 
+
 def get_key(key_length: int = 256):
     key = secrets.randbits(key_length)
     return Key(key.to_bytes((key.bit_length() + 7) // 8, 'little'))
 
+
 def bytes_to_bites(byte_: bytes):
     return byte_ * 8
-
