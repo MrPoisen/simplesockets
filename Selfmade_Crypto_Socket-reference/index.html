@@ -1,0 +1,2627 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+    
+    
+      
+        <title>Selfmade Variante - SimpleSockets</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e35208c4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#selfmade_crypto_socket-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SimpleSockets" class="md-header__button md-logo" aria-label="SimpleSockets" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SimpleSockets
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Selfmade Variante
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/MrPoisen/simplesockets/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SimpleSockets" class="md-nav__button md-logo" aria-label="SimpleSockets" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    SimpleSockets
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/MrPoisen/simplesockets/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        SimpleSockets
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="SimpleSockets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          SimpleSockets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple_sockets_selfwritten/" class="md-nav__link">
+        How to use
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple_sockets-reference/" class="md-nav__link">
+        Simplesockets
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        SecureSockets
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="SecureSockets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          SecureSockets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PyCryptodome_Socket-reference/" class="md-nav__link">
+        Pycryptodome Variante
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Selfmade Variante
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Selfmade Variante
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket" class="md-nav__link">
+    simplesockets.securesockets.SelfmadeCipher_Socket
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient" class="md-nav__link">
+    SecureClient
+  </a>
+  
+    <nav class="md-nav" aria-label="SecureClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connected_users" class="md-nav__link">
+    connected_users
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect" class="md-nav__link">
+    connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
+    get_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.on_connect" class="md-nav__link">
+    on_connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.recv_data" class="md-nav__link">
+    recv_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.send_data" class="md-nav__link">
+    send_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.setup" class="md-nav__link">
+    setup()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer" class="md-nav__link">
+    SecureServer
+  </a>
+  
+    <nav class="md-nav" aria-label="SecureServer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.add_user" class="md-nav__link">
+    add_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.check_user" class="md-nav__link">
+    check_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.decrypt_data" class="md-nav__link">
+    decrypt_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_address_by_user" class="md-nav__link">
+    get_address_by_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_client_keys" class="md-nav__link">
+    get_client_keys()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_public_key" class="md-nav__link">
+    get_public_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.load_users" class="md-nav__link">
+    load_users()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_connect" class="md-nav__link">
+    on_connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_disconnect" class="md-nav__link">
+    on_disconnect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.recv_data" class="md-nav__link">
+    recv_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.save_users" class="md-nav__link">
+    save_users()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.send_data" class="md-nav__link">
+    send_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.setup" class="md-nav__link">
+    setup()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket" class="md-nav__link">
+    simplesockets.securesockets.SelfmadeCipher_Socket
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient" class="md-nav__link">
+    SecureClient
+  </a>
+  
+    <nav class="md-nav" aria-label="SecureClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connected_users" class="md-nav__link">
+    connected_users
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect" class="md-nav__link">
+    connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
+    get_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.on_connect" class="md-nav__link">
+    on_connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.recv_data" class="md-nav__link">
+    recv_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.send_data" class="md-nav__link">
+    send_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.setup" class="md-nav__link">
+    setup()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer" class="md-nav__link">
+    SecureServer
+  </a>
+  
+    <nav class="md-nav" aria-label="SecureServer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.add_user" class="md-nav__link">
+    add_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.check_user" class="md-nav__link">
+    check_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.decrypt_data" class="md-nav__link">
+    decrypt_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_address_by_user" class="md-nav__link">
+    get_address_by_user()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_client_keys" class="md-nav__link">
+    get_client_keys()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_public_key" class="md-nav__link">
+    get_public_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.load_users" class="md-nav__link">
+    load_users()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_connect" class="md-nav__link">
+    on_connect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_disconnect" class="md-nav__link">
+    on_disconnect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.recv_data" class="md-nav__link">
+    recv_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.save_users" class="md-nav__link">
+    save_users()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.send_data" class="md-nav__link">
+    send_data()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.setup" class="md-nav__link">
+    setup()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/MrPoisen/simplesockets/edit/master/docs/Selfmade_Crypto_Socket-reference.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="selfmade_crypto_socket-module">Selfmade_Crypto_Socket module</h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="simplesockets.securesockets.SelfmadeCipher_Socket"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient">
+        <code>SecureClient</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connected_users">
+<code class="highlight language-python"><span class="n">connected_users</span><span class="p">:</span> <span class="nb">list</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>list of all users in the self.users_keys dict</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>self.user</code></td>
+        <td><code>str</code></td>
+        <td><p>should contain the username of the Client</p></td>
+      </tr>
+      <tr>
+        <td><code>self.pw</code></td>
+        <td><code>str</code></td>
+        <td><p>should contain the password of the Client</p></td>
+      </tr>
+      <tr>
+        <td><code>self.seperators</code></td>
+        <td><code>list</code></td>
+        <td><p>bytes separating the the received information's</p></td>
+      </tr>
+      <tr>
+        <td><code>self.own_keys</code></td>
+        <td><code>list</code></td>
+        <td><p>contains the Keys, first the private, second the public</p></td>
+      </tr>
+      <tr>
+        <td><code>self.server_key</code></td>
+        <td><code>RSA_Public_Key</code></td>
+        <td><p>should contain the Key of the Server</p></td>
+      </tr>
+      <tr>
+        <td><code>self.users_keys</code></td>
+        <td><code>dict</code></td>
+        <td><p>should contain as a key the username, as the value the public Key</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        self.user (str): should contain the username of the Client</span>
+<span class="sd">        self.pw (str): should contain the password of the Client</span>
+<span class="sd">        self.seperators (list): bytes separating the the received information&#39;s</span>
+<span class="sd">        self.own_keys (list): contains the Keys, first the private, second the public</span>
+<span class="sd">        self.server_key (RSA_Public_Key): should contain the Key of the Server</span>
+<span class="sd">        self.users_keys (dict): should contain as a key the username, as the value the public Key</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pw</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;type_targ_sepLnpEwEljZi&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;targ_data_sepcLkGqydgGY&#39;</span><span class="p">]</span>
+
+    <span class="n">private</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">get_private_key</span><span class="p">()</span>
+    <span class="n">public</span> <span class="o">=</span> <span class="n">private</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">private</span><span class="p">,</span> <span class="n">public</span><span class="p">]</span> <span class="c1">#0:private, 1:public</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">server_key</span><span class="p">:</span> <span class="n">RSA</span><span class="o">.</span><span class="n">RSA_Public_Key</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">users_keys</span><span class="p">:</span><span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#Key: username, value: public key</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">__first_keys</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect">
+<code class="highlight language-python"><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">pw</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function tries to connect</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>user</code></td>
+        <td><code>str</code></td>
+        <td><p>username</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>pw</code></td>
+        <td><code>str</code></td>
+        <td><p>password</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if connecting was successful</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function tries to connect</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        user: username</span>
+<span class="sd">        pw: password</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns True if connecting was successful</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pw</span> <span class="o">=</span> <span class="n">pw</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key">
+<code class="highlight language-python"><span class="n">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function returns a key for a username</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>username used for finding the key</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>RSA_Private_Key</code></td>
+      <td><p>returns a RSA Public key</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RSA</span><span class="o">.</span><span class="n">RSA_Private_Key</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function returns a key for a username</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username: username used for finding the key</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns a RSA Public key</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">users_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.on_connect">
+<code class="highlight language-python"><span class="n">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>this function is executed on connection</p>
+
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function is executed on connection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Exchange</span>
+    <span class="n">recved</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_data</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">server_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">import_key</span><span class="p">(</span><span class="n">recved</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Server&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unofficial_export</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">server_key</span><span class="p">)</span>
+
+    <span class="c1">#Login</span>
+
+    <span class="n">login</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;%|%&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Server&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">server_key</span><span class="p">)</span>
+    <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_data</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;Rejected&#39;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;keys&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__first_keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__first_keys</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;!!next!!&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">user</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;user-key&#39;</span><span class="p">)</span>
+                    <span class="n">keys</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">decode</span><span class="p">()]</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">import_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">users_keys</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.recv_data">
+<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function collects all incoming data</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>tuple, first the target, second the type, third the data</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function collects all incoming data</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple, first the target, second the type, third the data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">recv</span><span class="p">:</span><span class="nb">bytes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_data</span><span class="p">()</span>
+    <span class="nb">type</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">recv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">target</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">rest</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#Decrypt</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.send_data">
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sends data to the the username or given socket encrypted with a key</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>target</code></td>
+        <td><code>bytes</code></td>
+        <td><p>information used for target</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>type</code></td>
+        <td><code>bytes</code></td>
+        <td><p>information used for type</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>data to send</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>the username of the user to send, if not given, you must give a key</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>key</code></td>
+        <td><code></code></td>
+        <td><p>the RSA Public Key used for encryption,  if not given, you must give an username</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if the sending was successful</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sends data to the the username or given socket encrypted with a key</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target: information used for target</span>
+<span class="sd">        type: information used for type</span>
+<span class="sd">        data: data to send</span>
+<span class="sd">        username: the username of the user to send, if not given, you must give a key</span>
+<span class="sd">        key: the RSA Public Key used for encryption,  if not given, you must give an username</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns True if the sending was successful</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">users_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enrcypt_data</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_key</span><span class="p">)</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_key</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enrcypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="n">to_send</span> <span class="o">=</span> <span class="nb">type</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">target</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">to_send</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.setup">
+<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_ip</span><span class="p">,</span> <span class="n">target_port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function sets up the Client</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>target_ip</code></td>
+        <td><code>str</code></td>
+        <td><p>IP the Client should connect to</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>target_port</code></td>
+        <td><code>int</code></td>
+        <td><p>PORT the Client should connect to</p></td>
+        <td><code>25567</code></td>
+      </tr>
+      <tr>
+        <td><code>recv_buffer</code></td>
+        <td><code>int</code></td>
+        <td><p>PORT the Client should connect to</p></td>
+        <td><code>2048</code></td>
+      </tr>
+      <tr>
+        <td><code>on_connect</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on connection, it takes not arguments</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_disconnect</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on disconnection, it takes no arguments</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_receive</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on receive, it takes the received data as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25567</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function sets up the Client</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target_ip: IP the Client should connect to</span>
+<span class="sd">        target_port: PORT the Client should connect to</span>
+<span class="sd">        recv_buffer: PORT the Client should connect to</span>
+<span class="sd">        on_connect: function that will be executed on connection, it takes not arguments</span>
+<span class="sd">        on_disconnect: function that will be executed on disconnection, it takes no arguments</span>
+<span class="sd">        on_receive: function that will be executed on receive, it takes the received data as an argument</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">on_connect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">on_connect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span>
+
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">target_ip</span><span class="p">,</span> <span class="n">target_port</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="p">,</span> <span class="n">on_connect</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="p">,</span> <span class="n">on_receive</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer">
+        <code>SecureServer</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>max_connections</code></td>
+        <td><code>int</code></td>
+        <td><p>how many Clients can connect to the Server</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>self.users</code></td>
+        <td><code></code></td>
+        <td><p>contains the address as the key and the username as the value</p></td>
+      </tr>
+      <tr>
+        <td><code>self.own_keys</code></td>
+        <td><code></code></td>
+        <td><p>contains the private Key and the public Key</p></td>
+      </tr>
+      <tr>
+        <td><code>self.client_keys</code></td>
+        <td><code></code></td>
+        <td><p>contains the username as the key and the public Key as the value</p></td>
+      </tr>
+      <tr>
+        <td><code>self.to_send_client_keys</code></td>
+        <td><code></code></td>
+        <td><p>contains the username as the key and the public Key as bytes as the value</p></td>
+      </tr>
+      <tr>
+        <td><code>self.seperators</code></td>
+        <td><code></code></td>
+        <td><p>contains bytes separating the received information's</p></td>
+      </tr>
+      <tr>
+        <td><code>self.filepath</code></td>
+        <td><code></code></td>
+        <td><p>path to a json file containing usernames and their passwords</p></td>
+      </tr>
+      <tr>
+        <td><code>self.indent</code></td>
+        <td><code></code></td>
+        <td><p>indent used for json</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_connections</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        max_connections: how many Clients can connect to the Server</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        self.users: contains the address as the key and the username as the value</span>
+<span class="sd">        self.own_keys: contains the private Key and the public Key</span>
+<span class="sd">        self.client_keys: contains the username as the key and the public Key as the value</span>
+<span class="sd">        self.to_send_client_keys: contains the username as the key and the public Key as bytes as the value</span>
+<span class="sd">        self.seperators: contains bytes separating the received information&#39;s</span>
+<span class="sd">        self.filepath: path to a json file containing usernames and their passwords</span>
+<span class="sd">        self.indent: indent used for json</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">max_connections</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Key: address, value: username</span>
+
+    <span class="n">private</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">get_private_key</span><span class="p">()</span>
+    <span class="n">public</span> <span class="o">=</span> <span class="n">private</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">private</span><span class="p">,</span> <span class="n">public</span><span class="p">]</span>  <span class="c1"># 0 is private, 1 is public</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">client_keys</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Key: username, value: public key</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">to_send_client_keys</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Key: username, value: public key as bytes</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;type_targ_sepLnpEwEljZi&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;targ_data_sepcLkGqydgGY&#39;</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="mi">4</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.add_user">
+<code class="highlight language-python"><span class="n">add_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">pw</span><span class="p">,</span> <span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>adds a username and a password to the already given json file</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>the username</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>pw</code></td>
+        <td><code>str</code></td>
+        <td><p>the password</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>get</code></td>
+        <td><code>str</code></td>
+        <td><p>calls the dict.get() function with the given parameter</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pw</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    adds a username and a password to the already given json file</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username: the username</span>
+<span class="sd">        pw: the password</span>
+<span class="sd">        get: calls the dict.get() function with the given parameter</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_users</span><span class="p">(</span><span class="n">get</span><span class="p">)</span>
+    <span class="n">hashed_pw</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">gen_hash</span><span class="p">(</span><span class="n">pw</span><span class="p">)</span>
+    <span class="n">users</span><span class="p">[</span><span class="n">username</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashed_pw</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_users</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">get</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.check_user">
+<code class="highlight language-python"><span class="n">check_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">pw</span><span class="p">,</span> <span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>checks if the given username and password are in the json file and are valid</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>username to check</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>pw</code></td>
+        <td><code>str</code></td>
+        <td><p>password to check (not yet hashed)</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>get</code></td>
+        <td><code>str</code></td>
+        <td><p>calls the dict.get() function with the given parameter</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if username and password are valid</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pw</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># pw not hashed already</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    checks if the given username and password are in the json file and are valid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username: username to check</span>
+<span class="sd">        pw: password to check (not yet hashed)</span>
+<span class="sd">        get: calls the dict.get() function with the given parameter</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns True if username and password are valid</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_users</span><span class="p">(</span><span class="n">get</span><span class="p">)</span>
+    <span class="n">actual_pw</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">actual_pw</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">cipher</span><span class="o">.</span><span class="n">compare_hash</span><span class="p">(</span><span class="n">pw</span><span class="p">,</span> <span class="n">actual_pw</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.decrypt_data">
+<code class="highlight language-python"><span class="n">decrypt_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function can be used for decrypting the received data with the Server RSA Private Key</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>data which should be decrypted</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>returns decrypted data</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">decrypt_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function can be used for decrypting the received data with the Server RSA Private Key</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: data which should be decrypted</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns decrypted data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_address_by_user">
+<code class="highlight language-python"><span class="n">get_address_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>uses the username to get the address</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>user</code></td>
+        <td><code>str</code></td>
+        <td><p>username</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>returns the address</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_address_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    uses the username to get the address</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        user: username</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns the address</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">user</span><span class="p">)]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_client_keys">
+<code class="highlight language-python"><span class="n">get_client_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>returns a copy of the dictonary containing clients and there importable keys</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_client_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns a copy of the dictonary containing clients and there importable keys</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_send_client_keys</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.get_public_key">
+<code class="highlight language-python"><span class="n">get_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>gets the public key from the username</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>username</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>RSA_Public_Key</code></td>
+      <td><p>returns a RSA Public Key</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RSA</span><span class="o">.</span><span class="n">RSA_Public_Key</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    gets the public key from the username</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username: username</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns a RSA Public Key</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.load_users">
+<code class="highlight language-python"><span class="n">load_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>this function loads the json file with the users and their passwords</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>get</code></td>
+        <td><code>str</code></td>
+        <td><p>calls the dict.get() function with the given parameter</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>returns a dict</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>  <span class="c1"># json</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function loads the json file with the users and their passwords</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        get: calls the dict.get() function with the given parameter</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns a dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">loaded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">get</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">loaded</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">loaded</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">get</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_connect">
+<code class="highlight language-python"><span class="n">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>this function gets call when a new client connects to the Server</p>
+
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function gets call when a new client connects to the Server</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># exchange keys</span>
+    <span class="n">client_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">address</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unofficial_export</span><span class="p">(),</span> <span class="n">client_socket</span><span class="o">=</span><span class="n">client_socket</span><span class="p">)</span>
+    <span class="n">target</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_data</span><span class="p">(</span><span class="n">client_socket</span><span class="p">)</span>
+    <span class="n">public_key</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="c1"># login</span>
+
+    <span class="n">target</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">login_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_data</span><span class="p">(</span><span class="n">client_socket</span><span class="p">)</span>
+    <span class="n">login_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">login_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">user</span><span class="p">,</span> <span class="n">pw</span> <span class="o">=</span> <span class="n">login_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;%|%&#39;</span><span class="p">)</span>
+    <span class="n">check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">pw</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_keys</span><span class="p">[</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">import_key</span><span class="p">(</span><span class="n">public_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_send_client_keys</span><span class="p">[</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">public_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+        <span class="n">to_send_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_send_client_keys</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">client_keys</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">to_send_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">client_keys</span> <span class="o">=</span> <span class="n">client_keys</span> <span class="o">+</span> <span class="n">user</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;user-key&#39;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;!!next!!&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Client&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">client_keys</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Client&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Rejected&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Rejected&#39;</span><span class="p">,</span>
+                       <span class="n">key</span><span class="o">=</span><span class="n">RSA</span><span class="o">.</span><span class="n">import_key</span><span class="p">(</span><span class="n">public_key</span><span class="p">),</span> <span class="n">client_socket</span><span class="o">=</span><span class="n">client_socket</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.on_disconnect">
+<code class="highlight language-python"><span class="n">on_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>this function gets called when a client gets disconnected</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>address</code></td>
+        <td><code></code></td>
+        <td><p>the address, containing Ip and Port</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function gets called when a client gets disconnected</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        address: the address, containing Ip and Port</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">client_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">to_send_client_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.recv_data">
+<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function collects incoming data</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>client_socket</code></td>
+        <td><code>socket</code></td>
+        <td><p>client socket</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>tuple: first the target, second the type, third the data</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function collects incoming data</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client_socket: client socket</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: first the target, second the type, third the data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">recv</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recv_data</span><span class="p">(</span><span class="n">client_socket</span><span class="p">)</span>
+    <span class="nb">type</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">recv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">target</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">rest</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Decrypt</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decypt_data</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">own_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.save_users">
+<code class="highlight language-python"><span class="n">save_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>saves the users and their password dict</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>users</code></td>
+        <td><code>dict</code></td>
+        <td><p>the users dictionary</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>get</code></td>
+        <td><code>str</code></td>
+        <td><p>calls the dict.get() function with the given parameter</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">users</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">get</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># json</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    saves the users and their password dict</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        users: the users dictionary</span>
+<span class="sd">        get: calls the dict.get() function with the given parameter</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">read_</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">get</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">read_</span><span class="p">[</span><span class="n">get</span><span class="p">]</span> <span class="o">=</span> <span class="n">users</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">read_</span> <span class="o">=</span> <span class="n">users</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">read_</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indent</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.send_data">
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_socket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function sends encrypted data to a user or socket</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>target</code></td>
+        <td><code>bytes</code></td>
+        <td><p>information used for target</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>type</code></td>
+        <td><code>bytes</code></td>
+        <td><p>information used for type</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>data to send</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>username</code></td>
+        <td><code>str</code></td>
+        <td><p>the username of the user to send, if not given, you must give a socket and a key</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>key</code></td>
+        <td><code></code></td>
+        <td><p>the RSA Public Key used for encryption,  if not given, you must give an username</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>client_socket</code></td>
+        <td><code>socket</code></td>
+        <td><p>client socket,  if not given, you must give an username</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>encr_data</code></td>
+        <td><code>bool</code></td>
+        <td><p>if the data should be encrypted</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if the sending was successful</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">client_socket</span> <span class="p">:</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    function sends encrypted data to a user or socket</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target: information used for target</span>
+<span class="sd">        type: information used for type</span>
+<span class="sd">        data: data to send</span>
+<span class="sd">        username: the username of the user to send, if not given, you must give a socket and a key</span>
+<span class="sd">        key: the RSA Public Key used for encryption,  if not given, you must give an username</span>
+<span class="sd">        client_socket: client socket,  if not given, you must give an username</span>
+<span class="sd">        encr_data: if the data should be encrypted</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns True if the sending was successful</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">client_socket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">client_socket</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">RSA</span><span class="o">.</span><span class="n">RSA_Public_Key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">client_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_address_by_user</span><span class="p">(</span><span class="n">username</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You must give an username or key and clientsocket&quot;</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enrcypt_data</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">encr_data</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enrcypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="n">to_send</span> <span class="o">=</span> <span class="nb">type</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">target</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">seperators</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">to_send</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.setup">
+<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;DESKTOP-DAN1I7E&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>prepares the Server</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filepath</code></td>
+        <td><code>str</code></td>
+        <td><p>absolut Path of the json file containing usernames and their passwords</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>ip</code></td>
+        <td><code>str</code></td>
+        <td><p>IP of the Server</p></td>
+        <td><code>&#39;DESKTOP-DAN1I7E&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>port</code></td>
+        <td><code>int</code></td>
+        <td><p>PORT the Server should listen on</p></td>
+        <td><code>25567</code></td>
+      </tr>
+      <tr>
+        <td><code>listen</code></td>
+        <td><code>int</code></td>
+        <td><p>parameter for socket.listen()</p></td>
+        <td><code>5</code></td>
+      </tr>
+      <tr>
+        <td><code>recv_buffer</code></td>
+        <td><code>int</code></td>
+        <td><p>the receive buffer used for socket.recv()</p></td>
+        <td><code>2048</code></td>
+      </tr>
+      <tr>
+        <td><code>handle_client</code></td>
+        <td><code></code></td>
+        <td><p>the function for handling the Clients, should be left as None</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_connect</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on connection, it takes the address(tuple) as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_disconnect</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on disconnection, it takes the address(tuple) as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_receive</code></td>
+        <td><code></code></td>
+        <td><p>function that will be executed on receive, it takes the clientsocket, address, received data</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>simplesockets\securesockets\selfmadecipher_socket.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="n">recv_buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    prepares the Server</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filepath: absolut Path of the json file containing usernames and their passwords</span>
+<span class="sd">        ip: IP of the Server</span>
+<span class="sd">        port: PORT the Server should listen on</span>
+<span class="sd">        listen: parameter for socket.listen()</span>
+<span class="sd">        recv_buffer: the receive buffer used for socket.recv()</span>
+<span class="sd">        handle_client: the function for handling the Clients, should be left as None</span>
+<span class="sd">        on_connect: function that will be executed on connection, it takes the address(tuple) as an argument</span>
+<span class="sd">        on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument</span>
+<span class="sd">        on_receive: function that will be executed on receive, it takes the clientsocket, address, received data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">on_connect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">on_connect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span>
+
+    <span class="k">if</span> <span class="n">on_disconnect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">on_disconnect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">listen</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="p">,</span> <span class="n">handle_client</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="n">on_connect</span><span class="p">,</span>
+                  <span class="n">on_disconnect</span><span class="o">=</span><span class="n">on_disconnect</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="n">on_receive</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../PyCryptodome_Socket-reference/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Pycryptodome Variante
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../Changelog/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Changelog
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+    
+  </body>
+</html>
