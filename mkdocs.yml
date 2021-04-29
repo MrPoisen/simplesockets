@@ -1,0 +1,36 @@
+site_name: SimpleSockets
+
+nav:
+  - Home: index.md
+  - SimpleSockets:
+    - How to use: simple_sockets_selfwritten.md
+    - Simplesockets: simple_sockets-reference.md
+  - SecureSockets:
+      - Pycryptodome Variante: PyCryptodome_Socket-reference.md
+      - Selfmade Variante: Selfmade_Crypto_Socket-reference.md
+  - Changelog: Changelog.md
+
+repo_url: https://github.com/MrPoisen/simplesockets
+theme:
+  name: "material"
+  include_homepage_in_sidebar: True
+  navigation_depth: 5
+  collapse_navigation: False
+  titles_only: False
+  nav_style: dark
+  highlightjs: True
+  palette:
+    scheme: slate
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append("simplesockets")
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
