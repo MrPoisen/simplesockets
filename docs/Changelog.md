@@ -1,12 +1,15 @@
 # Roadmap: 
+
 - bugfixes
 - more usability
 - better documentation of the code
 
 ## Release 0.0.9:
 
-- improved code documentation
-- improved documentation
+- improved code documentation  
+- improved documentation  
+- removed ipv6 support  
+- small additions  
 - small changes
 
 ## Release 0.0.8:

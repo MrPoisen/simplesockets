@@ -6,6 +6,7 @@ nav:
     - How to use: simple_sockets_selfwritten.md
     - Simplesockets: simple_sockets-reference.md
   - SecureSockets:
+      - How to use: Securesockets_selfwritten.md
       - Pycryptodome Variante: PyCryptodome_Socket-reference.md
       - Selfmade Variante: Selfmade_Crypto_Socket-reference.md
   - Changelog: Changelog.md
@@ -21,6 +22,7 @@ theme:
   highlightjs: True
   palette:
     scheme: slate
+    primary: deep orange
 
 plugins:
   - mkdocstrings:
@@ -29,6 +31,9 @@ plugins:
           setup_commands:
             - import sys
             - sys.path.append("simplesockets")
+          rendering:
+            show_source: false
+  - search
 
 markdown_extensions:
   - pymdownx.highlight

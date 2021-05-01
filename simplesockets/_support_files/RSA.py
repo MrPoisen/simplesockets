@@ -1,13 +1,23 @@
 import secrets
 import random
 import os
+from typing import Union
+
 from simplesockets._support_files import error
 
 
 class RSA_Public_Key:
-    def __init__(self, n, e):
-        self.__n = n
-        self.__e = e
+    """
+    This class allows the encryption of data with RSA
+
+    Attributes:
+        self.n (int): n
+        self.e (int): e
+        self.bytes (bytes): represents the key, encoded with base64
+    """
+    def __init__(self, n: int, e: int):
+        self.__n: int = n
+        self.__e: int = e
 
     def __str__(self):
         return f'Public RSA Key:\nn:{self.__n}\ne:{self.__e}'
@@ -30,11 +40,27 @@ class RSA_Public_Key:
         return int.from_bytes(xbytes, 'big')
 
     def encrypt(self, data: bytes, padding: int = 0, padding_length: int = 16) -> bytes:
+        """
+
+        Args:
+            data: data to be encrypted
+            padding: 0 for False, 1 for True
+            padding_length: padding length
+
+        Returns:
+            returns the encrypted data
+
+        Raises:
+            ValueError: if padding isn't 0 or 1 or the data is to large for the key
+
+        """
 
         if padding is 0:
             data: bytes = b''.join([b'\x00\x02', data])
         elif padding is 1:
             data = self.__padding(data, padding_length)
+        else:
+            ValueError("padding must be 0 for False or 1 for True")
         int_: int = self.__int_from_bytes(data)
 
         if int_ > self.__n:
@@ -63,12 +89,29 @@ class RSA_Public_Key:
         return base64.b64encode(s)
 
     def unofficial_export(self):
+        """
+        Exports the key but doesn't follows any conventions
+
+        Returns:
+            returns bytes object containing information about the class
+
+        """
         b = self.bytes
         s = f'-----BEGIN RSA PUBLIC KEY-----\n{b}\n-----END RSA PUBLIC KEY-----'
         return s.encode()
 
 
 class RSA_Private_Key:
+    """
+        This class allows the decryption of data with RSA
+
+        Attributes:
+            self.p (int): p
+            self.q (int): q
+            self.n (int): n
+            self.d (int): d
+            self.e (int): e
+        """
     def __init__(self, p, q, n, d, e):
         self.__p = p
         self.__q = q
@@ -86,6 +129,19 @@ class RSA_Private_Key:
         return x.to_bytes((x.bit_length() + 7) // 8, 'big')
 
     def decrypt(self, data: bytes, padding: int = 0) -> bytes:
+        """
+
+        Args:
+            data: data to be decrypted
+            padding: 0 for False, 1 for True
+
+        Returns:
+            returns dercypted bytes object
+
+        Raises:
+            ValueError: If the data is larger then the key can decrypt or If the padding Value isn't 0 or 1
+
+        """
         data = self.__int_from_bytes(data)
 
         if data > self.__n:
@@ -98,13 +154,20 @@ class RSA_Private_Key:
         elif padding is 1:
             return self.__unpad(bytes_)
         else:
-            raise Exception("Error")
+            raise ValueError("Error")
 
     def __unpad(self, data: bytes):
         pad, data = data.split(b'\x00')
         return data
 
     def public_key(self) -> RSA_Public_Key:
+        """
+        creates and returns a RSA Public Key
+
+        Returns:
+            returns a RSA Public Key
+
+        """
         return RSA_Public_Key(self.__n, self.__e)
 
     @property
@@ -125,9 +188,16 @@ class RSA_Private_Key:
 
     @property
     def d(self):
-        return self.d
+        return self.__d
 
     def unofficial_export(self):
+        """
+        Exports the key but doesn't follows any conventions
+
+        Returns:
+            returns bytes object containing information about the class
+
+        """
         import base64
         b = f'p={self.__p}|q={self.__q}|n={self.__n}|d={self.__d}|e={self.__d}'.encode()
         b = base64.b64encode(b)
@@ -142,11 +212,25 @@ def import_public_bytes(key_info: bytes):
     n, e = s.split(b'|')
     n = n.strip(b'n=')
     e = e.strip(b'e=')
-    return RSA_Public_Key(n.decode(), e.decode())
+    return RSA_Public_Key(int(n), int(e))
 
 
 def get_private_key(key_length: int = 4096) -> RSA_Private_Key:
-    primes_list = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
+    """
+    Creates and Returns a RSA Public Key
+
+    Args:
+        key_length: bit length of the key, it should be even
+
+    Returns:
+        returns a RSA Private Key
+
+    Raises:
+        ValueError: If the key_length is odd
+        RSACalcKeyError: If calculating d of the RSA Key resulted in an invalid d value
+
+    """
+    primes_list = {3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
                    103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
                    211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317,
                    331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443,
@@ -173,7 +257,7 @@ def get_private_key(key_length: int = 4096) -> RSA_Private_Key:
                    3067, 3079, 3083, 3089, 3109, 3119, 3121, 3137, 3163, 3167, 3169, 3181, 3187, 3191, 3203, 3209, 3217,
                    3221, 3229, 3251, 3253, 3257, 3259, 3271, 3299, 3301, 3307, 3313, 3319, 3323, 3329, 3331, 3343, 3347,
                    3359, 3361, 3371, 3373, 3389, 3391, 3407, 3413, 3433, 3449, 3457, 3461, 3463, 3467, 3469, 3491, 3499,
-                   3511, 3517, 3527, 3529, 3533, 3539, 3541, 3547, 3557, 3559, 3571]
+                   3511, 3517, 3527, 3529, 3533, 3539, 3541, 3547, 3557, 3559, 3571}
 
     if key_length % 2 != 0:
         raise ValueError("key length must be even")
@@ -264,7 +348,20 @@ def get_private_key(key_length: int = 4096) -> RSA_Private_Key:
     return RSA_Private_Key(p, q, n, d, e)
 
 
-def import_key(key: bytes):
+def import_key(key: bytes) -> Union[RSA_Public_Key, RSA_Private_Key]:
+    """
+    Imports an exported RSA Key
+
+    Args:
+        key: the key as an bytes object
+
+    Returns:
+        returns an RSA Public or Private Key
+
+    Raises:
+        RSAImportKeyError: If the key type couldn't be identified
+
+    """
 
     if '-----BEGIN RSA PRIVATE KEY-----' in key.decode():
         import base64
@@ -277,7 +374,7 @@ def import_key(key: bytes):
         for part in dec_.split(b'|'):
             info.append(part[2:])
 
-        return RSA_Private_Key(info[0], info[1], info[2], info[3], info[4])
+        return RSA_Private_Key(int(info[0]), int(info[1]), int(info[2]), int(info[3]), int(info[4]))
 
     elif '-----BEGIN RSA PUBLIC KEY-----' in key.decode():
         import base64
@@ -288,6 +385,6 @@ def import_key(key: bytes):
 
         for part in dec_.split(b'|'):
             info.append(part[2:])
-        return RSA_Public_Key(info[0], info[1])
+        return RSA_Public_Key(int(info[0]), int(info[1]))
     else:
         raise error.RSAImportKeyError("Couldn't identify key")

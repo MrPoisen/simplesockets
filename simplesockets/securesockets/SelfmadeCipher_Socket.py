@@ -1,6 +1,7 @@
 import json
 import socket
 import time
+from typing import Callable, Optional
 
 from simplesockets._support_files import b_veginer
 from simplesockets._support_files import RSA
@@ -53,8 +54,9 @@ class SecureClient(TCPClient):
         pad = b_veginer.import_pad(pad)
         return pad.decrypt(enrcypted)
 
-    def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect=None,
-              on_disconnect=None, on_receive=None):
+    def setup(self, target_ip: str, target_port: Optional[int] = 25567, recv_buffer: Optional[int] = 2048,
+              on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
+              on_receive: Optional[Callable]=None):
         """
         function sets up the Client
 
@@ -141,7 +143,8 @@ class SecureClient(TCPClient):
 
         return (target, type, data)
 
-    def send_data(self, target: bytes, type: bytes, data: bytes, username:str=None, key=None) -> bool:
+    def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
+                  key: Optional[RSA.RSA_Public_Key] = None) -> bool:
         """
         Sends data to the the username or given socket encrypted with a key
 
@@ -174,7 +177,7 @@ class SecureClient(TCPClient):
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send)
 
-    def get_key(self, username: str) -> RSA.RSA_Private_Key:
+    def get_key(self, username: str) -> RSA.RSA_Public_Key:
         """
         function returns a key for a username
 
@@ -189,7 +192,7 @@ class SecureClient(TCPClient):
 
 
 class SecureServer(TCPServer):
-    def __init__(self, max_connections: int = None):
+    def __init__(self, max_connections: Optional[int] = None):
         """
 
         Args:
@@ -233,8 +236,10 @@ class SecureServer(TCPServer):
         pad = b_veginer.import_pad(pad)
         return pad.decrypt(enrcypted)
 
-    def setup(self, filepath: str, ip: str = socket.gethostname(), port: int = 25567, listen: int = 5,
-              recv_buffer: int = 2048, handle_client=None, on_connect=None, on_disconnect=None, on_receive=None):
+    def setup(self, filepath: str, ip: Optional[str] = "127.0.0.1", port: Optional[int] = 25567,
+              listen: Optional[int] = 5, recv_buffer: Optional[int] = 2048, handle_client: Optional[Callable] = None,
+              on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
+              on_receive: Optional[Callable] = None):
         """
         prepares the Server
 
@@ -261,7 +266,7 @@ class SecureServer(TCPServer):
         super().setup(ip, port, listen, recv_buffer, handle_client, on_connect=on_connect,
                       on_disconnect=on_disconnect, on_receive=on_receive)
 
-    def on_connect(self, address):
+    def on_connect(self, address: tuple):
         """
         this function gets call when a new client connects to the Server
         """
@@ -294,7 +299,7 @@ class SecureServer(TCPServer):
                            key=RSA.import_key(public_key), client_socket=client_socket)
             self.disconnect(address)
 
-    def on_disconnect(self, address):
+    def on_disconnect(self, address: tuple):
         """
         this function gets called when a client gets disconnected
 
@@ -306,7 +311,7 @@ class SecureServer(TCPServer):
         self.client_keys.pop(username)
         self.to_send_client_keys.pop(username)
 
-    def load_users(self, get: str = None) -> dict:  # json
+    def load_users(self, get: Optional[str] = None) -> dict:  # json
         """
         this function loads the json file with the users and their passwords
 
@@ -324,7 +329,7 @@ class SecureServer(TCPServer):
         else:
             return loaded.get(get)
 
-    def save_users(self, users: dict, get: str = None):  # json
+    def save_users(self, users: dict, get: Optional[str] = None):  # json
         """
         saves the users and their password dict
 
@@ -344,7 +349,7 @@ class SecureServer(TCPServer):
         with open(self.filepath, 'w') as file:
             json.dump(read_, file, indent=self.indent)
 
-    def add_user(self, username: str, pw: str, get: str = None):
+    def add_user(self, username: str, pw: str, get: Optional[str] = None):
         """
         adds a username and a password to the already given json file
 
@@ -359,7 +364,7 @@ class SecureServer(TCPServer):
         users[username] = hashed_pw
         self.save_users(users, get)
 
-    def check_user(self, username: str, pw: str, get: str = None) -> bool:  # pw not hashed already
+    def check_user(self, username: str, pw: str, get: Optional[str] = None) -> bool:  # pw not hashed already
         """
         checks if the given username and password are in the json file and are valid
 
@@ -425,8 +430,9 @@ class SecureServer(TCPServer):
 
         return (target, type, data)
 
-    def send_data(self, target: bytes, type: bytes, data: bytes, username: str = None, key=None,
-                  client_socket :socket.socket = None, encr_data: bool = True) -> bool:
+    def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
+                  key: Optional[RSA.RSA_Public_Key] = None, client_socket: Optional[socket.socket] = None,
+                  encr_data: Optional[bool] = True) -> bool:
         """
         function sends encrypted data to a user or socket
 

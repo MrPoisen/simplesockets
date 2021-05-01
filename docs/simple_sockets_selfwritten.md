@@ -2,6 +2,9 @@
 
 This module contains two classes: TCPServer and TCPClient.  
 
+Note: **This Page is still under construction and may be outdated. For the newest code 
+documentation look [here](simple_sockets-reference.md).**
+
 ## Server
 Let's get started with the TCPServer:
 

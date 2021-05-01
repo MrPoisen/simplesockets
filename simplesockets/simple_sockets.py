@@ -2,11 +2,29 @@ import socket
 import threading
 import time
 import traceback
-from typing import Callable, Union, Tuple, List
+from typing import Callable, Union, Tuple, List, Optional
 from simplesockets._support_files.error import SetupError
 
 
 class TCPClient:
+    """
+    This class contains functions for connecting and keeping connections alive
+
+    Attributes:
+        self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
+        self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
+        self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
+        self.EVENT_DISCONNECT (str): Returned by `await_event()` if client disconnected
+        self.EVENT_CONNECTED (str): Returned by `await_event()` if client connected
+        self.event.new_data (bool): Is True if the Client received new data
+        self.event.disconnected (bool): Is True if the Client disconnected
+        self.event.is_connected (bool): Is True if the Client is connected to the Server
+        self.event.connected (bool): Is True if the Client connected
+        self.event.exception.occurred (bool): Is True if an exception got caught
+        self.event.exception.list (list): contains all caught exceptions
+        self.recved_data (list): contains all received data
+
+    """
 
     EVENT_EXCEPTION = "--EXCEPTION--"
     EVENT_RECEIVED = "--RECEIVED--"
@@ -15,24 +33,6 @@ class TCPClient:
     EVENT_CONNECTED = "--CONNECTED--"
 
     def __init__(self):
-        """
-            This class contains functions for connecting and keeping connections alive
-
-            Attributes:
-                self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
-                self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
-                self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
-                self.EVENT_DISCONNECT (str): Returned by `await_event()` if client disconnected
-                self.EVENT_CONNECTED (str): Returned by `await_event()` if client connected
-                self.event.new_data (bool): Is True if the Client received new data
-                self.event.disconnected (bool): Is True if the Client disconnected
-                self.event.is_connected (bool): Is True if the Client is connected to the Server
-                self.event.connected (bool): Is True if the Client connected
-                self.event.exception.occurred: Is True if an exception got caught
-                self.event.exception.list (list): contains all caught exceptions
-                self.recved_data (list): contains all received data
-
-            """
 
         def set_events():
             class Exceptions:
@@ -88,12 +88,15 @@ class TCPClient:
         """Address of the Client, containing it's ip and port"""
         return (self.__target_ip, self.__target_port)
 
-    def await_event(self, timeout: int = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
         """
         waits till an event occurs
 
-        :param timeout: time till timeout in milliseconds
-        :return: returns event and its value(s)
+        Args:
+            timeout: time till timeout in milliseconds
+
+        Returns:
+            returns event and its value(s)
         """
         from time import time
         start_time = time()
@@ -117,18 +120,21 @@ class TCPClient:
             if timeout > 0 and time() > start_time + timeout:
                 return self.EVENT_TIMEOUT, None
 
-    def setup(self, target_ip: str, target_port: int = 25567, recv_buffer: int = 2048, on_connect: Callable = None,
-              on_disconnect: Callable = None, on_receive: Callable = None):
+    def setup(self, target_ip: str, target_port: Optional[int] = 25567, recv_buffer: Optional[int] = 2048,
+              on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
+              on_receive: Optional[Callable] = None):
         """
         function sets up the Client
 
-        :param target_ip: IP the Client should connect to
-        :param target_port: PORT the Client should connect to
-        :param recv_buffer: the receive buffer used for socket.recv()
-        :param on_connect: function that will be executed on connection, it takes not arguments
-        :param on_disconnect: function that will be executed on disconnection, it takes no arguments
-        :param on_receive: function that will be executed on receive, it takes the received data as an argument
+        Args:
+            target_ip: IP the Client should connect to
+            target_port: PORT the Client should connect to
+            recv_buffer: The receive buffer used for `socket.recv()`
+            on_connect: Function that will be executed on connection, it takes not arguments
+            on_disconnect: Function that will be executed on disconnection, it takes no arguments
+            on_receive: Function that will be executed on receive, it takes the received data as an argument
         """
+
         self.__target_ip = target_ip
         self.__target_port = target_port
         self.__recv_buffer = recv_buffer
@@ -142,7 +148,8 @@ class TCPClient:
         """
         tries to reconnect to the Server
 
-        :return: returns a bool if the connecting was successful
+        Returns:
+            returns a bool if the connecting was successful
         """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.event.connected = False
@@ -153,7 +160,8 @@ class TCPClient:
         """
         tries to connect to the Server
 
-        :return: returns a bool if the connecting was successful
+        Returns:
+            returns a bool if the connecting was successful
         """
         if self.__setup_flag is False:
             raise SetupError("Server isn't setup")
@@ -176,8 +184,11 @@ class TCPClient:
         """
         tries to send data to the Server
 
-        :param data: data that should be send
-        :return: returns True if the sending was successful
+        Args:
+            data: ata that should be send
+
+        Returns:
+            returns True if the sending was successful
         """
         data_length = len(data)
         sended_length = 0
@@ -194,7 +205,8 @@ class TCPClient:
         """
         returns received data
 
-        :return: returns a list of the received data
+        Returns:
+            returns a list of the received data
         """
         self.event.new_data = False
         data = self.recved_data.copy()
@@ -254,9 +266,10 @@ class TCPClient:
 
     def recv_data(self) -> bytes:
         """
-        function collects incoming data
+        function collects incoming data. If you want to collect all incoming data automatically, use `Client.autorecv()`
 
-        :return: returns received data as bytes
+        Returns:
+            returns received data as bytes
         """
         chunks = []
         recv_data = True
@@ -267,13 +280,16 @@ class TCPClient:
                 recv_data = False
         return b''.join(chunks)
 
-    def return_exceptions(self, delete: bool = True, reset_exceptions: bool = True) -> List[tuple]:
+    def return_exceptions(self, delete: Optional[bool] = True, reset_exceptions: Optional[bool] = True) -> List[tuple]:
         """
         this function returns all collected exceptions
 
-        :param delete: if the list which collected the exceptions should be cleared
-        :param reset_exceptions: if the exception occurred variable should be reset (set to False)
-        :return: returns a list of all collected exceptions
+        Args:
+            delete: If the list which collected the exceptions should be cleared
+            reset_exceptions: If the exception occurred variable should be reset (set to False)
+
+        Returns:
+            returns a list of all collected exceptions
         """
         exceptions = self.event.exception.list.copy()
         if delete:
@@ -285,6 +301,9 @@ class TCPClient:
     def disconnect(self) -> bool:
         """
         tries to disconnect from the Server
+
+        Returns:
+            returns true if the client disconnected without an exception
         """
         try:
             self.socket.shutdown(1)
@@ -302,29 +321,30 @@ class TCPClient:
 class TCPServer:
     """
     This class contains functions for accepting connections and keeping connections alive
+
+    Attributes:
+            self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
+            self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
+            self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
+            self.event.new_data (bool): Is True if the Client received new data
+            self.event.exception.occurred (bool): Is True if an exception got caught
+            self.event.exception.list (list): contains all caught exceptions
+            self.recved_data (list): contains all received data
+            self.socket (socket.socket): is the Server Socket
+            self.clients (dict): contains the address as the key and the client thread and socket as a list as the values
+
     """
 
     EVENT_EXCEPTION = "--EXCEPTION--"
     EVENT_RECEIVED = "--RECEIVED--"
     EVENT_TIMEOUT = "--TIMEOUT--"
 
-    def __init__(self, max_connections: int = None):
+    def __init__(self, max_connections: Optional[int] = None):
         """
-        This class contains functions for connecting and keeping connections alive
+        Initializes the Server
 
         Args:
             max_connections: how many Clients can connect to the Server
-
-        Attributes:
-            self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred
-            self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data
-            self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out
-            self.event.new_data (bool): Is True if the Client received new data
-            self.event.exception.occurred: Is True if an exception got caught
-            self.event.exception.list (list): contains all caught exceptions
-            self.recved_data (list): contains all received data
-            self.socket: is the Server Socket
-            self.clients (dict): contains the address as the key and the client thread and socket as a list as the values
 
         """
         def get_event():
@@ -389,21 +409,23 @@ class TCPServer:
             self.run = True
 
     # Prepares the Server
-    def setup(self, ip: str = socket.gethostname(), port: int = 25567, listen: int = 5, recv_buffer: int = 2048,
-              handle_client: Callable = None, on_connect: Callable = None, on_disconnect: Callable = None,
-              on_receive: Callable = None):
+    def setup(self, ip: Optional[str] = "127.0.0.1", port: Optional[int] = 25567, listen: Optional[int] = 5,
+              recv_buffer: Optional[int] = 2048, handle_client: Optional[Callable] = None,
+              on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
+              on_receive: Optional[Callable] = None):
         """
         function prepares the Server
 
-        :param ip: IP of the Server
-        :param port: PORT the Server should listen on
-        :param listen: parameter for socket.listen()
-        :param recv_buffer: the receive buffer used for socket.recv()
-        :param handle_client: the function for handling the Clients, should be left as None
-        :param on_connect: function that will be executed on connection, it takes the address(tuple) as an argument
-        :param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
-        :param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data
-        as an argument
+        Args:
+            ip: IP of the Server
+            port: PORT the Server should listen on
+            listen: parameter for `socket.listen()`
+            recv_buffer: the receive buffer used for `socket.recv()`
+            handle_client: the function for handling the Clients, should be left as None
+            on_connect: function that will be executed on connection, it takes the address(tuple) as an argument
+            on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
+            on_receive: function that will be executed on receive, it takes the clientsocket, address, received data as
+                an argument
         """
         self.__PORT = port
         self.__IP = ip
@@ -428,9 +450,12 @@ class TCPServer:
         """
         function for sending data to a specific clientsocket
 
-        :param data: data which should be send
-        :param client_socket: the clientsocket from to which the data should be send to
-        :return:
+        Args:
+            data: data which should be send
+            client_socket: the clientsocket from to which the data should be send to
+
+        Returns:
+            returns True if the operation was successful
         """
         data_length = len(data)
         sended_length = 0
@@ -449,7 +474,8 @@ class TCPServer:
         """
         function collects incoming data
 
-        :return: returns received data as bytes
+        Returns:
+            returns received data as bytes
         """
         chunks = []
         recv_data = True
@@ -469,7 +495,8 @@ class TCPServer:
         """
         returns received data
 
-        :return: returns a list of the received data
+        Returns:
+            returns a list of the received data
         """
         self.event.new_data = False
         data = self.recved_data.copy()
@@ -512,12 +539,16 @@ class TCPServer:
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
 
-    def await_event(self, timeout: int = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
         """
         waits till an event occurs
 
-        :param timeout: time till timeout in milliseconds
-        :return: returns event and its value(s)
+        Args:
+            timeout: time till timeout in milliseconds. Zero means no timeout.
+
+        Returns:
+            Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)
+
         """
         from time import time
         start_time = time()
@@ -537,6 +568,9 @@ class TCPServer:
     def start(self):
         """
         starts the accepting thread
+
+        Raises:
+            SetupError: If `Client.setup()` wasn't called before
         """
         if self.__setup_flag is False:
             raise SetupError("Server isn't setup")
@@ -565,16 +599,21 @@ class TCPServer:
     @property
     def killed(self) -> bool:
         """
-        :return: returns if the accepting thread got killed
+
+        Returns: returns if the accepting thread got killed or not
+
         """
+
         return self.__kill
 
     def disconnect(self, address: tuple):
         """
         disconnects a socket from the Server
 
-        :param address: the address of the client which you want to disconnect
+        Args:
+            address: the address of the client which you want to disconnect
         """
+
         try:
             client_socket = self.clients.get(address)[1]
             self.clients.pop(address)
@@ -588,14 +627,19 @@ class TCPServer:
         if callable(self.on_disconnect):
             self.on_disconnect(address)
 
-    def return_exceptions(self, delete: bool = True, reset_exception: bool = True) -> list:
+    def return_exceptions(self, delete: Optional[bool] = True, reset_exception: Optional[bool] = True) -> list:
         """
-        this function returns all collected exceptions
+        Returns the collected exceptions
 
-        :param delete: if the list which collected the exceptions should be cleared
-        :param reset_exception: if the exception occurred variable should be reset (set to False)
-        :return: returns a list of all collected exceptions
+        Args:
+            delete: If the list which collected the exceptions should be cleared
+            reset_exception: If the exception occurred variable should be reset (set to False)
+
+        Returns:
+            returns a list of all collected exceptions
+
         """
+
         exceptions = self.event.exception.list.copy()
         if delete:
             self.event.exception.list = []

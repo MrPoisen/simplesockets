@@ -4,7 +4,7 @@ If you want a secure connection, use the secure variant `securesockets`. It uses
 [pycryptodome](https://pypi.org/project/pycryptodome/) library. It should be clear, that you need to install said 
 library to use the secure variant.  
 If you have encountered a bug or have an idea, share it on [github](https://github.com/MrPoisen/simplesockets). For 
-more help look up the [docs](https://mrpoisen.github.io/simplesocketsdocs/)  
+more help look up the [docs](https://mrpoisen.github.io/simplesockets/)  
 This package also contains an example, an echo Server and Client:
 
 echoclient.py

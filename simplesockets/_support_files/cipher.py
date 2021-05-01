@@ -5,23 +5,29 @@ try:
 except ImportError:
     pass
 
-def gen_asym_keys(length=2048):
+def gen_asym_keys(length: int = 2048):
     ''' Generates RSA keys
 
-    :param length: (optional) length of the keys
-    :return: returns private key, public key
+    Args:
+        length: length of the keys
+
+    Returns:
+        RsaKey, RsaKey: returns private key, public key
     '''
     prkey = RSA.generate(length)
     pubkey = prkey.publickey()
     return prkey, pubkey
 
 
-def encrypt_asym(text, pubkey):
+def encrypt_asym(text: bytes, pubkey: RSA.RsaKey) -> bytes:
     ''' Asymmetrical encryption
 
-    :param text: data that is supposed to be encrypted in bytes
-    :param pubkey: public key
-    :return: decrypted text
+    Args:
+        text: data that is supposed to be encrypted in bytes
+        pubkey: public key
+
+    Returns:
+        bytes: decrypted text
     '''
     if type(text) == hex:  # Checks type
         text = bytearray.fromhex(text)
@@ -36,12 +42,15 @@ def encrypt_asym(text, pubkey):
     return encrmsg
 
 
-def decrypt_asym(text, prkey):
+def decrypt_asym(text: bytes, prkey: RSA.RsaKey) -> bytes:
     ''' Asymmetrical decryption
 
-    :param text: data that is supposed to be decrypted in bytes
-    :param prkey: privat key
-    :return: decrypted text
+    Args:
+        text: data that is supposed to be decrypted in bytes
+        prkey: privat key
+
+    Returns:
+        bytes: decrypted text
     '''
     if type(text) == hex or type(text) == str:  # Checks type
         text = bytearray.fromhex(text)
@@ -54,22 +63,29 @@ def decrypt_asym(text, prkey):
     return decrmsg
 
 
-def get_sym_keys(bytes=32):
+def get_sym_keys(bytes_: int = 32) -> bytes:
     ''' Generates random bytes used as key
 
-    :param bytes: (optional) length of the key
-    :return: key
+    Args:
+        bytes_ (:obj:`int`, optional): length of the key
+
+    Returns:
+        bytes: key
     '''
-    key = get_random_bytes(bytes)
+    key = get_random_bytes(bytes_)
     return key
 
 
-def encrypt_sym(text, key):
+def encrypt_sym(text: bytes, key: bytes) -> bytes:
     ''' Symmetrical encryption
 
-    :param text: data that is supposed to be encrypted
-    :param key: the key
-    :return: returns decrypted data as bytes
+    Args:
+        text: data that is supposed to be encrypted
+        key: the key
+
+    Returns:
+        returns decrypted data as bytes
+
     '''
     if type(text) == hex:
         text = bytearray.fromhex(text)
@@ -85,12 +101,15 @@ def encrypt_sym(text, key):
     return msg
 
 
-def decrypt_sym(text, key):
+def decrypt_sym(text: bytes, key: bytes) -> bytes:
     ''' Symmetrical decryption
 
-    :param text: data that is supposed to be decrypted
-    :param key: the key (is the same one as the one used to encrypt)
-    :return: returns decrypted data as bytes
+    Args:
+        text: data that is supposed to be decrypted
+        key: the key (is the same one as the one used to encrypt)
+
+    Returns:
+        returns decrypted data as bytes
     '''
     if type(text) == hex or type(text) == str:
         text = bytearray.fromhex(text)
@@ -103,16 +122,22 @@ def decrypt_sym(text, key):
     return pl
 
 
-def encr_data(data, pubkey, bytes=32, output="bytes"):
+def encr_data(data: bytes, pubkey: RSA.RsaKey, bytes_: bytes = 32, output: str = "bytes"):
     ''' Encrypts data symmetrical and the key for the data assymetrical
-    :param data: the data that is supposed to be decrypted
-    :param pubkey: public_key
-    :param bytes: (optional) number of bytes of the symmetric key
-    :param output: (optional) type of the output
-    >>> encr_data(data,pubkey,output="hex")
-    :return: returns enrcypted data normally in bytes
+
+    Args:
+        data: the data that is supposed to be encrypted
+        pubkey: public_key
+        bytes_: number of bytes of the symmetric key
+        output: type of the output
+
+    Returns:
+        returns enrcypted data normally in bytes
+
+    Raises:
+        TypeError: If the value of output is invalid
     '''
-    key = get_sym_keys(bytes)
+    key = get_sym_keys(bytes_)
     d = encrypt_sym(data, key)
     k = encrypt_asym(key, pubkey)
     space = b'$$$%%$'
@@ -122,18 +147,23 @@ def encr_data(data, pubkey, bytes=32, output="bytes"):
     elif output == "bytes":
         pass
     else:
-        raise TypeError("The requested outputtype was invalid")
+        raise TypeError("The requested output type was invalid")
     return all
 
 
-def decr_data(data, prkey, output="str"):
+def decr_data(data: bytes, prkey: RSA.RsaKey, output: str = "bytes"):
     ''' Decrypts data with a private key
 
-    :param data: the data that is supposed to be decrypted
-    :param prkey: private_key
-    :param output: (optional) type of the output
-    >>> decr_data(data,prkey,output="bytes")
-    :return: encrypted msg
+    Args:
+        data: the data that is supposed to be decrypted
+        prkey: private key
+        output: type of the output
+
+    Returns:
+        decrypted msg
+
+    Raises:
+        TypeError: if the type of data or the value of output is invalid
     '''
     if type(data) == hex or type(data) == str:
         data = bytearray.fromhex(data)
@@ -152,24 +182,32 @@ def decr_data(data, prkey, output="str"):
         raise TypeError("The requested output type was invalid")
     return msg
 
-def import_asym_key(key):
+def import_asym_key(key: bytes):
     return RSA.import_key(key)
 
-def export_asym_key(key):
+def export_asym_key(key: RSA.RsaKey):
     return key.export_key()
 
 import hashlib
 import os
 
 
-def gen_hash(text, predefined_salt=None, hash_type='sha512', iterations=100000, data_type='hex'):
+def gen_hash(text: bytes, predefined_salt: bytes = None, hash_type: str = 'sha512', iterations: int = 100_000,
+             data_type: int = 'hex'):
     ''' Generates a hash from a text, standard in type sh512 and returns it with the salt as a prefix in bytes (or in hex)
-    :param text: the text that is supposed to be hashed
-    :param predefined_salt: (optional) specific salt that should be used
-    :param hash_type: (optional) defines what hash algorithm should be used
-    :param iterations: (optional) defines the amount of iterations
-    :param data_type: (optional) defines the output type
-    :return: returns hash
+
+    Args:
+        text: the text that is supposed to be hashed
+        predefined_salt: If given, specific salt that should be used, normally None
+        hash_type: defines what hash algorithm should be used, normally sha512
+        iterations: defines the amount of iterations, normally 100000
+        data_type: defines the output type, normally hex
+
+    Returns:
+        hex: returns hash
+
+    Raises:
+        TypeError: If the predefined salt has the wrong type
     '''
     if predefined_salt == None:
         salt = os.urandom(32)  # Generates random bytes
@@ -194,13 +232,17 @@ def gen_hash(text, predefined_salt=None, hash_type='sha512', iterations=100000, 
     return allbytes
 
 
-def compare_hash(to_compare, hash, hash_type='sha512', iterations=100000):
+def compare_hash(to_compare: bytes, hash: bytes, hash_type: str = 'sha512', iterations: int = 100_000) -> bool:
     ''' Compares a text with a hash
-    :param to_compare: the text that should be compared with the hash
-    :param hash: the hash that should be compared with the text
-    :param hash_type: (optional) defines what hash algorithm should be used
-    :param iterations: (optional) defines the amount of iterations
-    :return: returns True or False
+
+    Args:
+        to_compare: the text that should be compared with the hash
+        hash: the hash that should be compared with the text
+        hash_type: defines what hash algorithm should be used
+        iterations: defines the amount of iterations
+
+    Returns:
+        returns True or False
     '''
     if type(hash) == bytes or type(hash) == bytearray:  # Checks type of hash
         hash = hash.hex()

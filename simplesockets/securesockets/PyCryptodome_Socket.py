@@ -1,6 +1,6 @@
 from simplesockets._support_files import cipher
 from simplesockets.simple_sockets import TCPClient, TCPServer
-from typing import Callable
+from typing import Callable, Optional
 from Crypto.PublicKey.RSA import RsaKey
 import json
 import socket
@@ -209,8 +209,8 @@ class SecureServer(TCPServer):
 
         self.indent = 4
 
-    def setup(self, filepath: str, ip: str = socket.gethostname(), port: int = 25567, listen: int = 5,
-              recv_buffer: int = 2048, handle_client: Callable = None, on_connect: Callable = None,
+    def setup(self, filepath: str, ip: Optional[str] = "127.0.0.1", port: Optional[int] = 25567,
+              listen: Optional[int] = 5, recv_buffer: int = 2048, handle_client: Callable = None, on_connect: Callable = None,
               on_disconnect: Callable = None, on_receive: Callable = None):
         """
         prepares the Server
@@ -287,7 +287,7 @@ class SecureServer(TCPServer):
         self.client_keys.pop(username)
         self.to_send_client_keys.pop(username)
 
-    def load_users(self, get: str = None) -> dict:  # json
+    def load_users(self, get: Optional[str] = None) -> dict:  # json
         """
         this function loads the json file with the users and their passwords
 
@@ -306,7 +306,7 @@ class SecureServer(TCPServer):
         else:
             return loaded.get(get)
 
-    def save_users(self, users: dict, get: str = None):  # json
+    def save_users(self, users: dict, get: Optional[str] = None):  # json
         """
         saves the users and their password dict
 
@@ -328,7 +328,7 @@ class SecureServer(TCPServer):
         with open(self.filepath, 'w') as file:
             json.dump(read_, file, indent=self.indent)
 
-    def add_user(self, username: str, pw: str, get: str = None):
+    def add_user(self, username: str, pw: str, get: Optional[str] = None):
         """
         adds a username and a password to the already given json file
 
@@ -344,7 +344,7 @@ class SecureServer(TCPServer):
         users[username] = hashed_pw
         self.save_users(users, get)
 
-    def check_user(self, username: str, pw: str, get: str = None) -> bool:  # pw not hashed already
+    def check_user(self, username: str, pw: str, get: Optional[str] = None) -> bool:  # pw not hashed already
         """
         checks if the given username and password are in the json file and are valid
 
@@ -414,8 +414,9 @@ class SecureServer(TCPServer):
 
         return (target, type, data)
 
-    def send_data(self, target: bytes, type: bytes, data: bytes, username: str = None, key=None,
-                  client_socket :socket.socket = None, encr_data: bool = True) -> bool:
+    def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
+                  key: Optional[RsaKey] = None, client_socket: Optional[socket.socket] = None,
+                  encr_data: Optional[bool] = True) -> bool:
         """
         function sends encrypted data to a user or socket
 
