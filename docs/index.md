@@ -1,12 +1,14 @@
 # Welcome to simplesockets
 
-This is the simplesockets documentation. Here, you can learn how to use [this]() library  
+This is the simplesockets documentation. Here, you can learn how to use 
+[this](https://github.com/MrPoisen/simplesockets) library.  
 
 If you want to use the "unsecure" variant, use ``simplesockets``  
-If you want to use the "secure" variant, use `securesockets`. For this one, you need [pycryptodome](https://pypi.org/project/pycryptodome/)  
+If you want to use the "secure" variant, use `securesockets`. For this one, you need 
+[pycryptodome](https://pypi.org/project/pycryptodome/)  
 
 Here you can learn more about the [``simplesockets``](simple_sockets_selfwritten.md)
-Here you can learn more about the `securesockets`
+Here you can learn more about the [`securesockets`](Securesockets_selfwritten.md)
 
 If you need an example, you can find one in the example folder.
 

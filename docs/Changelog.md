@@ -12,6 +12,7 @@
 - improved code documentation  
 - improved documentation  
 - removed ipv6 support  
+- first tests  
 - small additions  
 - small changes
 

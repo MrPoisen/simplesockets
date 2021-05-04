@@ -88,16 +88,22 @@ class TCPClient:
         """Address of the Client, containing it's ip and port"""
         return (self.__target_ip, self.__target_port)
 
-    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False) -> Union[Tuple[str, list], Tuple[str, None]]:
         """
         waits till an event occurs
 
         Args:
             timeout: time till timeout in milliseconds
+            disable_on_functions: If True, will set __connected and __disconnected flag to False
 
         Returns:
             returns event and its value(s)
         """
+
+        if disable_on_functions:
+            self.__connected = False
+            self.__disconnected = False
+
         from time import time
         start_time = time()
         timeout = timeout / 1000

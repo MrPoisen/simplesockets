@@ -5,3 +5,4 @@ The SelfmadeCipher_Socket module does not require any dependencies.
 
 The use of the SelfmadeCipher_Socket module is <span style="color:firebrick"> ***not*** </span> recommended. For real 
 secure communication, use the Pycryptodome variant.  
+Both variants already contain an `on_connect` function. The Server already contains an `on_disconnect` function.  

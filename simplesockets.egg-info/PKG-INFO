@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: simplesockets
-Version: 0.0.8
+Version: 0.0.9
 Summary: Allows the use of python sockets more easily
 Home-page: https://github.com/MrPoisen/simplesockets
 Author: MrPoisen
@@ -14,7 +14,7 @@ Description: This library allows to easily create TCP Servers and Clients using 
         [pycryptodome](https://pypi.org/project/pycryptodome/) library. It should be clear, that you need to install said library to use 
         the secure variant.  
         If you have encountered a bug or have an idea, share it on [github](https://github.com/MrPoisen/simplesockets). For more help look 
-        up the [docs](https://mrpoisen.github.io/simplesocketsdocs/)
+        up the [docs](https://mrpoisen.github.io/simplesockets/)
         (Note: They are incomplete)
         This package also contains an example, an echo Server and Client:
         
