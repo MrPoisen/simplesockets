@@ -23,6 +23,10 @@
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
         
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
       
     
     
@@ -50,7 +54,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="">
   
     
     <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
@@ -99,6 +103,36 @@
     </div>
     
     
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     
     
       <div class="md-header__source">
@@ -267,13 +301,6 @@
           <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient.Address" class="md-nav__link">
     Address
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#simplesockets.simple_sockets.TCPClient.__init__" class="md-nav__link">
-    __init__()
   </a>
   
 </li>
@@ -507,6 +534,18 @@
   
   
     <li class="md-nav__item">
+      <a href="../Securesockets_selfwritten/" class="md-nav__link">
+        How to use
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../PyCryptodome_Socket-reference/" class="md-nav__link">
         Pycryptodome Variante
       </a>
@@ -590,13 +629,6 @@
           <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient.Address" class="md-nav__link">
     Address
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#simplesockets.simple_sockets.TCPClient.__init__" class="md-nav__link">
-    __init__()
   </a>
   
 </li>
@@ -836,63 +868,6 @@
 
     <div class="doc doc-contents ">
 
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.Address">
-<code class="highlight language-python"><span class="n">Address</span><span class="p">:</span> <span class="nb">tuple</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-property"><code>property</code></small>
-      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Address of the Client, containing it's ip and port</p>
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.__init__">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
       <p>This class contains functions for connecting and keeping connections alive</p>
 
 <p><strong>Attributes:</strong></p>
@@ -952,7 +927,7 @@
       </tr>
       <tr>
         <td><code>self.event.exception.occurred</code></td>
-        <td><code></code></td>
+        <td><code>bool</code></td>
         <td><p>Is True if an exception got caught</p></td>
       </tr>
       <tr>
@@ -967,74 +942,45 @@
       </tr>
   </tbody>
 </table>
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This class contains functions for connecting and keeping connections alive</span>
-
-<span class="sd">        Attributes:</span>
-<span class="sd">            self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred</span>
-<span class="sd">            self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data</span>
-<span class="sd">            self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out</span>
-<span class="sd">            self.EVENT_DISCONNECT (str): Returned by `await_event()` if client disconnected</span>
-<span class="sd">            self.EVENT_CONNECTED (str): Returned by `await_event()` if client connected</span>
-<span class="sd">            self.event.new_data (bool): Is True if the Client received new data</span>
-<span class="sd">            self.event.disconnected (bool): Is True if the Client disconnected</span>
-<span class="sd">            self.event.is_connected (bool): Is True if the Client is connected to the Server</span>
-<span class="sd">            self.event.connected (bool): Is True if the Client connected</span>
-<span class="sd">            self.event.exception.occurred: Is True if an exception got caught</span>
-<span class="sd">            self.event.exception.list (list): contains all caught exceptions</span>
-<span class="sd">            self.recved_data (list): contains all received data</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">set_events</span><span class="p">():</span>
-        <span class="k">class</span> <span class="nc">Exceptions</span><span class="p">:</span>
-            <span class="n">occurred</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
-            <span class="c1"># Exceptions</span>
-            <span class="n">exception</span> <span class="o">=</span> <span class="n">Exceptions</span><span class="p">()</span>
-            <span class="c1"># Data</span>
-            <span class="n">new_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="c1"># Connection</span>
-            <span class="n">disconnected</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">connected</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">is_connected</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="k">return</span> <span class="n">Event</span><span class="p">()</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__reciving_automatic</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">set_events</span><span class="p">()</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__allthreads</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__autorecv_thread</span><span class="p">]</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__target_ip</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__target_port</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__start_taregt</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_receive</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__connected</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__disconnected</span> <span class="o">=</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.Address">
+<code class="highlight language-python"><span class="n">Address</span><span class="p">:</span> <span class="nb">tuple</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Address of the Client, containing it's ip and port</p>
     </div>
 
   </div>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1054,30 +1000,6 @@
 
       <p>function which activates the auto-receiving thread, automatically saving all incoming data</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">autorecv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function which activates the auto-receiving thread, automatically saving all incoming data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span> <span class="n">e</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__reciving_automatic</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__reciving_automatic</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="k">return</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -1089,7 +1011,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.await_event">
-<code class="highlight language-python"><span class="n">await_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">await_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">disable_on_functions</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1097,41 +1019,41 @@
     <div class="doc doc-contents ">
 
       <p>waits till an event occurs</p>
-<p>:param timeout: time till timeout in milliseconds
-:return: returns event and its value(s)</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">await_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    waits till an event occurs</span>
-
-<span class="sd">    :param timeout: time till timeout in milliseconds</span>
-<span class="sd">    :return: returns event and its value(s)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="o">/</span> <span class="mi">1000</span>
-
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_EXCEPTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_exceptions</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_RECEIVED</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connected</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__connected</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_CONNECTED</span><span class="p">,</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__disconnected</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__disconnected</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_DISCONNECT</span><span class="p">,</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">timeout</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_TIMEOUT</span><span class="p">,</span> <span class="kc">None</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>time till timeout in milliseconds</p></td>
+        <td><code>0</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Union[Tuple[str, list], Tuple[str]]</code></td>
+      <td><p>returns event and its value(s)</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1151,34 +1073,22 @@
     <div class="doc doc-contents ">
 
       <p>tries to connect to the Server</p>
-<p>:return: returns a bool if the connecting was successful</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    tries to connect to the Server</span>
-
-<span class="sd">    :return: returns a bool if the connecting was successful</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">SetupError</span><span class="p">(</span><span class="s2">&quot;Server isn&#39;t setup&quot;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__target_ip</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__target_port</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">is_connected</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__connected</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1"># self.socket.setblocking(False)</span>
-        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">()</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span> <span class="n">e</span><span class="p">))</span>
-        <span class="k">return</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns a bool if the connecting was successful</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1199,25 +1109,21 @@
 
       <p>tries to disconnect from the Server</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    tries to disconnect from the Server</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">is_connected</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">disconnected</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__disconnected</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span> <span class="n">e</span><span class="p">))</span>
-        <span class="k">return</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns true if the client disconnected without an exception</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1237,22 +1143,22 @@
     <div class="doc doc-contents ">
 
       <p>tries to reconnect to the Server</p>
-<p>:return: returns a bool if the connecting was successful</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    tries to reconnect to the Server</span>
-
-<span class="sd">    :return: returns a bool if the connecting was successful</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">disconnected</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns a bool if the connecting was successful</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1271,27 +1177,23 @@
 
     <div class="doc doc-contents ">
 
-      <p>function collects incoming data</p>
-<p>:return: returns received data as bytes</p>
+      <p>function collects incoming data. If you want to collect all incoming data automatically, use <code>Client.autorecv()</code></p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function collects incoming data</span>
-
-<span class="sd">    :return: returns received data as bytes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">recv_data</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">while</span> <span class="n">recv_data</span><span class="p">:</span>
-        <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">)</span>
-        <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">:</span>
-            <span class="n">recv_data</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>returns received data as bytes</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1311,28 +1213,47 @@
     <div class="doc doc-contents ">
 
       <p>this function returns all collected exceptions</p>
-<p>:param delete: if the list which collected the exceptions should be cleared
-:param reset_exceptions: if the exception occurred variable should be reset (set to False)
-:return: returns a list of all collected exceptions</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">return_exceptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">reset_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    this function returns all collected exceptions</span>
-
-<span class="sd">    :param delete: if the list which collected the exceptions should be cleared</span>
-<span class="sd">    :param reset_exceptions: if the exception occurred variable should be reset (set to False)</span>
-<span class="sd">    :return: returns a list of all collected exceptions</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">exceptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">reset_exceptions</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="n">exceptions</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>delete</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>If the list which collected the exceptions should be cleared</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>reset_exceptions</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>If the exception occurred variable should be reset (set to False)</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[tuple]</code></td>
+      <td><p>returns a list of all collected exceptions</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1352,22 +1273,22 @@
     <div class="doc doc-contents ">
 
       <p>returns received data</p>
-<p>:return: returns a list of the received data</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">return_recved_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    returns received data</span>
-
-<span class="sd">    :return: returns a list of the received data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">return</span> <span class="n">data</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[bytes]</code></td>
+      <td><p>returns a list of the received data</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1387,30 +1308,41 @@
     <div class="doc doc-contents ">
 
       <p>tries to send data to the Server</p>
-<p>:param data: data that should be send
-:return: returns True if the sending was successful</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    tries to send data to the Server</span>
-
-<span class="sd">    :param data: data that should be send</span>
-<span class="sd">    :return: returns True if the sending was successful</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">sended_length</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">sended_length</span> <span class="o">&lt;</span> <span class="n">data_length</span><span class="p">:</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">sended_length</span><span class="p">:])</span>
-        <span class="k">if</span> <span class="n">sent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;socket connection error&quot;</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">sended_length</span> <span class="o">+=</span> <span class="n">sent</span>
-    <span class="k">return</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>ata that should be send</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if the sending was successful</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1430,37 +1362,56 @@
     <div class="doc doc-contents ">
 
       <p>function sets up the Client</p>
-<p>:param target_ip: IP the Client should connect to
-:param target_port: PORT the Client should connect to
-:param recv_buffer: the receive buffer used for socket.recv()
-:param on_connect: function that will be executed on connection, it takes not arguments
-:param on_disconnect: function that will be executed on disconnection, it takes no arguments
-:param on_receive: function that will be executed on receive, it takes the received data as an argument</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25567</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span> <span class="n">on_connect</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-          <span class="n">on_disconnect</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function sets up the Client</span>
-
-<span class="sd">    :param target_ip: IP the Client should connect to</span>
-<span class="sd">    :param target_port: PORT the Client should connect to</span>
-<span class="sd">    :param recv_buffer: the receive buffer used for socket.recv()</span>
-<span class="sd">    :param on_connect: function that will be executed on connection, it takes not arguments</span>
-<span class="sd">    :param on_disconnect: function that will be executed on disconnection, it takes no arguments</span>
-<span class="sd">    :param on_receive: function that will be executed on receive, it takes the received data as an argument</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__target_ip</span> <span class="o">=</span> <span class="n">target_ip</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__target_port</span> <span class="o">=</span> <span class="n">target_port</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span> <span class="o">=</span> <span class="n">recv_buffer</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="n">on_connect</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span> <span class="o">=</span> <span class="n">on_disconnect</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_receive</span> <span class="o">=</span> <span class="n">on_receive</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="o">=</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>target_ip</code></td>
+        <td><code>str</code></td>
+        <td><p>IP the Client should connect to</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>target_port</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>PORT the Client should connect to</p></td>
+        <td><code>25567</code></td>
+      </tr>
+      <tr>
+        <td><code>recv_buffer</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>The receive buffer used for <code>socket.recv()</code></p></td>
+        <td><code>2048</code></td>
+      </tr>
+      <tr>
+        <td><code>on_connect</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>Function that will be executed on connection, it takes not arguments</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_disconnect</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>Function that will be executed on disconnection, it takes no arguments</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_receive</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>Function that will be executed on receive, it takes the received data as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1481,17 +1432,6 @@
 
       <p>sets the flag in the autorecv thread to False and closes the socket</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    sets the flag in the autorecv thread to False and closes the socket</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__autorecv</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -1523,81 +1463,6 @@
 
       <p>This class contains functions for accepting connections and keeping connections alive</p>
 
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.killed">
-<code class="highlight language-python"><span class="n">killed</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-property"><code>property</code></small>
-      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>:return: returns if the accepting thread got killed</p>
-    </div>
-
-  </div>
-
-
-
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.__init__">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>This class contains functions for connecting and keeping connections alive</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>max_connections</code></td>
-        <td><code>int</code></td>
-        <td><p>how many Clients can connect to the Server</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
 <p><strong>Attributes:</strong></p>
 <table>
   <thead>
@@ -1630,7 +1495,7 @@
       </tr>
       <tr>
         <td><code>self.event.exception.occurred</code></td>
-        <td><code></code></td>
+        <td><code>bool</code></td>
         <td><p>Is True if an exception got caught</p></td>
       </tr>
       <tr>
@@ -1645,7 +1510,7 @@
       </tr>
       <tr>
         <td><code>self.socket</code></td>
-        <td><code></code></td>
+        <td><code>socket.socket</code></td>
         <td><p>is the Server Socket</p></td>
       </tr>
       <tr>
@@ -1655,72 +1520,81 @@
       </tr>
   </tbody>
 </table>
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_connections</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This class contains functions for connecting and keeping connections alive</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        max_connections: how many Clients can connect to the Server</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        self.EVENT_EXCEPTION (str): Returned by `await_event()` if an exception occurred</span>
-<span class="sd">        self.EVENT_RECEIVED (str): Returned by `await_event()` if the client received data</span>
-<span class="sd">        self.EVENT_TIMEOUT (str): Returned by `await_event()` if the function timed out</span>
-<span class="sd">        self.event.new_data (bool): Is True if the Client received new data</span>
-<span class="sd">        self.event.exception.occurred: Is True if an exception got caught</span>
-<span class="sd">        self.event.exception.list (list): contains all caught exceptions</span>
-<span class="sd">        self.recved_data (list): contains all received data</span>
-<span class="sd">        self.socket: is the Server Socket</span>
-<span class="sd">        self.clients (dict): contains the address as the key and the client thread and socket as a list as the values</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">get_event</span><span class="p">():</span>
-        <span class="k">class</span> <span class="nc">Exceptions</span><span class="p">:</span>
-            <span class="n">occurred</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+  <div class="doc doc-children">
 
-        <span class="k">class</span> <span class="nc">Accept</span><span class="p">:</span>
-            <span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
-            <span class="c1"># Exceptions</span>
-            <span class="n">exception</span> <span class="o">=</span> <span class="n">Exceptions</span><span class="p">()</span>
-            <span class="c1"># Data</span>
-            <span class="n">new_data</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="c1"># Accepting Thread</span>
-            <span class="n">accepting_thread</span> <span class="o">=</span> <span class="n">Accept</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">Event</span><span class="p">()</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__kill</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># key: address, value : [client_thread,client_socket]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span> <span class="o">=</span> <span class="mi">2048</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__accepting_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__accept_clients</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">get_event</span><span class="p">()</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">max_connections</span> <span class="o">=</span> <span class="n">max_connections</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__allthreads</span> <span class="o">=</span> <span class="p">{}</span>
+  <div class="doc doc-object doc-attribute">
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__start_target</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_receive</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__PORT</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__IP</span> <span class="o">=</span> <span class="kc">None</span>
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.killed">
+<code class="highlight language-python"><span class="n">killed</span><span class="p">:</span> <span class="nb">bool</span></code>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="o">=</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns: returns if the accepting thread got killed or not</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the Server</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>max_connections</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>how many Clients can connect to the Server</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1742,33 +1616,41 @@
     <div class="doc doc-contents ">
 
       <p>waits till an event occurs</p>
-<p>:param timeout: time till timeout in milliseconds
-:return: returns event and its value(s)</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">await_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    waits till an event occurs</span>
-
-<span class="sd">    :param timeout: time till timeout in milliseconds</span>
-<span class="sd">    :return: returns event and its value(s)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="o">/</span> <span class="mi">1000</span>
-
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_EXCEPTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_exceptions</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_RECEIVED</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">timeout</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EVENT_TIMEOUT</span><span class="p">,</span> <span class="kc">None</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>time till timeout in milliseconds. Zero means no timeout.</p></td>
+        <td><code>0</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Union[Tuple[str, list], Tuple[str]]</code></td>
+      <td><p>Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1788,30 +1670,26 @@
     <div class="doc doc-contents ">
 
       <p>disconnects a socket from the Server</p>
-<p>:param address: the address of the client which you want to disconnect</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    disconnects a socket from the Server</span>
-
-<span class="sd">    :param address: the address of the client which you want to disconnect</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">client_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">address</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__allthreads</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-        <span class="n">client_socket</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span> <span class="n">e</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>address</code></td>
+        <td><code>tuple</code></td>
+        <td><p>the address of the client which you want to disconnect</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1832,16 +1710,6 @@
 
       <p>stops and kills the accepting thread</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">exit_accept</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    stops and kills the accepting thread</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__kill</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">accepting_thread</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -1861,30 +1729,22 @@
     <div class="doc doc-contents ">
 
       <p>function collects incoming data</p>
-<p>:return: returns received data as bytes</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function collects incoming data</span>
-
-<span class="sd">    :return: returns received data as bytes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">recv_data</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">chunk</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">)</span>
-    <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">:</span>
-        <span class="k">while</span> <span class="n">recv_data</span><span class="p">:</span>
-            <span class="n">chunk</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">)</span>
-            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span><span class="p">:</span>
-                <span class="n">recv_data</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>returns received data as bytes</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1905,21 +1765,6 @@
 
       <p>function tries to restart the accepting thread</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function tries to restart the accepting thread</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kill</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__kill</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__accepting_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__accept_clients</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__accepting_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kill</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can&#39;t restart stopped or running thread&quot;</span><span class="p">)</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -1938,30 +1783,48 @@
 
     <div class="doc doc-contents ">
 
-      <p>this function returns all collected exceptions</p>
-<p>:param delete: if the list which collected the exceptions should be cleared
-:param reset_exception: if the exception occurred variable should be reset (set to False)
-:return: returns a list of all collected exceptions</p>
+      <p>Returns the collected exceptions</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">return_exceptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">reset_exception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    this function returns all collected exceptions</span>
-
-<span class="sd">    :param delete: if the list which collected the exceptions should be cleared</span>
-<span class="sd">    :param reset_exception: if the exception occurred variable should be reset (set to False)</span>
-<span class="sd">    :return: returns a list of all collected exceptions</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">exceptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">reset_exception</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="k">return</span> <span class="n">exceptions</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>delete</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>If the list which collected the exceptions should be cleared</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>reset_exception</code></td>
+        <td><code>Optional[bool]</code></td>
+        <td><p>If the exception occurred variable should be reset (set to False)</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>returns a list of all collected exceptions</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -1981,22 +1844,22 @@
     <div class="doc doc-contents ">
 
       <p>returns received data</p>
-<p>:return: returns a list of the received data</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">return_recved_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    returns received data</span>
-
-<span class="sd">    :return: returns a list of the received data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">recved_data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">return</span> <span class="n">data</span>
-</code></pre></div>
-        </details>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[bytes]</code></td>
+      <td><p>returns a list of the received data</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -2016,33 +1879,47 @@
     <div class="doc doc-contents ">
 
       <p>function for sending data to a specific clientsocket</p>
-<p>:param data: data which should be send
-:param client_socket: the clientsocket from to which the data should be send to
-:return:</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function for sending data to a specific clientsocket</span>
-
-<span class="sd">    :param data: data which should be send</span>
-<span class="sd">    :param client_socket: the clientsocket from to which the data should be send to</span>
-<span class="sd">    :return:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">sended_length</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">sended_length</span> <span class="o">&lt;</span> <span class="n">data_length</span><span class="p">:</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">sended_length</span><span class="p">:])</span>
-        <span class="k">if</span> <span class="n">sent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;socket connection error&quot;</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">occurred</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="n">sended_length</span> <span class="o">+=</span> <span class="n">sent</span>
-    <span class="k">return</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>data which should be send</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>client_socket</code></td>
+        <td><code>socket</code></td>
+        <td><p>the clientsocket from to which the data should be send to</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>returns True if the operation was successful</p></td>
+    </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -2054,7 +1931,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.setup">
-<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;DESKTOP-DAN1I7E&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 </h3>
@@ -2062,53 +1939,69 @@
     <div class="doc doc-contents ">
 
       <p>function prepares the Server</p>
-<p>:param ip: IP of the Server
-:param port: PORT the Server should listen on
-:param listen: parameter for socket.listen()
-:param recv_buffer: the receive buffer used for socket.recv()
-:param handle_client: the function for handling the Clients, should be left as None
-:param on_connect: function that will be executed on connection, it takes the address(tuple) as an argument
-:param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument
-:param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data
-as an argument</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>
-          <span class="n">handle_client</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-          <span class="n">on_receive</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    function prepares the Server</span>
-
-<span class="sd">    :param ip: IP of the Server</span>
-<span class="sd">    :param port: PORT the Server should listen on</span>
-<span class="sd">    :param listen: parameter for socket.listen()</span>
-<span class="sd">    :param recv_buffer: the receive buffer used for socket.recv()</span>
-<span class="sd">    :param handle_client: the function for handling the Clients, should be left as None</span>
-<span class="sd">    :param on_connect: function that will be executed on connection, it takes the address(tuple) as an argument</span>
-<span class="sd">    :param on_disconnect: function that will be executed on disconnection, it takes the address(tuple) as an argument</span>
-<span class="sd">    :param on_receive: function that will be executed on receive, it takes the clientsocket, address, received data</span>
-<span class="sd">    as an argument</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__PORT</span> <span class="o">=</span> <span class="n">port</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__IP</span> <span class="o">=</span> <span class="n">ip</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">listen</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__recv_buffer</span> <span class="o">=</span> <span class="n">recv_buffer</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="n">on_connect</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span> <span class="o">=</span> <span class="n">on_disconnect</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">on_receive</span> <span class="o">=</span> <span class="n">on_receive</span>
-
-    <span class="k">if</span> <span class="n">handle_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__start_target</span> <span class="o">=</span> <span class="n">handle_client</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__start_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_client</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__accepting_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  <span class="c1"># starts the accepting thread while the while loop is still false</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="o">=</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ip</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>IP of the Server</p></td>
+        <td><code>&#39;127.0.0.1&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>port</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>PORT the Server should listen on</p></td>
+        <td><code>25567</code></td>
+      </tr>
+      <tr>
+        <td><code>listen</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>parameter for <code>socket.listen()</code></p></td>
+        <td><code>5</code></td>
+      </tr>
+      <tr>
+        <td><code>recv_buffer</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>the receive buffer used for <code>socket.recv()</code></p></td>
+        <td><code>2048</code></td>
+      </tr>
+      <tr>
+        <td><code>handle_client</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>the function for handling the Clients, should be left as None</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_connect</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>function that will be executed on connection, it takes the address(tuple) as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_disconnect</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>function that will be executed on disconnection, it takes the address(tuple) as an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>on_receive</code></td>
+        <td><code>Optional[Callable]</code></td>
+        <td><p>function that will be executed on receive, it takes the clientsocket, address, received data as
+an argument</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -2129,18 +2022,21 @@ as an argument</p>
 
       <p>starts the accepting thread</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    starts the accepting thread</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__setup_flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">SetupError</span><span class="p">(</span><span class="s2">&quot;Server isn&#39;t setup&quot;</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">accepting_thread</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>SetupError</code></td>
+        <td><p>If <code>Client.setup()</code> wasn't called before</p></td>
+      </tr>
+  </tbody>
+</table>
     </div>
 
   </div>
@@ -2161,15 +2057,6 @@ as an argument</p>
 
       <p>stops the accepting thread</p>
 
-        <details class="quote">
-          <summary>Source code in <code>simplesockets\simple_sockets.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    stops the accepting thread</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">accepting_thread</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">False</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -2228,13 +2115,13 @@ as an argument</p>
         </a>
       
       
-        <a href="../PyCryptodome_Socket-reference/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../Securesockets_selfwritten/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Pycryptodome Variante
+              How to use
             </div>
           </div>
           <div class="md-footer__button md-icon">
