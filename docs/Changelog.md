@@ -3,6 +3,9 @@
 - bugfixes
 - more usability
 - better documentation of the code
+- cover the complete code with tests
+- test for different python versions
+- test for different operating systems
 
 ## Release 0.0.9:
 
