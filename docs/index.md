@@ -12,6 +12,14 @@ Here you can learn more about the [`securesockets`](Securesockets_selfwritten.md
 
 If you need an example, you can find one in the example folder.
 
+## Installation  
+
+For installation, write on the command prompt:  
+`pip install simplesockets`  
+Now, you can use this library.  
+
+## Example  
+
 If you want a simple echo Client, it could look something like this:
 
 ```` python
