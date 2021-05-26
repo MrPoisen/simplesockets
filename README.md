@@ -1,3 +1,4 @@
+# Introduction  
 This library allows to easily create TCP Servers and Clients using Python sockets
 
 If you want a secure connection, use the secure variant `securesockets`. It uses the 
@@ -5,14 +6,19 @@ If you want a secure connection, use the secure variant `securesockets`. It uses
 the secure variant.  
 If you have encountered a bug or have an idea, share it on [github](https://github.com/MrPoisen/simplesockets). For more help look 
 up the [docs](https://mrpoisen.github.io/simplesockets/)
-(Note: They are incomplete)
+(Note: They may be incomplete)
+
+# Installation
+use `pip install simplesockets` to install this library.
+
+# Examples
 This package also contains an example, an echo Server and Client:
 
 echoclient.py
 ```` python
 
 if __name__ == "__main__":
-    from simplesockets.simplesockets import TCPClient
+    from simplesockets import TCPClient
     
     Client = TCPClient()
     Client.setup(target_ip="localhost", target_port=25567) #prepares the Client
@@ -33,7 +39,7 @@ echoserver.py
 ```` python
 
 if __name__ == "__main__":
-    from simplesockets.simplesockets import TCPServer
+    from simplesockets import TCPServer
     
     Server = TCPServer()
     Server.setup(ip='127.0.0.1',port=25567) #prepares the server

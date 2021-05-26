@@ -7,6 +7,13 @@
 - test for different python versions
 - test for different operating systems
 
+## Release 0.0.10:
+
+- improved RSA speed
+- improved security in the self-made secure socket
+- imported classes in `__init__.py`
+
+
 ## Release 0.0.9:
 
 - improved code documentation  

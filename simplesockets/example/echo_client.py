@@ -1,6 +1,6 @@
 
 if __name__ == "__main__":
-    from simplesockets.simple_sockets import TCPClient
+    from simplesockets import TCPClient
 
     Client = TCPClient()
     Client.setup(target_ip="localhost", target_port=25567) #prepares the Client

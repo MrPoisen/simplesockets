@@ -24,7 +24,7 @@ If you want a simple echo Client, it could look something like this:
 
 ```` python
 if __name__ == "__main__":
-    from simplesockets.simplesockets import TCPClient
+    from simplesockets import TCPClient
 
     Client = TCPClient()
     Client.setup(target_ip="localhost", target_port=25567) #prepares the Client
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 A simple echo Server could look something like this:
 ```` python
 if __name__ == "__main__":
-    from simplesockets.simplesockets import TCPServer
+    from simplesockets import TCPServer
 
     Server = TCPServer()
     Server.setup(ip='127.0.0.1',port=25567) #prepares the server

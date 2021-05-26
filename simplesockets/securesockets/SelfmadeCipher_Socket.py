@@ -1,12 +1,13 @@
-import json
-import socket
-import time
-from typing import Callable, Optional
-
 from simplesockets._support_files import b_veginer
 from simplesockets._support_files import RSA
 from simplesockets._support_files import cipher
 from simplesockets.simple_sockets import TCPClient, TCPServer
+
+from typing import Callable, Optional
+import json
+import socket
+import time
+import os
 
 
 class SecureClient(TCPClient):
@@ -43,15 +44,16 @@ class SecureClient(TCPClient):
         return list(self.users_keys.keys())
 
     def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
-        pad = b_veginer.Pad(b_veginer.get_key())
+        Combined_key = b_veginer.Combined_Key(b_veginer.get_vigenere_key(), b_veginer.Combined_Key.get_transposition_key())
+        pad = b_veginer.Pad(Combined_key)
         encrypted = pad.encrypt(data)
-        encr_key = key.encrypt(pad.bytes, 1)
+        encr_key = key.encrypt(Combined_key.export_key(), 1)
         return b''.join([encrypted, b'$$$$', encr_key])
 
     def __decypt_data(self, data: bytes, prkey: RSA.RSA_Private_Key) -> bytes:
-        pad, enrcypted = data.split(b'$$$$')
-        pad = prkey.decrypt(pad, 1)
-        pad = b_veginer.import_pad(pad)
+        combined_key, enrcypted = data.split(b'$$$$')
+        Combined_key = b_veginer.Combined_Key.import_key(prkey.decrypt(combined_key, 1))
+        pad = b_veginer.Pad(Combined_key)
         return pad.decrypt(enrcypted)
 
     def setup(self, target_ip: str, target_port: Optional[int] = 25567, recv_buffer: Optional[int] = 2048,
@@ -137,7 +139,7 @@ class SecureClient(TCPClient):
         target, data = rest.split(self.seperators[1])
 
         #Decrypt
-        type = self.own_keys[0].decrypt(type, 1)
+        type = self.own_keys[0]._decrypt(type, 1)
         target = self.__decypt_data(target, self.own_keys[0]).decode()
         data = self.__decypt_data(data, self.own_keys[0])
 
@@ -225,7 +227,7 @@ class SecureServer(TCPServer):
         self.indent = 4
 
     def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
-        pad = b_veginer.Pad(b_veginer.get_key())
+        pad = b_veginer.Pad(b_veginer.get_vigenere_key())
         encrypted = pad.encrypt(data)
         encr_key = key.encrypt(pad.bytes, 1)
         return b''.join([encrypted, b'$$$$', encr_key])
@@ -261,7 +263,7 @@ class SecureServer(TCPServer):
         if on_disconnect is None:
             on_disconnect = self.on_disconnect
 
-        self.filepath = filepath
+        self.filepath = os.path.expanduser(filepath)
 
         super().setup(ip, port, listen, recv_buffer, handle_client, on_connect=on_connect,
                       on_disconnect=on_disconnect, on_receive=on_receive)
@@ -456,7 +458,7 @@ class SecureServer(TCPServer):
             client_socket = self.clients.get(self.get_address_by_user(username))[1]
         else:
             self.event.exception.occurred = True
-            self.event.exception.list.append((Exception("You must give an username or key and clientsocket")))
+            self.event.exception._list.append((Exception("You must give an username or key and clientsocket")))
             return False
 
         target = self.__enrcypt_data(target, key)
@@ -467,7 +469,7 @@ class SecureServer(TCPServer):
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send, client_socket)
 
-    def get_client_keys(self) -> bytes:
+    def get_client_keys(self) -> dict:
         """
 
         Returns:

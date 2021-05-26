@@ -1,7 +1,8 @@
 import secrets
 import os
-from typing import Tuple
+from typing import Tuple, Union
 import simplesockets._support_files.error as error
+from simplesockets._support_files.colum_transposition import Transposition, get_key, _int_to_bytes
 
 
 class Key:
@@ -15,6 +16,8 @@ class Key:
         self.__key: bytes = key
 
     def __eq__(self, other):
+        if isinstance(other, self) is False:
+            raise NotImplementedError
         return other.key == self.__key
 
     def __str__(self):
@@ -72,9 +75,215 @@ class Key:
 
         return b''.join(decrypted)
 
+class Autokey(Key):
+    def encrypt(self, data: bytes) -> bytes:
+        """
+
+        Args:
+            data: data to be encrypted
+
+        Returns:
+            returns encrypted data
+
+        """
+
+        def get_key(text: bytes, pos_: int):
+            if pos_ < len(self.key):
+                return self.key[pos_]
+            else:
+                pos_ = pos_ - len(self.__key)
+                return text[pos_]
+
+        pos = 0
+        encrypted = []
+        for element in data:
+            as_int = element
+            as_int = (as_int + get_key(data, pos)) % 256
+            pos = (pos + 1) % len(self.key)
+            if as_int == 0:
+                encrypted.append(b'\x00')
+            encrypted.append(_int_to_bytes(as_int))
+
+        return b''.join(encrypted)
+
+    def decrypt(self, data: bytes) -> bytes:
+        """
+
+        Args:
+            data: data to be decrypted
+
+        Returns:
+            decrypted data
+
+        """
+
+        def get_key(decyrpted_text: list, pos_: int):
+            if pos_ < len(self.__key):
+                return self.key[pos_]
+            else:
+                position = pos_ - len(self.key)
+                return decyrpted_text[position]
+
+        pos = 0
+        decrypted = []
+        for element in data:
+            as_int = element
+            as_int = (as_int - get_key(decrypted, pos)) % 256
+            pos = (pos + 1) % len(self.key)
+            decrypted.append(self.__int_to_bytes(as_int))
+
+        return b''.join(decrypted)
+
+
+class Combined_Key(Autokey):
+    """
+    This class combines the Vigenere autokey with the colunm transposition
+    """
+    def __init__(self, vigenere_key: Key, transposition: Transposition):
+        """
+
+        Args:
+            vigenere_key: The vigenere key
+            transposition: The transposition key
+        """
+        self.__transposition_key = transposition
+        super().__init__(vigenere_key.key)
+
+    def __eq__(self, other):
+        if isinstance(other, type(self)) is False:
+            raise NotImplementedError
+        else:
+            return other.export_key() == self.export_key()
+
+    @property
+    def transposition_key(self) -> bytes:
+        """
+
+        Returns:
+            returns transposition key
+
+        """
+        return self.__transposition_key.key
+
+    @property
+    def vigenere_key(self) -> bytes:
+        """
+
+        Returns:
+            returns vigenere key
+
+        """
+        return self.key
+
+    def encrypt(self, data: bytes, rounds: int = 2) -> bytes:
+        """
+        encrypts the data first with the vigenere autokey and then with the column transposition
+
+        Args:
+            data: data to be encrypted
+            rounds: how often the column transposition will be applied
+
+        Returns:
+            returns the encrypted data
+
+        """
+        encrypted = super().encrypt(data)
+        return self.__transposition_key.encrypt(encrypted, rounds)
+
+    def decrypt(self, data: bytes, rounds: int = 2) -> bytes:
+        """
+        decrypts the data first with the column transposition and then with the vigenere autokey
+
+        Args:
+            data: data to be decrypted
+            rounds: how often the column transposition will be applied
+
+        Returns:
+            returns the decrypted data
+
+        """
+        decrypted = self.__transposition_key.decrypt(data, rounds)
+        return super().decrypt(decrypted)
+
+    def export_key(self) -> bytes:
+        """
+        exports the key as bytes
+
+        Returns:
+            returns the exported key
+
+        """
+        from base64 import b64encode
+        bytes_ = b'v_key=' + self.key + b'|-|t_key=' + self.__transposition_key.key
+        return b64encode(bytes_)
+
+    @classmethod
+    def import_key(cls, key: bytes):
+        """
+        imports the exported key
+
+        Args:
+            key: the exported key
+
+        Returns:
+            Combined_Key: returns the key as Combined_Key
+
+        """
+        from base64 import b64decode
+        decoded = b64decode(key)
+        keys = decoded.split(b'|-|')
+        if len(keys) != 2:
+            raise ValueError("Wrong or invalid key")
+        return Combined_Key(Key(keys[0].strip(b'v_key=')), Transposition(keys[1].strip(b't_key=')))
+
+    @classmethod
+    def get_transposition_key(cls, size: tuple = (2, 257)):
+        """
+        creates an column transposition key
+
+        Args:
+            size: range for the size of the key with minimum 2 and maximum 257 (included)
+
+        Returns:
+            returns a column transposition key
+
+        """
+        return get_key(size)
+
+    @classmethod
+    def get_vigenere_key(self, size: int = 32, generation_type: str = "os"):
+        """
+        creates a vigenere key
+
+        Args:
+            size: the size of the key
+            generation_type: how the key is generated (with 'os' or 'secrets')
+
+        Returns:
+            returns a vigenere key
+
+        """
+        return get_vigenere_key(size, generation_type)
+
+    @classmethod
+    def get_combined_key(self, transposition_size: tuple = (2, 257), vigenere_size: int = 32, generation_type: str = "os"):
+        """
+
+        Args:
+            transposition_size: range for the size of the transposition key with minimum 2 and maximum 257 (included)
+            vigenere_size: the size of the vigenere key
+            generation_type: how the vigenere key is generated (with 'os' or 'secrets')
+
+        Returns:
+            Combined_Key: returns a Combined Key
+
+        """
+        vigener_key = get_vigenere_key(vigenere_size, generation_type)
+        transposition_key = get_key(transposition_size)
+        return Combined_Key(vigener_key, transposition_key)
 
 class Pad:
-    def __init__(self, key: Key, begin_pad: Tuple[int, int] = (10, 30), end_pad: Tuple[int, int] = (10, 30)):
+    def __init__(self, key: Union[Key, Autokey], begin_pad: Tuple[int, int] = (10, 30), end_pad: Tuple[int, int] = (10, 30)):
         """
 
         Args:
@@ -170,7 +379,7 @@ def import_pad(pad_: bytes) -> Pad:
     return Pad(Key(list_[1]), tuple(list_[0]), tuple(list_[2]))
 
 
-def get_key(key_length: int = 256, generation_type: str = "secrets") -> Key:
+def get_vigenere_key(key_length: int = 256, generation_type: str = "secrets") -> Key:
     """
     Creates and returns a Key
 

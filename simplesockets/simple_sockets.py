@@ -77,8 +77,7 @@ class TCPClient:
         self.__disconnected = False
 
     def __str__(self):
-        return f'[socket : {str(self.socket)}, target address : ({self.__target_ip},{self.__target_port}), ' \
-               f'receive buffer: {self.__recv_buffer}]'
+        return f'[socket : {str(self.socket)}, target address : ({self.__target_ip},{self.__target_port}), receive buffer: {self.__recv_buffer}]'
 
     def __repr__(self):
         return f'[{str(self.socket)},({self.__target_ip},{self.__target_port}),{self.__recv_buffer}]'

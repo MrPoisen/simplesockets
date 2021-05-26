@@ -1,6 +1,6 @@
 
 if __name__ == "__main__":
-    from simplesockets.simple_sockets import TCPServer
+    from simplesockets import TCPServer
 
     Server = TCPServer()
     Server.setup(ip='127.0.0.1',port=25567) #prepares the server

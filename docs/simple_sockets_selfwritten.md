@@ -11,7 +11,7 @@ Let's get started with the TCPServer:
 Setting up and starting the Server is really easy:
 
 ```` python
-from simplesockets.simplesockets import TCPServer
+from simplesockets import TCPServer
 
 Server = TCPServer() # you could specify the max amount of conections
 Server.setup(ip="127.0.0.1", port=9999) # more options: listen=5, recv_buffer=2048, handle_client=None
@@ -64,7 +64,7 @@ Therefore, we call `Server.send_data()`. It takes two arguments:
 Now we are finished. Here the complete code:
 
 ```` python
-from simplesockets.simplesockets import TCPServer
+from simplesockets import TCPServer
 
 Server = TCPServer()
 Server.setup(ip='127.0.0.1',port=9999) 

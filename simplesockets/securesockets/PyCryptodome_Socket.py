@@ -1,10 +1,13 @@
 from simplesockets._support_files import cipher
 from simplesockets.simple_sockets import TCPClient, TCPServer
-from typing import Callable, Optional
+
 from Crypto.PublicKey.RSA import RsaKey
+
+from typing import Callable, Optional
 import json
 import socket
 import time
+import os
 
 class SecureClient(TCPClient):
 
@@ -205,7 +208,7 @@ class SecureServer(TCPServer):
 
         self.seperators = [b'type_targ_sepLnpEwEljZi', b'targ_data_sepcLkGqydgGY']
 
-        self.filepath: str = None
+        self.filepath: str = ''
 
         self.indent = 4
 
@@ -235,7 +238,7 @@ class SecureServer(TCPServer):
         if on_disconnect is None:
             on_disconnect = self.on_disconnect
 
-        self.filepath = filepath
+        self.filepath = os.path.expanduser(filepath)
 
         super().setup(ip, port, listen, recv_buffer, handle_client, on_connect=on_connect,
                       on_disconnect=on_disconnect, on_receive=on_receive)
@@ -441,7 +444,7 @@ class SecureServer(TCPServer):
             client_socket = self.clients.get(self.get_address_by_user(username))[1]
         else:
             self.event.exception.occurred = True
-            self.event.exception.list.append((Exception("You must give an username or key and clientsocket")))
+            self.event.exception._list.append((Exception("You must give an username or key and clientsocket")))
             return False
 
         target = cipher.encr_data(target, key)
@@ -452,7 +455,7 @@ class SecureServer(TCPServer):
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send, client_socket)
 
-    def get_client_keys(self) -> bytes:
+    def get_client_keys(self) -> dict:
         """
 
         Returns:
