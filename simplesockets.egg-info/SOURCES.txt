@@ -13,7 +13,9 @@ simplesockets/_support_files/RSA.py
 simplesockets/_support_files/__init__.py
 simplesockets/_support_files/b_veginer.py
 simplesockets/_support_files/cipher.py
+simplesockets/_support_files/colum_transposition.py
 simplesockets/_support_files/error.py
+simplesockets/_support_files/primes.py
 simplesockets/example/__init__.py
 simplesockets/example/echo_client.py
 simplesockets/example/echo_server.py
