@@ -21,8 +21,10 @@ def test_data_exchange():
 
     Client.send_data(text)
 
-    event, value = Client.await_event() #returns Client.EVENT_CONNECTED
-    event, value = Client.await_event()
+    event, value = Client.await_event(disable_on_functions=True)
+
+    Client.close()
+    Server.close()
 
     assert event == Client.EVENT_RECEIVED and value[0] == text
 

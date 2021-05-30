@@ -3,7 +3,8 @@ import threading
 import time
 import traceback
 from typing import Callable, Union, Tuple, List, Optional
-from simplesockets._support_files.error import SetupError
+
+from simplesockets._support_files.error import SetupError, Exception_Collection
 
 
 class TCPClient:
@@ -37,7 +38,7 @@ class TCPClient:
         def set_events():
             class Exceptions:
                 occurred: bool = False
-                list = []
+                exceptions = Exception_Collection()
 
             class Event:
                 # Exceptions
@@ -82,12 +83,20 @@ class TCPClient:
     def __repr__(self):
         return f'[{str(self.socket)},({self.__target_ip},{self.__target_port}),{self.__recv_buffer}]'
 
+    def __enter__(self):
+        self.connect()
+        self.autorecv()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
     @property
     def Address(self) -> tuple:
         """Address of the Client, containing it's ip and port"""
         return (self.__target_ip, self.__target_port)
 
-    def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False) -> Union[Tuple[str, list], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False)\
+            -> Union[Tuple[str, dict], Tuple[str, List[bytes]], Tuple[str, None]]:
         """
         waits till an event occurs
 
@@ -182,7 +191,7 @@ class TCPClient:
             return True
         except Exception as e:
             self.event.exception.occurred = True
-            self.event.exception.list.append((traceback.format_exc(), e))
+            self.event.exception.exceptions.add(e, traceback.format_exc())
             return False
 
     def send_data(self, data: bytes) -> bool:
@@ -200,7 +209,7 @@ class TCPClient:
         while sended_length < data_length:
             sent = self.socket.send(data[sended_length:])
             if sent == 0:
-                self.event.exception.list.append((RuntimeError("socket connection error")))
+                self.event.exception.exceptions.add(ConnectionError("socket connection error"))
                 self.event.exception.occurred = True
                 return False
             sended_length += sent
@@ -231,7 +240,7 @@ class TCPClient:
                     self.event.new_data = True
 
             except Exception as e:
-                self.event.exception.list.append((traceback.format_exc(), e))
+                self.event.exception.exceptions.add(e, traceback.format_exc())
                 self.event.exception.occurred = True
                 self.event.disconnected = True
                 self.event.is_connected = False
@@ -250,7 +259,7 @@ class TCPClient:
                 self.__autorecv_thread.start()
                 return True
             except Exception as e:
-                self.event.exception.list.append((traceback.format_exc(), e))
+                self.event.exception.exceptions.add(e, traceback.format_exc())
                 self.event.exception.occurred = True
                 self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
                 return False
@@ -285,7 +294,7 @@ class TCPClient:
                 recv_data = False
         return b''.join(chunks)
 
-    def return_exceptions(self, delete: Optional[bool] = True, reset_exceptions: Optional[bool] = True) -> List[tuple]:
+    def return_exceptions(self, delete: Optional[bool] = True, reset_exceptions: Optional[bool] = True) -> dict:
         """
         this function returns all collected exceptions
 
@@ -296,9 +305,10 @@ class TCPClient:
         Returns:
             returns a list of all collected exceptions
         """
-        exceptions = self.event.exception.list.copy()
+
+        exceptions = self.event.exception.exceptions.exceptions
         if delete:
-            self.event.exception.list = []
+            self.event.exception.exceptions.clear()
         if reset_exceptions:
             self.event.exception.occurred = False
         return exceptions
@@ -319,8 +329,14 @@ class TCPClient:
             return True
         except Exception as e:
             self.event.exception.occurred = True
-            self.event.exception.list.append((traceback.format_exc(), e))
+            self.event.exception.exceptions.add(e, traceback.format_exc())
             return False
+
+    def close(self):
+        """
+        Closes the socket
+        """
+        self.socket.close()
 
 
 class TCPServer:
@@ -355,7 +371,7 @@ class TCPServer:
         def get_event():
             class Exceptions:
                 occurred = False
-                list = []
+                exceptions = Exception_Collection()
 
             class Accept:
                 run = True
@@ -403,6 +419,12 @@ class TCPServer:
     def __repr__(self):
         return f'[{str(self.socket)},({self.__IP},{self.__PORT}),{self.__recv_buffer}]'
 
+    def __enter__(self):
+        self.start()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
     def __perfom_disconnect(self, address: tuple):
         self.clients.pop(address)
         self.__allthreads.pop(address)
@@ -434,8 +456,10 @@ class TCPServer:
         """
         self.__PORT = port
         self.__IP = ip
+
         self.socket.bind((ip, port))
         self.socket.listen(listen)
+
         self.__recv_buffer = recv_buffer
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
@@ -467,7 +491,7 @@ class TCPServer:
         while sended_length < data_length:
             sent = client_socket.send(data[sended_length:])
             if sent == 0:
-                self.event.exception.list.append((RuntimeError("socket connection error")))
+                self.event.exception.exceptions.add(ConnectionError("socket connection error"))
                 self.event.exception.occurred = True
                 return False
 
@@ -521,7 +545,7 @@ class TCPServer:
                         self.on_receive(client_socket, address, recved)
 
         except Exception as e:
-            self.event.exception.list.append((traceback.format_exc(), e))
+            self.event.exception.exceptions.add(e, traceback.format_exc())
             self.event.exception.occurred = True
 
             self.__perfom_disconnect(address)
@@ -530,7 +554,11 @@ class TCPServer:
         while self.__kill is False:
             time.sleep(0.1)
             while self.event.accepting_thread.run:
-                client_socket, address = self.socket.accept()
+                try:
+                    client_socket, address = self.socket.accept()
+                except OSError:
+                    self.exit_accept()
+                    return
                 ct = threading.Thread(target=self.__start_target, args=(client_socket, address), daemon=True)
                 self.clients[address] = [ct, client_socket]
 
@@ -544,7 +572,7 @@ class TCPServer:
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
 
-    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, list], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, List[bytes]], Tuple[str, dict], Tuple[str, None]]:
         """
         waits till an event occurs
 
@@ -627,12 +655,12 @@ class TCPServer:
             client_socket.close()
         except Exception as e:
             self.event.exception.occurred = True
-            self.event.exception.list.append((traceback.format_exc(), e))
+            self.event.exception.exceptions.add(e, traceback.format_exc())
 
         if callable(self.on_disconnect):
             self.on_disconnect(address)
 
-    def return_exceptions(self, delete: Optional[bool] = True, reset_exception: Optional[bool] = True) -> list:
+    def return_exceptions(self, delete: Optional[bool] = True, reset_exception: Optional[bool] = True) -> dict:
         """
         Returns the collected exceptions
 
@@ -645,9 +673,10 @@ class TCPServer:
 
         """
 
-        exceptions = self.event.exception.list.copy()
+
+        exceptions = self.event.exception.exceptions.exceptions.copy()
         if delete:
-            self.event.exception.list = []
+            self.event.exception.exceptions.clear()
         if reset_exception:
             self.event.exception.occurred = False
 
@@ -659,3 +688,10 @@ class TCPServer:
         """
         self.__kill = True
         self.event.accepting_thread.run = False
+
+    def close(self):
+        """
+        Closes the socket
+        """
+
+        self.socket.close()

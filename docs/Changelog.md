@@ -7,11 +7,14 @@
 - test for different python versions
 - test for different operating systems
 
-## Release 0.0.10:
+## Release 0.1.0:
 
 - improved RSA speed
 - improved security in the self-made secure socket
-- imported classes in `__init__.py`
+- importing classes in `__init__.py`
+- new exception collecting system
+- added `close()` functions to Server and Client
+- added support for python keyword `with`
 
 
 ## Release 0.0.9:

@@ -7,7 +7,7 @@ import json
 from simplesockets._support_files import error
 
 
-class RSA_Public_Key:
+class RSA_PUBLIC_KEY:
     """
     This class allows the encryption of data with RSA
 
@@ -102,7 +102,7 @@ class RSA_Public_Key:
         return s.encode()
 
 
-class RSA_Private_Key:
+class RSA_PRIVATE_KEY:
     """
         This class allows the decryption of data with RSA
 
@@ -121,7 +121,7 @@ class RSA_Private_Key:
         self.__e = e
 
     def __str__(self):
-        return f'Private RSA Key:\nn:{self.__n}\nd:{self.__d}\n'
+        return f'Private RSA Key:\nn:{self.__n}\nd:{self.__d}'
 
     def __int_from_bytes(self, xbytes: bytes) -> int:
         return int.from_bytes(xbytes, 'big')
@@ -161,7 +161,7 @@ class RSA_Private_Key:
         pad, data = data.split(b'\x00')
         return data
 
-    def public_key(self) -> RSA_Public_Key:
+    def public_key(self) -> RSA_PUBLIC_KEY:
         """
         creates and returns a RSA Public Key
 
@@ -169,7 +169,7 @@ class RSA_Private_Key:
             returns a RSA Public Key
 
         """
-        return RSA_Public_Key(self.__n, self.__e)
+        return RSA_PUBLIC_KEY(self.__n, self.__e)
 
     @property
     def p(self):
@@ -213,13 +213,13 @@ def import_public_bytes(key_info: bytes):
     n, e = s.split(b'|')
     n = n.strip(b'n=')
     e = e.strip(b'e=')
-    return RSA_Public_Key(int(n), int(e))
+    return RSA_PUBLIC_KEY(int(n), int(e))
 
 def get_prime_list():
     with open('primes.json') as primes_file:
         return json.load(primes_file)
 
-def get_single_key(primes_list, length: int = 2048):
+def get_single_key(primes_list, length: int = 1024):
     """
     generates a prime number
 
@@ -234,7 +234,7 @@ def get_single_key(primes_list, length: int = 2048):
     def random_bit_number_odd(size: int = 2048):
         l = secrets.randbits(size)
         while pow(l, 1, 2) == 0:
-            l = secrets.randbits(size)
+            l += 1
         return l
 
     def check_first_primes(n: int):
@@ -255,7 +255,8 @@ def get_single_key(primes_list, length: int = 2048):
         r, s = 0, n - 1
         while pow(s, 1, 2) == 0:
             r += 1
-            s //= 2
+            s = divmod(s, 2)[0]
+            #s //= 2
         for _ in range(k):
             a = random.randrange(2, n - 1)
             x = pow(a, s, n)
@@ -275,15 +276,19 @@ def get_single_key(primes_list, length: int = 2048):
         number = random_bit_number_odd(length)
         if check_first_primes(number) is False:
             continue
-        if fermit_test(number, 5) is False:
-            continue
-        if Miller_Rabin_test(number, 5) is False:
+
+        """if fermit_test(number, 5) is False:
+            print("fermit test", number)
+            #number += 2
+            continue"""
+
+        if Miller_Rabin_test(number, 10) is False:
             continue
         prime = True
 
     return number
 
-def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA_Private_Key:
+def get_private_key(key_length: int = 2048, p: int = None, q: int = None) -> RSA_PRIVATE_KEY:
     """
     Creates and Returns a RSA Public Key
 
@@ -296,10 +301,13 @@ def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA
         returns a RSA Private Key
 
     Raises:
-        ValueError: If the key_length is odd
+        ValueError: If the key_length is odd | If the given Values of p and q are the same
         RSACalcKeyError: If calculating d of the RSA Key resulted in an invalid d value
 
     """
+
+    if isinstance(q, int) and p == q:
+        raise ValueError("p and q can't have the same Value")
 
     primes_list = get_prime_list()
 
@@ -308,12 +316,12 @@ def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA
 
     def get_e(phi_: int):
         e = 65537
-        while phi_ % e == 0:
+        while pow(phi_, 1, e) == 0:
             e += 1
         return e
 
     def check_d(phi__: int, d: int, e: int):
-        return e * d % phi__ == 1
+        return pow(e * d, 1, phi__) == 1
 
     def get_d(phi___, e):
         top1, top2 = phi___, phi___
@@ -322,9 +330,9 @@ def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA
             temp = top1 // c1
             lower_c1, lower_c2 = top1 - (c1 * temp), top2 - (c2 * temp)
             if lower_c1 < 0:
-                lower_c1 = lower_c1 % phi___
+                lower_c1 = pow(lower_c1, 1, phi___) #lower_c1 % phi___
             if lower_c2 < 0:
-                lower_c2 = lower_c2 % phi___
+                lower_c2 = pow(lower_c2, 1, phi___) #lower_c2 % phi___
             top1, top2 = c1, c2
             c1, c2 = lower_c1, lower_c2
             if c1 == 1:
@@ -336,7 +344,8 @@ def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA
         q = get_single_key(primes_list, key_length // 2)
 
     if p == q:
-        raise ValueError("p and q can't have the same Value")
+        while p == q:
+            q = get_single_key(primes_list, key_length//2)
 
     n = p * q
     phi = (p - 1) * (q - 1)
@@ -346,10 +355,10 @@ def get_private_key(key_length: int = 4096, p: int = None, q: int = None) -> RSA
     if check_d(phi, d, e) is False:
         raise error.RSACalcKeyError("Calculating d resulted in an Error")
 
-    return RSA_Private_Key(p, q, n, d, e)
+    return RSA_PRIVATE_KEY(p, q, n, d, e)
 
 
-def import_key(key: bytes) -> Union[RSA_Public_Key, RSA_Private_Key]:
+def import_key(key: bytes) -> Union[RSA_PUBLIC_KEY, RSA_PRIVATE_KEY]:
     """
     Imports an exported RSA Key
 
@@ -375,7 +384,7 @@ def import_key(key: bytes) -> Union[RSA_Public_Key, RSA_Private_Key]:
         for part in dec_.split(b'|'):
             info.append(part[2:])
 
-        return RSA_Private_Key(int(info[0]), int(info[1]), int(info[2]), int(info[3]), int(info[4]))
+        return RSA_PRIVATE_KEY(int(info[0]), int(info[1]), int(info[2]), int(info[3]), int(info[4]))
 
     elif '-----BEGIN RSA PUBLIC KEY-----' in key.decode():
         import base64
@@ -386,15 +395,18 @@ def import_key(key: bytes) -> Union[RSA_Public_Key, RSA_Private_Key]:
 
         for part in dec_.split(b'|'):
             info.append(part[2:])
-        return RSA_Public_Key(int(info[0]), int(info[1]))
+        return RSA_PUBLIC_KEY(int(info[0]), int(info[1]))
     else:
         raise error.RSAImportKeyError("Couldn't identify key")
+
 
 if __name__ == "__main__":
     import time
     start_time = time.time()
-    key = get_private_key(1024)
+    key = get_private_key(2048)
     end_time = time.time() - start_time
 
     print(key)
+    print("p:", key.p)
+    print("q:", key.q)
     print(f"time taken: {end_time} seconds, {end_time*1000} milliseconds, {end_time/60} minutes")

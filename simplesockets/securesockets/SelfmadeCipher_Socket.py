@@ -33,7 +33,7 @@ class SecureClient(TCPClient):
         public = private.public_key()
         self.own_keys: list = [private, public] #0:private, 1:public
 
-        self.server_key: RSA.RSA_Public_Key = None
+        self.server_key: RSA.RSA_PUBLIC_KEY = None
         self.users_keys:dict = {} #Key: username, value: public key
 
         self.__first_keys = True
@@ -43,14 +43,14 @@ class SecureClient(TCPClient):
         """list of all users in the self.users_keys dict"""
         return list(self.users_keys.keys())
 
-    def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
+    def __enrcypt_data(self, data: bytes, key: RSA.RSA_PUBLIC_KEY) -> bytes:
         Combined_key = b_veginer.Combined_Key(b_veginer.get_vigenere_key(), b_veginer.Combined_Key.get_transposition_key())
         pad = b_veginer.Pad(Combined_key)
         encrypted = pad.encrypt(data)
         encr_key = key.encrypt(Combined_key.export_key(), 1)
         return b''.join([encrypted, b'$$$$', encr_key])
 
-    def __decypt_data(self, data: bytes, prkey: RSA.RSA_Private_Key) -> bytes:
+    def __decypt_data(self, data: bytes, prkey: RSA.RSA_PRIVATE_KEY) -> bytes:
         combined_key, enrcypted = data.split(b'$$$$')
         Combined_key = b_veginer.Combined_Key.import_key(prkey.decrypt(combined_key, 1))
         pad = b_veginer.Pad(Combined_key)
@@ -146,7 +146,7 @@ class SecureClient(TCPClient):
         return (target, type, data)
 
     def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
-                  key: Optional[RSA.RSA_Public_Key] = None) -> bool:
+                  key: Optional[RSA.RSA_PUBLIC_KEY] = None) -> bool:
         """
         Sends data to the the username or given socket encrypted with a key
 
@@ -179,7 +179,7 @@ class SecureClient(TCPClient):
         to_send = type + self.seperators[0] + target + self.seperators[1] + data
         return super().send_data(to_send)
 
-    def get_key(self, username: str) -> RSA.RSA_Public_Key:
+    def get_key(self, username: str) -> RSA.RSA_PUBLIC_KEY:
         """
         function returns a key for a username
 
@@ -226,13 +226,13 @@ class SecureServer(TCPServer):
 
         self.indent = 4
 
-    def __enrcypt_data(self, data: bytes, key: RSA.RSA_Public_Key) -> bytes:
+    def __enrcypt_data(self, data: bytes, key: RSA.RSA_PUBLIC_KEY) -> bytes:
         pad = b_veginer.Pad(b_veginer.get_vigenere_key())
         encrypted = pad.encrypt(data)
         encr_key = key.encrypt(pad.bytes, 1)
         return b''.join([encrypted, b'$$$$', encr_key])
 
-    def __decypt_data(self, data: bytes, prkey: RSA.RSA_Private_Key) -> bytes:
+    def __decypt_data(self, data: bytes, prkey: RSA.RSA_PRIVATE_KEY) -> bytes:
         pad, enrcypted = data.split(b'$$$$')
         pad = prkey.decrypt(pad, 1)
         pad = b_veginer.import_pad(pad)
@@ -398,7 +398,7 @@ class SecureServer(TCPServer):
         """
         return list(self.users.keys())[list(self.users.values()).index(user)]
 
-    def get_public_key(self, username: str) -> RSA.RSA_Public_Key:
+    def get_public_key(self, username: str) -> RSA.RSA_PUBLIC_KEY:
         """
         gets the public key from the username
 
@@ -433,7 +433,7 @@ class SecureServer(TCPServer):
         return (target, type, data)
 
     def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
-                  key: Optional[RSA.RSA_Public_Key] = None, client_socket: Optional[socket.socket] = None,
+                  key: Optional[RSA.RSA_PUBLIC_KEY] = None, client_socket: Optional[socket.socket] = None,
                   encr_data: Optional[bool] = True) -> bool:
         """
         function sends encrypted data to a user or socket
@@ -454,7 +454,7 @@ class SecureServer(TCPServer):
         if key is not None and client_socket is not None and username is None:
             pass
         elif key is None and client_socket is None and username is not None:
-            key: RSA.RSA_Public_Key = self.client_keys.get(username)
+            key: RSA.RSA_PUBLIC_KEY = self.client_keys.get(username)
             client_socket = self.clients.get(self.get_address_by_user(username))[1]
         else:
             self.event.exception.occurred = True
