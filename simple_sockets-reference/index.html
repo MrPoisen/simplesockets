@@ -320,6 +320,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.TCPClient.close" class="md-nav__link">
+    close()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient.connect" class="md-nav__link">
     connect()
   </a>
@@ -412,6 +419,13 @@
           <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPServer.await_event" class="md-nav__link">
     await_event()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.TCPServer.close" class="md-nav__link">
+    close()
   </a>
   
 </li>
@@ -648,6 +662,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.TCPClient.close" class="md-nav__link">
+    close()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient.connect" class="md-nav__link">
     connect()
   </a>
@@ -740,6 +761,13 @@
           <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPServer.await_event" class="md-nav__link">
     await_event()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.TCPServer.close" class="md-nav__link">
+    close()
   </a>
   
 </li>
@@ -986,6 +1014,8 @@
 
 
 
+
+
   <div class="doc doc-object doc-method">
 
 
@@ -1055,11 +1085,31 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>Union[Tuple[str, list], Tuple[str]]</code></td>
+      <td><code>Union[Tuple[str, dict], Tuple[str, List[bytes]], Tuple[str]]</code></td>
       <td><p>returns event and its value(s)</p></td>
     </tr>
   </tbody>
 </table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.close">
+<code class="highlight language-python"><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Closes the socket</p>
+
     </div>
 
   </div>
@@ -1255,7 +1305,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>List[tuple]</code></td>
+      <td><code>dict</code></td>
       <td><p>returns a list of all collected exceptions</p></td>
     </tr>
   </tbody>
@@ -1565,6 +1615,8 @@
 
 
 
+
+
   <div class="doc doc-object doc-method">
 
 
@@ -1652,11 +1704,31 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>Union[Tuple[str, list], Tuple[str]]</code></td>
+      <td><code>Union[Tuple[str, List[bytes]], Tuple[str, dict], Tuple[str]]</code></td>
       <td><p>Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)</p></td>
     </tr>
   </tbody>
 </table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.close">
+<code class="highlight language-python"><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Closes the socket</p>
+
     </div>
 
   </div>
@@ -1826,7 +1898,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>list</code></td>
+      <td><code>dict</code></td>
       <td><p>returns a list of all collected exceptions</p></td>
     </tr>
   </tbody>
