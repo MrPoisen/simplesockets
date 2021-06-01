@@ -140,7 +140,7 @@ def encr_data(data: bytes, pubkey: RSA.RsaKey, bytes_: bytes = 32, output: str =
     key = get_sym_keys(bytes_)
     d = encrypt_sym(data, key)
     k = encrypt_asym(key, pubkey)
-    space = b'$$$%%$'
+    space = b'$$%%$$'
     all = k + space + d
     if output == "hex":
         all = all.hex()

@@ -7,6 +7,11 @@
 - test for different python versions
 - test for different operating systems
 
+## Release 0.2.0:
+- filepath isn't required anymore in the secruesockets
+- user and pw variables can now be changed with `login_data(user, password)` instead of in `connect()`
+- more decisions in `send_data()` for securesockets
+
 ## Release 0.1.0:
 
 - improved RSA speed

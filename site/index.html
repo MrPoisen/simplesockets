@@ -210,9 +210,46 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         Home
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -372,6 +409,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -396,9 +455,14 @@ If you want to use the "secure" variant, use <code>securesockets</code>. For thi
 <p>Here you can learn more about the <a href="simple_sockets_selfwritten/"><code>simplesockets</code></a>
 Here you can learn more about the <a href="Securesockets_selfwritten/"><code>securesockets</code></a></p>
 <p>If you need an example, you can find one in the example folder.</p>
+<h2 id="installation">Installation</h2>
+<p>For installation, write on the command prompt:<br />
+<code>pip install simplesockets</code><br />
+Now, you can use this library.  </p>
+<h2 id="example">Example</h2>
 <p>If you want a simple echo Client, it could look something like this:</p>
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">simplesockets.simplesockets</span> <span class="kn">import</span> <span class="n">TCPClient</span>
+    <span class="kn">from</span> <span class="nn">simplesockets</span> <span class="kn">import</span> <span class="n">TCPClient</span>
 
     <span class="n">Client</span> <span class="o">=</span> <span class="n">TCPClient</span><span class="p">()</span>
     <span class="n">Client</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">target_ip</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">target_port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span> <span class="c1">#prepares the Client</span>
@@ -416,7 +480,7 @@ Here you can learn more about the <a href="Securesockets_selfwritten/"><code>sec
 </code></pre></div>
 <p>A simple echo Server could look something like this:
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">simplesockets.simplesockets</span> <span class="kn">import</span> <span class="n">TCPServer</span>
+    <span class="kn">from</span> <span class="nn">simplesockets</span> <span class="kn">import</span> <span class="n">TCPServer</span>
 
     <span class="n">Server</span> <span class="o">=</span> <span class="n">TCPServer</span><span class="p">()</span>
     <span class="n">Server</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span> <span class="c1">#prepares the server</span>
