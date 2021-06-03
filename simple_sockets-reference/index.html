@@ -382,13 +382,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#simplesockets.simple_sockets.TCPClient.shutdown" class="md-nav__link">
-    shutdown()
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -720,13 +713,6 @@
           <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient.setup" class="md-nav__link">
     setup()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#simplesockets.simple_sockets.TCPClient.shutdown" class="md-nav__link">
-    shutdown()
   </a>
   
 </li>
@@ -1268,7 +1254,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>this function returns all collected exceptions</p>
+      <p>this function returns all collected exceptions. Key is the time and value the Exception</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1363,7 +1349,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>tries to send data to the Server</p>
+      <p>tries to send data to the Server, returns True if it was succesful</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1379,7 +1365,7 @@
       <tr>
         <td><code>data</code></td>
         <td><code>bytes</code></td>
-        <td><p>ata that should be send</p></td>
+        <td><p>data that should be send</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -1468,26 +1454,6 @@
       </tr>
   </tbody>
 </table>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.shutdown">
-<code class="highlight language-python"><span class="n">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>sets the flag in the autorecv thread to False and closes the socket</p>
-
     </div>
 
   </div>
@@ -1861,7 +1827,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Returns the collected exceptions</p>
+      <p>Returns the collected exceptions as a dict. Key is the time and value the Exception</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1921,7 +1887,8 @@
 
     <div class="doc doc-contents ">
 
-      <p>returns received data</p>
+      <p>Returns received data. They are returned as tuples, first containing the clientsocket, second it's address and
+third the informations/data</p>
 
 <p><strong>Returns:</strong></p>
 <table>
@@ -1933,8 +1900,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>List[bytes]</code></td>
-      <td><p>returns a list of the received data</p></td>
+      <td><code>List[Tuple[socket.socket, tuple, bytes]]</code></td>
+      <td><p>returns a list of tuples containing clientsocket, address and the received data</p></td>
     </tr>
   </tbody>
 </table>

@@ -379,15 +379,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect" class="md-nav__link">
-    connect()
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
+    get_key()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
-    get_key()
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.login_data" class="md-nav__link">
+    login_data()
   </a>
   
 </li>
@@ -620,15 +620,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect" class="md-nav__link">
-    connect()
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
+    get_key()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key" class="md-nav__link">
-    get_key()
+  <a href="#simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.login_data" class="md-nav__link">
+    login_data()
   </a>
   
 </li>
@@ -931,66 +931,6 @@
 
 
 
-<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.connect">
-<code class="highlight language-python"><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">pw</span><span class="p">)</span></code>
-
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>function tries to connect</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>user</code></td>
-        <td><code>str</code></td>
-        <td><p>username</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>pw</code></td>
-        <td><code>str</code></td>
-        <td><p>password</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>bool</code></td>
-      <td><p>returns True if connecting was successful</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
 <h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.get_key">
 <code class="highlight language-python"><span class="n">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span></code>
 
@@ -1033,6 +973,51 @@
       <td><code>RSA_PUBLIC_KEY</code></td>
       <td><p>returns a RSA Public key</p></td>
     </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.login_data">
+<code class="highlight language-python"><span class="n">login_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>overwrites self.user and self.pw with given arguments</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>user</code></td>
+        <td><code>str</code></td>
+        <td><p>username</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>password</code></td>
+        <td><code></code></td>
+        <td><p>password</p></td>
+        <td><em>required</em></td>
+      </tr>
   </tbody>
 </table>
     </div>
@@ -1101,7 +1086,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureClient.send_data">
-<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_rest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1898,7 +1883,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.send_data">
-<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_socket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_socket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encr_rest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1988,7 +1973,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.SelfmadeCipher_Socket.SecureServer.setup">
-<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">,</span> <span class="n">listen</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">recv_buffer</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">handle_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_disconnect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_receive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 </h3>
@@ -2012,7 +1997,7 @@
         <td><code>filepath</code></td>
         <td><code>str</code></td>
         <td><p>absolut Path of the json file containing usernames and their passwords</p></td>
-        <td><em>required</em></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>ip</code></td>
@@ -2061,6 +2046,21 @@
         <td><code>Optional[Callable]</code></td>
         <td><p>function that will be executed on receive, it takes the clientsocket, address, received data</p></td>
         <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>Exception</code></td>
+        <td><p>When filepath is missing and no alternative on_connect function is given</p></td>
       </tr>
   </tbody>
 </table>
