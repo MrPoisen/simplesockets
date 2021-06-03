@@ -4,6 +4,6 @@ from .securesockets.PyCryptodome_Socket import SecureClient, SecureServer
 
 try:
     from Crypto.PublicKey.RSA import RsaKey
-    PYCRYPTODOME = TRUE
+    PYCRYPTODOME = True
 except ImportError:
-    PYRCYPTODOME = FALSE
+    PYRCYPTODOME = False

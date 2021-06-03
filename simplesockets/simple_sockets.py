@@ -196,10 +196,10 @@ class TCPClient:
 
     def send_data(self, data: bytes) -> bool:
         """
-        tries to send data to the Server
+        tries to send data to the Server, returns True if it was succesful
 
         Args:
-            data: ata that should be send
+            data: data that should be send
 
         Returns:
             returns True if the sending was successful
@@ -288,7 +288,7 @@ class TCPClient:
 
     def return_exceptions(self, delete: Optional[bool] = True, reset_exceptions: Optional[bool] = True) -> dict:
         """
-        this function returns all collected exceptions
+        this function returns all collected exceptions. Key is the time and value the Exception
 
         Args:
             delete: If the list which collected the exceptions should be cleared
@@ -386,7 +386,7 @@ class TCPServer:
 
         self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
 
-        self.recved_data = []
+        self.recved_data = [] #Tuple: (client_socket, address, data)
 
         self.event = get_event()
 
@@ -513,12 +513,13 @@ class TCPServer:
         return b''.join(chunks)
 
     # returns all received data and clears self.recved_data and sets new_data_recved to False
-    def return_recved_data(self) -> List[bytes]:
+    def return_recved_data(self) -> List[Tuple[socket.socket, tuple, bytes]]:
         """
-        returns received data
+        Returns received data. They are returned as tuples, first containing the clientsocket, second it's address and
+        third the informations/data
 
         Returns:
-            returns a list of the received data
+            returns a list of tuples containing clientsocket, address and the received data
         """
         self.event.new_data = False
         data = self.recved_data.copy()
@@ -655,7 +656,7 @@ class TCPServer:
 
     def return_exceptions(self, delete: Optional[bool] = True, reset_exception: Optional[bool] = True) -> dict:
         """
-        Returns the collected exceptions
+        Returns the collected exceptions as a dict. Key is the time and value the Exception
 
         Args:
             delete: If the list which collected the exceptions should be cleared
