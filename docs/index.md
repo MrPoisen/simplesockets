@@ -4,8 +4,9 @@ This is the simplesockets documentation. Here, you can learn how to use
 [this](https://github.com/MrPoisen/simplesockets) library.  
 
 If you want to use the "unsecure" variant, use ``simplesockets``  
-If you want to use the "secure" variant, use `securesockets`. For this one, you need 
-[pycryptodome](https://pypi.org/project/pycryptodome/)  
+If you want to use the "secure" variant, use `securesockets`. For this one, you will need 
+[pycryptodome](https://pypi.org/project/pycryptodome/) if you need real security. If you just need increased security, 
+use [this](Selfmade_Crypto_Socket-reference.md) one. For more information, read [here](Securesockets_selfwritten.md)  
 
 Here you can learn more about the [``simplesockets``](simple_sockets_selfwritten.md)
 Here you can learn more about the [`securesockets`](Securesockets_selfwritten.md)
