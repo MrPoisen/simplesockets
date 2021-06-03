@@ -270,14 +270,6 @@ class TCPClient:
 
         return False
 
-    def shutdown(self):
-        """
-        sets the flag in the autorecv thread to False and closes the socket
-        """
-        self.__autorecv = False
-        self.socket.shutdown(1)
-        self.socket.close()
-
     def recv_data(self) -> bytes:
         """
         function collects incoming data. If you want to collect all incoming data automatically, use `Client.autorecv()`
@@ -326,6 +318,7 @@ class TCPClient:
             self.event.is_connected = False
             self.event.disconnected = True
             self.__disconnected = True
+            self.__init__()
             return True
         except Exception as e:
             self.event.exception.occurred = True
@@ -693,5 +686,9 @@ class TCPServer:
         """
         Closes the socket
         """
-
         self.socket.close()
+        clients = list(self.clients.values())
+        for list_ in clients:
+            thread, socket = list_[0], list_[1]
+            socket.close()
+            thread.join()

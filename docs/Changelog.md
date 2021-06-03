@@ -1,8 +1,6 @@
 # Roadmap: 
 
 - bugfixes
-- more usability
-- better documentation of the code
 - cover the complete code with tests
 - test for different python versions
 - test for different operating systems
@@ -11,6 +9,8 @@
 - filepath isn't required anymore in the secruesockets
 - user and pw variables can now be changed with `login_data(user, password)` instead of in `connect()`
 - more decisions in `send_data()` for securesockets
+- changed `disconnect()` function. It disconnects and calls the `__init__()` function after.  
+- bugfixes
 
 ## Release 0.1.0:
 

@@ -3,7 +3,10 @@ import traceback
 from simplesockets._support_files import cipher
 from simplesockets.simple_sockets import TCPClient, TCPServer
 
-from Crypto.PublicKey.RSA import RsaKey
+try:
+    from Crypto.PublicKey.RSA import RsaKey
+except ImportError:
+    pass
 
 from typing import Callable, Optional
 import json

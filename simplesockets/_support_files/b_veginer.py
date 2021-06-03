@@ -100,8 +100,6 @@ class Autokey(Key):
             as_int = element
             as_int = (as_int + get_key(data, pos)) % 256
             pos = (pos + 1) % len(self.key)
-            if as_int == 0:
-                encrypted.append(b'\x00')
             encrypted.append(_int_to_bytes(as_int))
 
         return b''.join(encrypted)
@@ -118,7 +116,7 @@ class Autokey(Key):
         """
 
         def get_key(decyrpted_text: list, pos_: int):
-            if pos_ < len(self.__key):
+            if pos_ < len(self.key):
                 return self.key[pos_]
             else:
                 position = pos_ - len(self.key)
@@ -130,7 +128,7 @@ class Autokey(Key):
             as_int = element
             as_int = (as_int - get_key(decrypted, pos)) % 256
             pos = (pos + 1) % len(self.key)
-            decrypted.append(self.__int_to_bytes(as_int))
+            decrypted.append(_int_to_bytes(as_int))
 
         return b''.join(decrypted)
 
@@ -213,9 +211,8 @@ class Combined_Key(Autokey):
             returns the exported key
 
         """
-        from base64 import b64encode
         bytes_ = b'v_key=' + self.key + b'|-|t_key=' + self.__transposition_key.key
-        return b64encode(bytes_)
+        return bytes_
 
     @classmethod
     def import_key(cls, key: bytes):
@@ -229,8 +226,7 @@ class Combined_Key(Autokey):
             Combined_Key: returns the key as Combined_Key
 
         """
-        from base64 import b64decode
-        decoded = b64decode(key)
+        decoded = key
         keys = decoded.split(b'|-|')
         if len(keys) != 2:
             raise ValueError("Wrong or invalid key")
@@ -347,7 +343,7 @@ class Pad:
     def __unpad(self, data: bytes):
         s = data.split(b'\x02\x02pad')
         if len(s) != 3:
-            raise error.VPadError("Could't unpad")
+            raise error.VPadError(f"Could't unpad, found {len(s)} from the padding")
         return s[1]
 
     @property

@@ -3,6 +3,7 @@ import random
 import os
 from typing import Union
 import json
+import pkgutil
 
 from simplesockets._support_files import error
 
@@ -74,6 +75,9 @@ class RSA_PUBLIC_KEY:
         padding = b''
         padding_length = len(data) % length
 
+        if padding_length + len(data) >= self.__n:
+            padding_length = padding_length+len(data) - self.__n
+
         while len(padding) < padding_length:
             nedded = padding_length - len(padding)
 
@@ -81,7 +85,7 @@ class RSA_PUBLIC_KEY:
             to_use = to_use.replace(b'\x00', b'')
             padding += to_use[:nedded]
 
-        return b''.join([b"\x00\x02", padding, b"\x00", data])
+        return b''.join([b"\x00\x02", padding, b"\x00\x02", data])
 
     @property
     def bytes(self):
@@ -158,7 +162,7 @@ class RSA_PRIVATE_KEY:
             raise ValueError("Error")
 
     def __unpad(self, data: bytes):
-        pad, data = data.split(b'\x00')
+        pad, data = data.split(b'\x00\x02')
         return data
 
     def public_key(self) -> RSA_PUBLIC_KEY:
@@ -216,8 +220,12 @@ def import_public_bytes(key_info: bytes):
     return RSA_PUBLIC_KEY(int(n), int(e))
 
 def get_prime_list():
-    with open('primes.json') as primes_file:
-        return json.load(primes_file)
+    #print(os.listdir(os.getcwd()))
+    #return [2, 3, 5, 7, 9]
+    #data = pkgutil.get_data(__name__, "primes.json")
+    #return json.loads(data)
+    from simplesockets._support_files import PRIMES
+    return PRIMES.copy()
 
 def get_single_key(primes_list, length: int = 1024):
     """
@@ -403,7 +411,7 @@ def import_key(key: bytes) -> Union[RSA_PUBLIC_KEY, RSA_PRIVATE_KEY]:
 if __name__ == "__main__":
     import time
     start_time = time.time()
-    key = get_private_key(2048)
+    key = get_private_key(2024)
     end_time = time.time() - start_time
 
     print(key)

@@ -38,7 +38,7 @@ if __name__ == "__main__":
         if Client.event.new_data: #checks if any data recved
             data = Client.return_recved_data() #returns the recved data as a list
             for element in data:
-                print(element) #should return b'Test'
+                print(element[2]) #should return b'Test'
 ````
 
 A simple echo Server could look something like this:

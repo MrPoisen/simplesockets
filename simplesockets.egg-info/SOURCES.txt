@@ -23,4 +23,6 @@ simplesockets/securesockets/PyCryptodome_Socket.py
 simplesockets/securesockets/SelfmadeCipher_Socket.py
 simplesockets/securesockets/__init__.py
 tests/__init__.py
+tests/test_PyCryptodome_Socket.py
+tests/test_SelfmadeCipher_Socket.py
 tests/test_simple_sockets.py

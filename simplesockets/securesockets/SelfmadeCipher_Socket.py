@@ -45,17 +45,19 @@ class SecureClient(TCPClient):
         return list(self.users_keys.keys())
 
     def __enrcypt_data(self, data: bytes, key: RSA.RSA_PUBLIC_KEY) -> bytes:
-        Combined_key = b_veginer.Combined_Key(b_veginer.get_vigenere_key(), b_veginer.Combined_Key.get_transposition_key())
-        pad = b_veginer.Pad(Combined_key)
-        encrypted = pad.encrypt(data)
+        Combined_key = b_veginer.Combined_Key(b_veginer.get_vigenere_key(64), b_veginer.Combined_Key.get_transposition_key((4, 100)))
+        #pad = b_veginer.Pad(Combined_key)
+        encrypted = Combined_key.encrypt(data)
+        #encrypted = pad.encrypt(data)
         encr_key = key.encrypt(Combined_key.export_key(), 1)
         return b''.join([encrypted, b'$$$$', encr_key])
 
     def __decypt_data(self, data: bytes, prkey: RSA.RSA_PRIVATE_KEY) -> bytes:
-        combined_key, enrcypted = data.split(b'$$$$')
+        encrypted, combined_key = data.split(b'$$$$')
         Combined_key = b_veginer.Combined_Key.import_key(prkey.decrypt(combined_key, 1))
-        pad = b_veginer.Pad(Combined_key)
-        return pad.decrypt(enrcypted)
+        #pad = b_veginer.Pad(Combined_key)
+        #return pad.decrypt(encrypted)
+        return Combined_key.decrypt(encrypted)
 
     def setup(self, target_ip: str, target_port: Optional[int] = 25567, recv_buffer: Optional[int] = 2048,
               on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
@@ -137,8 +139,8 @@ class SecureClient(TCPClient):
 
         #Decrypt
         try:
-            type = self.own_keys[0]._decrypt(type, 1)
-            target = self.__decypt_data(target, self.own_keys[0]).decode()
+            type = self.own_keys[0].decrypt(type, 1)
+            target = self.__decypt_data(target, self.own_keys[0])
         except ValueError:
             pass
 
@@ -233,15 +235,17 @@ class SecureServer(TCPServer):
         self.indent = 4
 
     def __enrcypt_data(self, data: bytes, key: RSA.RSA_PUBLIC_KEY) -> bytes:
-        pad = b_veginer.Pad(b_veginer.get_vigenere_key())
+        Combined_key = b_veginer.Combined_Key(b_veginer.get_vigenere_key(64),
+                                              b_veginer.Combined_Key.get_transposition_key((4, 100)))
+        pad = b_veginer.Pad(Combined_key)
         encrypted = pad.encrypt(data)
-        encr_key = key.encrypt(pad.bytes, 1)
+        encr_key = key.encrypt(Combined_key.export_key(), 1)
         return b''.join([encrypted, b'$$$$', encr_key])
 
     def __decypt_data(self, data: bytes, prkey: RSA.RSA_PRIVATE_KEY) -> bytes:
-        pad, enrcypted = data.split(b'$$$$')
-        pad = prkey.decrypt(pad, 1)
-        pad = b_veginer.import_pad(pad)
+        enrcypted, combined_key = data.split(b'$$$$')
+        Combined_key = b_veginer.Combined_Key.import_key(prkey.decrypt(combined_key, 1))
+        pad = b_veginer.Pad(Combined_key)
         return pad.decrypt(enrcypted)
 
     def setup(self, ip: Optional[str] = "127.0.0.1", port: Optional[int] = 25567,

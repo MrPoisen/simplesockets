@@ -1,17 +1,18 @@
 import simplesockets.simple_sockets as s
 
+
 def test_data_exchange():
+
     Client = s.TCPClient()
     Server = s.TCPServer(1)
 
     pr = lambda clientsocket, address, data: Server.send_data(data, clientsocket)
-    on_connect = lambda *args: print(args)
+    on_connect = lambda *args: print("connect", args)
     on_receive = lambda *args: print(args)
     on_disconnect = lambda *args: print(args)
 
     Server.setup(on_receive=pr, on_connect=on_connect, on_disconnect=on_disconnect)
     Client.setup("localhost", on_connect=on_connect, on_receive=on_receive, on_disconnect=on_disconnect)
-
     Server.start()
     Client.connect()
 
