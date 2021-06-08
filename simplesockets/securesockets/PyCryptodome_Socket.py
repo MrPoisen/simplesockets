@@ -1,7 +1,7 @@
 import traceback
 
 from simplesockets._support_files import cipher
-from simplesockets.simple_sockets import TCPClient, TCPServer
+from simplesockets.simple_sockets import TCPClient, TCPServer, Server_Client, Socket_Response, _time
 
 try:
     from Crypto.PublicKey.RSA import RsaKey
@@ -10,15 +10,15 @@ except ImportError:
 
 from typing import Callable, Optional
 import json
-import socket
+#import socket
 import time
 import os
+
 
 class SecureClient(TCPClient):
 
     def __init__(self):
         """
-
         Attributes:
             self.user (str): should contain the username of the Client
             self.pw (str): should contain the password of the Client
@@ -83,7 +83,7 @@ class SecureClient(TCPClient):
         """
         # Exchange
         recved = super().recv_data()
-        self.server_key = cipher.import_asym_key(recved)
+        self.server_key = cipher.import_asym_key(recved.response)
         self.send_data(target=b'Server', type=b'key', data=cipher.export_asym_key(self.own_keys[1]), key=self.server_key)
 
         #Login
@@ -110,9 +110,11 @@ class SecureClient(TCPClient):
             except Exception as e:
                 self.event.exception.occurred = True
                 self.event.exception.exceptions.add(e, traceback.format_exc())
+
+                self._event_system.happened(self.EVENT_EXCEPTION.copy())
             return True
 
-    def recv_data(self) -> tuple:
+    def recv_data(self) -> Socket_Response:
         """
         function collects all incoming data
 
@@ -121,8 +123,8 @@ class SecureClient(TCPClient):
 
         """
 
-        recv:bytes = super().recv_data()
-        type, rest = recv.split(self.seperators[0])
+        recv = super().recv_data()
+        type, rest = recv.response.split(self.seperators[0])
         target, data = rest.split(self.seperators[1])
 
         #Decrypt
@@ -134,7 +136,7 @@ class SecureClient(TCPClient):
 
         data = cipher.decr_data(data, prkey=self.own_keys[0], output="bytes")
 
-        return (target, type, data)
+        return Socket_Response((target, type, data), _time())
 
     def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
                   key: Optional[RsaKey] = None, encr_rest: bool = True) -> bool:
@@ -265,18 +267,17 @@ class SecureServer(TCPServer):
         super().setup(ip, port, listen, recv_buffer, handle_client, on_connect=on_connect,
                       on_disconnect=on_disconnect, on_receive=on_receive)
 
-    def on_connect(self, address: tuple):
+    def on_connect(self, client: Server_Client):
         """
         this function gets call when a new client connects to the Server
         """
         # exchange keys
-        client_socket = self.clients.get(address)[1]
-        super().send_data(cipher.export_asym_key(self.own_keys[0]), client_socket=client_socket)
-        target, type_, data = self.recv_data(client_socket)
+        client.send(cipher.export_asym_key(self.own_keys[0]))
+        target, type_, data = self.recv_data(client)
         public_key = cipher.decr_data(data, prkey=self.own_keys[0], output="bytes")
         # login
 
-        target, type_, login_data = self.recv_data(client_socket)
+        target, type_, login_data = self.recv_data(client)
         login_data: str = cipher.decr_data(login_data, prkey=self.own_keys[0])
         user, pw = login_data.split('%|%')
         check = self.check_user(user, pw)
@@ -284,20 +285,21 @@ class SecureServer(TCPServer):
         if check:
 
             self.client_keys[user] = cipher.import_asym_key(public_key)
+            client._add_key(cipher.import_asym_key(public_key))
             self.to_send_client_keys[user] = public_key
-            self.users[address] = user
+            self.users[client.address] = user
             time.sleep(0.05)
             to_send_keys = self.to_send_client_keys.copy()
             client_keys = b''
             for user, key in to_send_keys.items():
                 client_keys = client_keys + user.encode() + b'user-key' + key + b'!!next!!'
-            self.send_data(target=b'Client', type=b'keys', data=client_keys, username=user)
+            self.send_data(target=b'Client', type=b'keys', data=client_keys, client=client)
 
         else:
             self.send_data(target=b'Client', type=b'Rejected', data=b'Rejected',
-                           key=cipher.import_asym_key(public_key), client_socket=client_socket)
+                           key=cipher.import_asym_key(public_key), client=client)
 
-            self.disconnect(address)
+            self.disconnect(client.address)
 
     def on_disconnect(self, address: tuple):
         """
@@ -417,20 +419,20 @@ class SecureServer(TCPServer):
 
         return self.client_keys.get(username)
 
-    def recv_data(self, client_socket: socket.socket) -> tuple:
+    def recv_data(self, client: Server_Client) -> Socket_Response:
         """
         function collects incoming data
 
         Args:
-            client_socket: client socket
+            client: client object
 
         Returns:
-            tuple: first the target, second the type, third the data
+            Socket_Response: Response contains as a tuple first the target, second the type, third the data
 
         """
 
-        recv: bytes = super().recv_data(client_socket)
-        type, rest = recv.split(self.seperators[0])
+        recv = client.recv()
+        type, rest = recv.response.split(self.seperators[0])
         target, data = rest.split(self.seperators[1])
 
         # Decrypt
@@ -440,10 +442,10 @@ class SecureServer(TCPServer):
         except ValueError:
             pass
 
-        return (target, type, data)
+        return Socket_Response((target, type, data), _time(), client)
 
     def send_data(self, target: bytes, type: bytes, data: bytes, username: Optional[str] = None,
-                  key: Optional[RsaKey] = None, client_socket: Optional[socket.socket] = None,
+                  key: Optional[RsaKey] = None, client: Optional[Server_Client] = None,
                   encr_data: Optional[bool] = True, encr_rest: Optional[bool] = True) -> bool:
         """
         function sends encrypted data to a user or socket
@@ -454,7 +456,7 @@ class SecureServer(TCPServer):
             data: data to send
             username: the username of the user to send, if not given, you must give a socket and a key
             key: the RSA Public Key used for encryption,  if not given, you must give an username
-            client_socket: client socket,  if not given, you must give an username
+            client: client object,  if not given, you must give an username
             encr_data: if the data should be encrypted
 
         Returns:
@@ -462,18 +464,22 @@ class SecureServer(TCPServer):
 
         """
 
-        if key is not None and client_socket is not None and username is None:
+        if key is not None and client is not None and client.key is None and username is None:
             pass
-        elif key is None and client_socket is None and username is not None:
+        elif key is None and client is None and username is not None:
             key = self.client_keys.get(username)
-            client_socket = self.clients.get(self.get_address_by_user(username))[1]
-        elif key is None and client_socket is not None and username is None and encr_data is False and encr_rest is False:
+            client = self.clients.get(self.get_address_by_user(username))[1]
+        elif key is None and client is not None and username is None and encr_data is False and encr_rest is False:
             pass
-        elif encr_rest is False and encr_data is False and client_socket is not None:
+        elif encr_rest is False and encr_data is False and client is not None:
             pass
+        elif isinstance(client.key, RsaKey):
+            key = client.key
         else:
             self.event.exception.occurred = True
-            self.event.exception.exceptions.add(Exception("You must give an username or key and clientsocket", traceback.format_exc()))
+            self.event.exception.exceptions.add(Exception("You must give an username or key and client", traceback.format_exc()))
+
+            self._event_system.happened(self.EVENT_EXCEPTION.copy())
             return False
 
         if encr_rest:
@@ -484,7 +490,7 @@ class SecureServer(TCPServer):
 
         to_send = b"".join([type, self.seperators[0], target, self.seperators[1], data])
         #type + self.seperators[0] + target + self.seperators[1] + data
-        return super().send_data(to_send, client_socket)
+        return super().send_data(to_send, client)
 
     def get_client_keys(self) -> dict:
         """

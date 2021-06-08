@@ -170,7 +170,6 @@ class Transposition:
             data = self._encrypt(data)
 
         if start_data == data:
-            print(data, start_data)
             raise error.NotEncryptedError("The encrypted data is the same as the not encrypted one")
         return data
 

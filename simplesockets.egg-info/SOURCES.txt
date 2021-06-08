@@ -9,6 +9,7 @@ simplesockets.egg-info/PKG-INFO
 simplesockets.egg-info/SOURCES.txt
 simplesockets.egg-info/dependency_links.txt
 simplesockets.egg-info/top_level.txt
+simplesockets/_support_files/Events.py
 simplesockets/_support_files/RSA.py
 simplesockets/_support_files/__init__.py
 simplesockets/_support_files/b_veginer.py

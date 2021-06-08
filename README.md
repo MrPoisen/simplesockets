@@ -19,20 +19,21 @@ echoclient.py
 
 if __name__ == "__main__":
     from simplesockets import TCPClient
-    
+
     Client = TCPClient()
-    Client.setup(target_ip="localhost", target_port=25567) #prepares the Client
-    Client.connect() #connects the Client to the Server
-    
-    Client.autorecv()   #enables autorecv: automaticle saves all incoming data in Client.recved_data,
-                        # return them with Client.return_recved_data()
-    
-    Client.send_data(b'Test') #sends the text to the Server
+    Client.setup(target_ip="localhost", target_port=25567)  # prepares the Client
+    Client.connect()  # connects the Client to the Server
+
+    Client.autorecv()  # enables autorecv: automatically saves all incoming data in Client.recved_data,
+    # return them with Client.return_recved_data()
+
+    Client.send_data(b'Test')  # sends the text to the Server
     while True:
-        if Client.event.new_data: #checks if any data recved
-            data = Client.return_recved_data() #returns the recved data as a list
+        if Client.event.new_data:  # checks if any data received
+            data: list = Client.return_recved_data()  # returns the received data as a list
             for element in data:
-                print(element) #should return b'Test'
+                print(element.response)  # should print b'Test'
+            break  # ends the while loop
 ````
 
 echoserver.py
@@ -40,15 +41,16 @@ echoserver.py
 
 if __name__ == "__main__":
     from simplesockets import TCPServer
-    
+
     Server = TCPServer()
-    Server.setup(ip='127.0.0.1',port=25567) #prepares the server
-    Server.start() #starts the server
-    
+    Server.setup(ip='127.0.0.1', port=25567)  # prepares the server
+    Server.start()  # starts the server
+
     while True:
-        if Server.event.new_data: #checks if any data recved
-            data = Server.return_recved_data() #returns the recved data as a list
+        if Server.event.new_data:  # checks if any data received
+            data: list = Server.return_recved_data()  # returns the received data as a list
             for element in data:
-                client_socket, address, data = element #data is saved like this (client_socket, address, recved_data)
-                Server.send_data(data, client_socket)
+                data: bytes = element.response  # element is a Socket_Response object,
+                client = element.from_  # sets client to a Server_Client object
+                Server.send_data(data, client)
 ````

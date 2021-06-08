@@ -5,21 +5,32 @@
 - test for different python versions
 - test for different operating systems
 
-## Release 0.2.0:
-- filepath isn't required anymore in the secruesockets
-- user and pw variables can now be changed with `login_data(user, password)` instead of in `connect()`
-- more decisions in `send_data()` for securesockets
-- changed `disconnect()` function. It disconnects and calls the `__init__()` function after.  
+## Release 0.3.0:
+- improved event system for `await_event()`  
+- new class Server_Client  
+- new class Socket_Response  
+- new class Exception_Collection   
+- new class Better_Exception  
+- new class Event  
+- new class Event_System  
 - bugfixes
 
-## Release 0.1.0:
+## Release 0.2.0:  
 
-- improved RSA speed
-- improved security in the self-made secure socket
-- importing classes in `__init__.py`
-- new exception collecting system
-- added `close()` functions to Server and Client
-- added support for python keyword `with`
+- filepath isn't required anymore in the securesockets  
+- user and pw variables can now be changed with `login_data(user, password)` instead of in `connect()`  
+- more decisions in `send_data()` for securesockets  
+- changed `disconnect()` function. It disconnects and calls the `__init__()` function after.  
+- bugfixes  
+
+## Release 0.1.0:  
+
+- improved RSA speed  
+- improved security in the self-made secure socket  
+- importing classes in `__init__.py`  
+- new exception collecting system  
+- added `close()` functions to Server and Client  
+- added support for python keyword `with`  
 
 
 ## Release 0.0.9:

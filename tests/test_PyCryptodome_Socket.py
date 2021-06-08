@@ -5,8 +5,8 @@ def test_simple_data_exchange():
     Client = SecureClient()
     Server = SecureServer()
 
-    def send(clientsocket, address, data):
-        Server.send_data(data[0],data[1], data[2], client_socket=clientsocket, encr_data=False, encr_rest=False)
+    def send(client, data):
+        Server.send_data(data[0],data[1], data[2], client=client, encr_data=False, encr_rest=False)
 
     on_connect = lambda *args: print("!!on_connect", args)
     on_receive = lambda *args: print("!!on_receive",args)
@@ -28,8 +28,11 @@ def test_simple_data_exchange():
 
     event, value = Client.await_event(disable_on_functions=True, timeout=3000)
 
-    Server.close()
     Client.close()
+    Server.close()
+
+    if Server.event.exception.occurred:
+        print(Server.return_exceptions())
 
     assert event == Client.EVENT_RECEIVED and value[0][2] == text
 
@@ -37,8 +40,8 @@ def test_less_simple_data_exchange():
     Client = SecureClient()
     Server = SecureServer()
 
-    def send(clientsocket, address, data):
-        Server.send_data(data[0], data[1], data[2], client_socket=clientsocket, key=Client.own_keys[1], encr_data=False, encr_rest=True)
+    def send(client, data):
+        Server.send_data(data[0], data[1], data[2], client=client, key=Client.own_keys[1], encr_data=False, encr_rest=True)
 
     on_connect = lambda *args: print("!!on_connect", args)
     on_receive = lambda *args: print("!!on_receive", args)
@@ -62,7 +65,7 @@ def test_less_simple_data_exchange():
 
     event, value = Client.await_event(disable_on_functions=True, timeout=3000)
 
-    Server.close()
     Client.close()
+    Server.close()
 
     assert event == Client.EVENT_RECEIVED and value[0][2] == text

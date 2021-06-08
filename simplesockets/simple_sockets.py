@@ -2,10 +2,107 @@ import socket
 import threading
 import time
 import traceback
-from typing import Callable, Union, Tuple, List, Optional
+from typing import Callable, Union, Tuple, List, Optional, Any
+from dataclasses import dataclass
+from datetime import datetime
 
 from simplesockets._support_files.error import SetupError, Exception_Collection
+from simplesockets._support_files.Events import Event, Event_System
 
+
+@dataclass(frozen=True)
+class Server_Client:
+    socket: socket.socket
+    address: tuple
+    key: Any = None
+    _thread: threading.Thread = None
+    _recv_buffer: int = 1024
+
+    def __str__(self):
+        return str(self.socket)
+
+    def recv(self):
+        """
+        function collects incoming data.`
+
+        Returns:
+            Socket_Response: returns received data as bytes
+        """
+        chunks = []
+        recv_data = True
+        while recv_data:
+            chunk = self.socket.recv(self._recv_buffer)
+            chunks.append(chunk)
+            if len(chunk) < self._recv_buffer:
+                recv_data = False
+        return Socket_Response(b''.join(chunks), _time(), self)
+
+    def send(self, data: bytes) -> None:
+        """
+        tries to send data to the Server
+
+        Args:
+            data: data that should be send
+
+        Raises:
+            ConnectionError: if the sending failed
+        """
+        data_length = len(data)
+        sended_length = 0
+        while sended_length < data_length:
+            sent = self.socket.send(data[sended_length:])
+            if sent == 0:
+                raise ConnectionError("socket connection error")
+            sended_length += sent
+
+    def disconnect(self):
+        """
+        closes the socket
+        """
+        self.socket.close()
+
+    def _add_thread(self, thread: threading.Thread):
+        return Server_Client(self.socket, self.address, self.key, thread, self._recv_buffer)
+
+    def _add_key(self, key):
+        return Server_Client(self.socket, self.address, key, self._thread, self._recv_buffer)
+
+
+@dataclass(frozen=True)
+class Socket_Response:
+    response: Union[bytes, Tuple[bytes]]
+    time_: datetime
+    from_: Server_Client = None
+
+    def __str__(self):
+        return "".join(["Socket_Response(response=", str(self.response), ", time=", str(self.time_)])
+
+    def __len__(self):
+        return len(self.response)
+
+    def __getitem__(self, item):
+        return self.response[item]
+
+    def equals(self, information) -> bool:
+        """
+        checks if the response is equal to the given information
+
+        Args:
+            information(Union[bytes, Tuple[bytes], Socket_Response]): information which should be compared to the response
+
+        Returns:
+            Returns if the response and the information are equal
+
+        """
+        if isinstance(information, Socket_Response):
+            return self.response == information.response
+        elif isinstance(information, bytes) or isinstance(information, tuple):
+            return self.response == information
+        else:
+            raise TypeError("information should be a Socket_Response, bytes or tuple object")
+
+def _time() -> datetime:
+    return datetime.now()
 
 class TCPClient:
     """
@@ -27,22 +124,22 @@ class TCPClient:
 
     """
 
-    EVENT_EXCEPTION = "--EXCEPTION--"
-    EVENT_RECEIVED = "--RECEIVED--"
-    EVENT_TIMEOUT = "--TIMEOUT--"
-    EVENT_DISCONNECT = "--DISCONNECT--"
-    EVENT_CONNECTED = "--CONNECTED--"
+    EVENT_EXCEPTION = Event("--EXCEPTION--")
+    EVENT_RECEIVED = Event("--RECEIVED--")
+    EVENT_TIMEOUT = Event("--TIMEOUT--")
+    EVENT_DISCONNECT = Event("--DISCONNECT--")
+    EVENT_CONNECTED = Event("--CONNECTED--")
 
     def __init__(self):
 
         def set_events():
-            class Exceptions:
+            class Exceptions_:
                 occurred: bool = False
                 exceptions = Exception_Collection()
 
-            class Event:
+            class Events:
                 # Exceptions
-                exception = Exceptions()
+                exception = Exceptions_()
                 # Data
                 new_data: bool = False
                 # Connection
@@ -50,7 +147,7 @@ class TCPClient:
                 connected: bool = False
                 is_connected: bool = False
 
-            return Event()
+            return Events()
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.recved_data = []
@@ -58,6 +155,8 @@ class TCPClient:
         self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
 
         self.event = set_events()
+        self._event_system = Event_System()
+        self._event_system.clear()
 
         self.__allthreads = [self.__autorecv_thread]
 
@@ -71,11 +170,7 @@ class TCPClient:
         self.on_disconnect = None
         self.on_receive = None
 
-
         self.__setup_flag = False
-
-        self.__connected = False
-        self.__disconnected = False
 
     def __str__(self):
         return f'[socket : {str(self.socket)}, target address : ({self.__target_ip},{self.__target_port}), receive buffer: {self.__recv_buffer}]'
@@ -95,8 +190,9 @@ class TCPClient:
         """Address of the Client, containing it's ip and port"""
         return (self.__target_ip, self.__target_port)
 
-    def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False)\
-            -> Union[Tuple[str, dict], Tuple[str, List[bytes]], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False,) -> Union[
+        Tuple[Event, List[Socket_Response]], Tuple[Event, dict], Tuple[Event, None]]:
+
         """
         waits till an event occurs
 
@@ -107,32 +203,53 @@ class TCPClient:
         Returns:
             returns event and its value(s)
         """
-
         if disable_on_functions:
-            self.__connected = False
-            self.__disconnected = False
+            for ev in self._event_system:
+                if ev.name == self.EVENT_CONNECTED.name or ev.name == self.EVENT_DISCONNECT.name:
+                    self._event_system.remove(ev)
 
-        from time import time
-        start_time = time()
-        timeout = timeout / 1000
+        ev_ = self._event_system.await_event(timeout if timeout != 0 else None)
+        if ev_ is False:
+            return self.EVENT_TIMEOUT.copy(), None
 
-        while True:
-            if self.event.exception.occurred:
-                return self.EVENT_EXCEPTION, self.return_exceptions()
+        ev: Event = self._event_system.first_event()
 
-            if self.event.new_data:
-                return self.EVENT_RECEIVED, self.return_recved_data()
+        if ev == self.EVENT_RECEIVED:
+            return ev, self.return_recved_data(True)
+        elif ev == self.EVENT_EXCEPTION:
+            return ev, self.return_exceptions()
+        elif ev == self.EVENT_CONNECTED:
+            return ev, None
+        elif ev == self.EVENT_DISCONNECT:
+            return ev, None
 
-            if self.__connected:
+        """
+            if disable_on_functions:
                 self.__connected = False
-                return self.EVENT_CONNECTED, None
-
-            if self.__disconnected:
                 self.__disconnected = False
-                return self.EVENT_DISCONNECT, None
 
-            if timeout > 0 and time() > start_time + timeout:
-                return self.EVENT_TIMEOUT, None
+            from time import time
+            start_time = time()
+            timeout = timeout / 1000
+
+            while True:
+                if self.event.exception.occurred:
+                    return self.EVENT_EXCEPTION.copy(), self.return_exceptions()
+
+                if self.event.new_data:
+                    return self.EVENT_RECEIVED.copy(), self.return_recved_data()
+
+                if self.__connected:
+                    self.__connected = False
+                    return self.EVENT_CONNECTED.copy(), None
+
+                if self.__disconnected:
+                    self.__disconnected = False
+                    return self.EVENT_DISCONNECT.copy(), None
+
+                if timeout > 0 and time() > start_time + timeout:
+                    return self.EVENT_TIMEOUT.copy(), None
+        """
 
     def setup(self, target_ip: str, target_port: Optional[int] = 25567, recv_buffer: Optional[int] = 2048,
               on_connect: Optional[Callable] = None, on_disconnect: Optional[Callable] = None,
@@ -184,14 +301,17 @@ class TCPClient:
 
             self.event.is_connected = True
             self.event.connected = True
-            self.__connected = True
             # self.socket.setblocking(False)
+
+            self._event_system.happened(self.EVENT_CONNECTED.copy())
+
             if callable(self.on_connect):
                 self.on_connect()
             return True
         except Exception as e:
             self.event.exception.occurred = True
             self.event.exception.exceptions.add(e, traceback.format_exc())
+            self._event_system.happened(self.EVENT_EXCEPTION.copy())
             return False
 
     def send_data(self, data: bytes) -> bool:
@@ -211,11 +331,12 @@ class TCPClient:
             if sent == 0:
                 self.event.exception.exceptions.add(ConnectionError("socket connection error"))
                 self.event.exception.occurred = True
+                self._event_system.happened(self.EVENT_EXCEPTION.copy())
                 return False
             sended_length += sent
         return True
 
-    def return_recved_data(self) -> List[bytes]:
+    def return_recved_data(self, clear_event: bool = True) -> List[Socket_Response]:
         """
         returns received data
 
@@ -223,6 +344,8 @@ class TCPClient:
             returns a list of the received data
         """
         self.event.new_data = False
+        if clear_event:
+            self._event_system.clear_name(self.EVENT_RECEIVED.name)
         data = self.recved_data.copy()
         self.recved_data = []
         return data
@@ -238,13 +361,16 @@ class TCPClient:
 
                     self.recved_data.append(recved)
                     self.event.new_data = True
+                    self._event_system.happened(self.EVENT_RECEIVED.copy())
 
             except Exception as e:
                 self.event.exception.exceptions.add(e, traceback.format_exc())
                 self.event.exception.occurred = True
                 self.event.disconnected = True
                 self.event.is_connected = False
-                self.__disconnected = True
+
+                self._event_system.happened(self.EVENT_EXCEPTION.copy())
+                self._event_system.happened(self.EVENT_DISCONNECT.copy())
 
                 if callable(self.on_disconnect):
                     self.on_disconnect()
@@ -261,6 +387,7 @@ class TCPClient:
             except Exception as e:
                 self.event.exception.exceptions.add(e, traceback.format_exc())
                 self.event.exception.occurred = True
+                self._event_system.happened(self.EVENT_EXCEPTION.copy())
                 self.__autorecv_thread = threading.Thread(target=self.__reciving_automatic, daemon=True)
                 return False
         elif self.__autorecv is True:
@@ -270,7 +397,7 @@ class TCPClient:
 
         return False
 
-    def recv_data(self) -> bytes:
+    def recv_data(self) -> Socket_Response:
         """
         function collects incoming data. If you want to collect all incoming data automatically, use `Client.autorecv()`
 
@@ -284,7 +411,7 @@ class TCPClient:
             chunks.append(chunk)
             if len(chunk) < self.__recv_buffer:
                 recv_data = False
-        return b''.join(chunks)
+        return Socket_Response(b''.join(chunks), _time())
 
     def return_exceptions(self, delete: Optional[bool] = True, reset_exceptions: Optional[bool] = True) -> dict:
         """
@@ -303,6 +430,9 @@ class TCPClient:
             self.event.exception.exceptions.clear()
         if reset_exceptions:
             self.event.exception.occurred = False
+            for ev in self._event_system:
+                if ev.name == self.EVENT_EXCEPTION.name:
+                    self._event_system.remove(ev)
         return exceptions
 
     def disconnect(self) -> bool:
@@ -317,12 +447,13 @@ class TCPClient:
             self.socket.close()
             self.event.is_connected = False
             self.event.disconnected = True
-            self.__disconnected = True
+            self._event_system.happened(self.EVENT_DISCONNECT.copy())
             self.__init__()
             return True
         except Exception as e:
             self.event.exception.occurred = True
             self.event.exception.exceptions.add(e, traceback.format_exc())
+            self._event_system.happened(self.EVENT_DISCONNECT.copy())
             return False
 
     def close(self):
@@ -349,9 +480,9 @@ class TCPServer:
 
     """
 
-    EVENT_EXCEPTION = "--EXCEPTION--"
-    EVENT_RECEIVED = "--RECEIVED--"
-    EVENT_TIMEOUT = "--TIMEOUT--"
+    EVENT_EXCEPTION = Event("--EXCEPTION--")
+    EVENT_RECEIVED = Event("--RECEIVED--")
+    EVENT_TIMEOUT = Event("--TIMEOUT--")
 
     def __init__(self, max_connections: Optional[int] = None):
         """
@@ -369,7 +500,7 @@ class TCPServer:
             class Accept:
                 run = True
 
-            class Event:
+            class Events:
                 # Exceptions
                 exception = Exceptions()
                 # Data
@@ -377,11 +508,11 @@ class TCPServer:
                 # Accepting Thread
                 accepting_thread = Accept()
 
-            return Event()
+            return Events()
 
         self.__kill = False
         self.socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.clients = {}  # key: address, value : [client_thread,client_socket]
+        self.clients = {}  # key: address, value : [client_thread,client_socket] / key: address, value: Server_Client
         self.__recv_buffer = 2048
 
         self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
@@ -389,6 +520,8 @@ class TCPServer:
         self.recved_data = [] #Tuple: (client_socket, address, data)
 
         self.event = get_event()
+        self._event_system = Event_System()
+        self._event_system.clear()
 
         self.max_connections = max_connections
 
@@ -468,81 +601,77 @@ class TCPServer:
         self.__setup_flag = True
 
     # Sends bytes to a target
-    def send_data(self, data: bytes, client_socket: socket.socket) -> bool:
+    def send_data(self, data: Union[bytes, Socket_Response], client: Server_Client) -> bool:
         """
-        function for sending data to a specific clientsocket
+        function for sending data to a client,
 
         Args:
             data: data which should be send
-            client_socket: the clientsocket from to which the data should be send to
+            client: the client to which the data should be send to
 
         Returns:
-            returns True if the operation was successful
+            returns True if the operation was successful without an exception
         """
-        data_length = len(data)
-        sended_length = 0
-        while sended_length < data_length:
-            sent = client_socket.send(data[sended_length:])
-            if sent == 0:
-                self.event.exception.exceptions.add(ConnectionError("socket connection error"))
-                self.event.exception.occurred = True
-                return False
+        if isinstance(data, Socket_Response):
+            data = data.response
 
-            sended_length += sent
+        try:
+            client.send(data)
+        except Exception as e:
+            self.event.exception.exceptions.add(e, traceback.format_exc())
+            self.event.exception.occurred = True
+
+            self._event_system.happened(self.EVENT_EXCEPTION.copy())
+            return False
         return True
 
     # recv data from a target
-    def recv_data(self, client_socket: socket.socket) -> bytes:
+    def recv_data(self, client: Server_Client) -> Socket_Response:
         """
         function collects incoming data
 
         Returns:
             returns received data as bytes
         """
-        chunks = []
-        recv_data = True
-        chunk = client_socket.recv(self.__recv_buffer)
-        chunks.append(chunk)
-        if len(chunk) >= self.__recv_buffer:
-            while recv_data:
-                chunk = client_socket.recv(self.__recv_buffer)
-                chunks.append(chunk)
-                if len(chunk) < self.__recv_buffer:
-                    recv_data = False
-
-        return b''.join(chunks)
+        return client.recv()
 
     # returns all received data and clears self.recved_data and sets new_data_recved to False
-    def return_recved_data(self) -> List[Tuple[socket.socket, tuple, bytes]]:
+    def return_recved_data(self) -> List[Socket_Response]:
         """
-        Returns received data. They are returned as tuples, first containing the clientsocket, second it's address and
-        third the informations/data
+        Returns received data. They are returned as Socket_Response objects
 
         Returns:
-            returns a list of tuples containing clientsocket, address and the received data
+            returns a list of Socket_Response objects
         """
         self.event.new_data = False
+        self._event_system.clear_name(self.EVENT_RECEIVED.name)
         data = self.recved_data.copy()
-        self.recved_data = []
+        self.recved_data.clear()
         return data
 
     # handles the connection
-    def __handle_client(self, client_socket: socket.socket, address: tuple):
+    def __handle_client(self, client: Server_Client):
         try:
             while True:
-                recved = self.recv_data(client_socket)
+                try:
+                    recved = self.recv_data(client)
+                except ConnectionResetError:
+                    return None
+                #recved = self.recv_data(client_socket)
                 if len(recved) > 0:
                     self.event.new_data = True
-                    self.recved_data.append((client_socket, address, recved))
+                    self.recved_data.append(recved)
 
                     if callable(self.on_receive):
-                        self.on_receive(client_socket, address, recved)
+                        self.on_receive(client, recved)
 
         except Exception as e:
             self.event.exception.exceptions.add(e, traceback.format_exc())
             self.event.exception.occurred = True
 
-            self.__perfom_disconnect(address)
+            self._event_system.happened(self.EVENT_EXCEPTION.copy())
+
+            self.__perfom_disconnect(client.address)
 
     def __accept_clients(self):
         while self.__kill is False:
@@ -553,11 +682,16 @@ class TCPServer:
                 except OSError:
                     self.exit_accept()
                     return
-                ct = threading.Thread(target=self.__start_target, args=(client_socket, address), daemon=True)
-                self.clients[address] = [ct, client_socket]
+                server_client = Server_Client(client_socket, address, _recv_buffer=self.__recv_buffer)
+
+                ct = threading.Thread(target=self.__start_target, args=(server_client,), daemon=True)
+                server_client = server_client._add_thread(ct)
+                #self.clients[address] = [ct, client_socket]
+
+                self.clients[address] = server_client
 
                 if callable(self.on_connect):
-                    self.on_connect(address)
+                    self.on_connect(server_client)
 
                 ct.start()
 
@@ -566,7 +700,8 @@ class TCPServer:
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
 
-    def await_event(self, timeout: Optional[int] = 0) -> Union[Tuple[str, List[bytes]], Tuple[str, dict], Tuple[str, None]]:
+    def await_event(self, timeout: Optional[int] = 0) -> Union[
+        Tuple[Event, dict], Tuple[Event, List[Socket_Response]], Tuple[Event, None]]:
         """
         waits till an event occurs
 
@@ -577,7 +712,19 @@ class TCPServer:
             Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)
 
         """
-        from time import time
+
+        event_: bool = self._event_system.await_event(timeout if timeout != 0 else None)
+        if event_:
+            event: Event = self._event_system.first_event()
+            if event == self.EVENT_EXCEPTION:
+                return event, self.return_exceptions()
+            elif event == self.EVENT_RECEIVED:
+                return event, self.return_recved_data()
+        else:
+            return self.EVENT_TIMEOUT.copy(), None
+
+
+        """from time import time
         start_time = time()
         timeout = timeout / 1000
 
@@ -590,6 +737,7 @@ class TCPServer:
 
             if timeout > 0 and time() > start_time + timeout:
                 return self.EVENT_TIMEOUT, None
+        """
 
     # starts the server
     def start(self):
@@ -642,14 +790,15 @@ class TCPServer:
         """
 
         try:
-            client_socket = self.clients.get(address)[1]
+            client: Server_Client = self.clients.get(address)
             self.clients.pop(address)
             self.__allthreads.pop(address)
-            client_socket.shutdown(1)
-            client_socket.close()
+            client.disconnect()
         except Exception as e:
             self.event.exception.occurred = True
             self.event.exception.exceptions.add(e, traceback.format_exc())
+
+            self._event_system.happened(self.EVENT_EXCEPTION.copy())
 
         if callable(self.on_disconnect):
             self.on_disconnect(address)
@@ -667,12 +816,12 @@ class TCPServer:
 
         """
 
-
         exceptions = self.event.exception.exceptions.exceptions.copy()
         if delete:
             self.event.exception.exceptions.clear()
         if reset_exception:
             self.event.exception.occurred = False
+            self._event_system.clear_name(self.EVENT_EXCEPTION.name)
 
         return exceptions
 
@@ -689,7 +838,7 @@ class TCPServer:
         """
         self.socket.close()
         clients = list(self.clients.values())
-        for list_ in clients:
-            thread, socket = list_[0], list_[1]
-            socket.close()
-            thread.join()
+        for client in clients:
+            client.disconnect()
+            client._thread.join()
+        self.__accepting_thread.join()

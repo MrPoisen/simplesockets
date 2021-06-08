@@ -5,8 +5,8 @@ def test_simple_data_exchange():
     Client = SecureClient()
     Server = SecureServer()
 
-    def send(clientsocket, address, data):
-        Server.send_data(data[0],data[1], data[2], client_socket=clientsocket, encr_data=False, encr_rest=False)
+    def send(client, data):
+        Server.send_data(data[0],data[1], data[2], client=client, encr_data=False, encr_rest=False)
 
     on_connect = lambda *args: print("!!on_connect", args)
     on_receive = lambda *args: print("!!on_receive",args)
@@ -31,8 +31,11 @@ def test_simple_data_exchange():
     Client.close()
     Server.close()
 
-    if event == Client.EVENT_EXCEPTION or event == Client.EVENT_DISCONNECT:
-        print(value, Client.return_exceptions())
+    if Server.event.exception.occurred:
+        print(Server.return_exceptions())
+
+    if event is Client.EVENT_EXCEPTION or Client.EVENT_DISCONNECT:
+        print(value)
 
     assert event == Client.EVENT_RECEIVED and value[0][2] == text
 
@@ -40,8 +43,8 @@ def test_less_simple_data_exchange():
     Client = SecureClient()
     Server = SecureServer()
 
-    def send(clientsocket, address, data):
-        Server.send_data(data[0], data[1], data[2], client_socket=clientsocket, key=Client.own_keys[1], encr_data=False, encr_rest=True)
+    def send(client, data):
+        Server.send_data(data[0], data[1], data[2], client=client, key=Client.own_keys[1], encr_data=False, encr_rest=True)
 
     on_connect = lambda *args: print("!!on_connect", args)
     on_receive = lambda *args: print("!!on_receive", args)
@@ -68,7 +71,10 @@ def test_less_simple_data_exchange():
     Client.close()
     Server.close()
 
-    if event == Client.EVENT_EXCEPTION or Client.EVENT_DISCONNECT:
-        print(value, Client.return_exceptions())
+    if Server.event.exception.occurred:
+        print(Server.return_exceptions())
+
+    if event == Client.EVENT_EXCEPTION:
+        print(value)
 
     assert event == Client.EVENT_RECEIVED and value[0][2] == text

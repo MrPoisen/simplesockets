@@ -75,7 +75,12 @@ class Key:
 
         return b''.join(decrypted)
 
+
 class Autokey(Key):
+    def __init__(self, key: bytes):
+        super().__init__(key)
+        self._key_list = [byte for byte in key]
+
     def encrypt(self, data: bytes) -> bytes:
         """
 
@@ -86,21 +91,19 @@ class Autokey(Key):
             returns encrypted data
 
         """
+        key_list = self._key_list.copy()
 
-        def get_key(text: bytes, pos_: int):
-            if pos_ < len(self.key):
-                return self.key[pos_]
-            else:
-                pos_ = pos_ - len(self.__key)
-                return text[pos_]
-
-        pos = 0
         encrypted = []
         for element in data:
             as_int = element
-            as_int = (as_int + get_key(data, pos)) % 256
-            pos = (pos + 1) % len(self.key)
-            encrypted.append(_int_to_bytes(as_int))
+            as_int = (as_int + key_list[0]) % 256
+
+            key_list.pop(0)
+            key_list.append(element)
+            if as_int == 0:
+                encrypted.append(b'\x00')
+            else:
+                encrypted.append(_int_to_bytes(as_int))
 
         return b''.join(encrypted)
 
@@ -115,22 +118,22 @@ class Autokey(Key):
 
         """
 
-        def get_key(decyrpted_text: list, pos_: int):
-            if pos_ < len(self.key):
-                return self.key[pos_]
-            else:
-                position = pos_ - len(self.key)
-                return decyrpted_text[position]
+        key_list = self._key_list.copy()
 
-        pos = 0
-        decrypted = []
+        encrypted = []
         for element in data:
             as_int = element
-            as_int = (as_int - get_key(decrypted, pos)) % 256
-            pos = (pos + 1) % len(self.key)
-            decrypted.append(_int_to_bytes(as_int))
+            as_int = (as_int - key_list[0]) % 256
 
-        return b''.join(decrypted)
+            key_list.pop(0)
+            key_list.append(as_int)
+
+            if as_int == 0:
+                encrypted.append(b'\x00')
+            else:
+                encrypted.append(_int_to_bytes(as_int))
+
+        return b''.join(encrypted)
 
 
 class Combined_Key(Autokey):
@@ -186,7 +189,10 @@ class Combined_Key(Autokey):
 
         """
         encrypted = super().encrypt(data)
-        return self.__transposition_key.encrypt(encrypted, rounds)
+        try:
+            return self.__transposition_key.encrypt(encrypted, rounds)
+        except Exception:
+            return encrypted
 
     def decrypt(self, data: bytes, rounds: int = 2) -> bytes:
         """
@@ -394,3 +400,9 @@ def get_vigenere_key(key_length: int = 256, generation_type: str = "secrets") ->
         return Key(key.to_bytes((key.bit_length() + 7) // 8, 'little'))
     else:
         raise error.GenerationTypeError("The generation_type must be 'secrets' or 'os'")
+
+if __name__ == "__main__":
+    autokey = Autokey(os.urandom(8))
+    l = (autokey.encrypt(b"TEst this"))
+    print(l)
+    print(autokey.decrypt(l))

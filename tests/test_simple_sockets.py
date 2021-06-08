@@ -6,7 +6,7 @@ def test_data_exchange():
     Client = s.TCPClient()
     Server = s.TCPServer(1)
 
-    pr = lambda clientsocket, address, data: Server.send_data(data, clientsocket)
+    pr = lambda client, data: client.send(data.response)
     on_connect = lambda *args: print("connect", args)
     on_receive = lambda *args: print(args)
     on_disconnect = lambda *args: print(args)
@@ -22,12 +22,14 @@ def test_data_exchange():
 
     Client.send_data(text)
 
-    event, value = Client.await_event(disable_on_functions=True)
+    event, value = Client.await_event(disable_on_functions=True, timeout=3000)
 
     Client.close()
     Server.close()
+    if Server.event.exception.occurred:
+        print(Server.return_exceptions())
 
-    assert event == Client.EVENT_RECEIVED and value[0] == text
+    assert event == Client.EVENT_RECEIVED and value[0].response == text
 
 def test_reconnect():
     Client = s.TCPClient()
