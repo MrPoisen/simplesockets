@@ -291,6 +291,60 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client" class="md-nav__link">
+    Server_Client
+  </a>
+  
+    <nav class="md-nav" aria-label="Server_Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.disconnect" class="md-nav__link">
+    disconnect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.recv" class="md-nav__link">
+    recv()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.send" class="md-nav__link">
+    send()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Socket_Response" class="md-nav__link">
+    Socket_Response
+  </a>
+  
+    <nav class="md-nav" aria-label="Socket_Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Socket_Response.equals" class="md-nav__link">
+    equals()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient" class="md-nav__link">
     TCPClient
   </a>
@@ -626,6 +680,60 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client" class="md-nav__link">
+    Server_Client
+  </a>
+  
+    <nav class="md-nav" aria-label="Server_Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.disconnect" class="md-nav__link">
+    disconnect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.recv" class="md-nav__link">
+    recv()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Server_Client.send" class="md-nav__link">
+    send()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Socket_Response" class="md-nav__link">
+    Socket_Response
+  </a>
+  
+    <nav class="md-nav" aria-label="Socket_Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplesockets.simple_sockets.Socket_Response.equals" class="md-nav__link">
+    equals()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#simplesockets.simple_sockets.TCPClient" class="md-nav__link">
     TCPClient
   </a>
@@ -873,6 +981,273 @@
 
 
 
+<h2 class="doc doc-heading" id="simplesockets.simple_sockets.Server_Client">
+        <code>Server_Client</code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Server_Client(socket: socket.socket, address: tuple, key: Any = None, _thread: threading.Thread = None, _recv_buffer: int = 1024)</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.Server_Client.disconnect">
+<code class="highlight language-python"><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>closes the socket</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.Server_Client.recv">
+<code class="highlight language-python"><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>function collects incoming data.`</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Socket_Response</code></td>
+      <td><p>returns received data as bytes</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.Server_Client.send">
+<code class="highlight language-python"><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>tries to send data to the Server</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>bytes</code></td>
+        <td><p>data that should be send</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ConnectionError</code></td>
+        <td><p>if the sending failed</p></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="simplesockets.simple_sockets.Socket_Response">
+        <code>Socket_Response</code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Socket_Response(response: Union[bytes, Tuple[bytes]], time_: datetime.datetime, from_: simplesockets.simple_sockets.Server_Client = None)</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="simplesockets.simple_sockets.Socket_Response.equals">
+<code class="highlight language-python"><span class="n">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">information</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>checks if the response is equal to the given information</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>information(Union[bytes,</code></td>
+        <td><code>Tuple[bytes], Socket_Response]</code></td>
+        <td><p>information which should be compared to the response</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>Returns if the response and the information are equal</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
 <h2 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient">
         <code>TCPClient</code>
 
@@ -1071,7 +1446,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>Union[Tuple[str, dict], Tuple[str, List[bytes]], Tuple[str]]</code></td>
+      <td><code>Union[Tuple[simplesockets._support_files.Events.Event, List[simplesockets.simple_sockets.Socket_Response]], Tuple[simplesockets._support_files.Events.Event, dict], Tuple[simplesockets._support_files.Events.Event]]</code></td>
       <td><p>returns event and its value(s)</p></td>
     </tr>
   </tbody>
@@ -1231,7 +1606,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>bytes</code></td>
+      <td><code>Socket_Response</code></td>
       <td><p>returns received data as bytes</p></td>
     </tr>
   </tbody>
@@ -1307,7 +1682,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPClient.return_recved_data">
-<code class="highlight language-python"><span class="n">return_recved_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">return_recved_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clear_event</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1326,7 +1701,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>List[bytes]</code></td>
+      <td><code>List[simplesockets.simple_sockets.Socket_Response]</code></td>
       <td><p>returns a list of the received data</p></td>
     </tr>
   </tbody>
@@ -1670,7 +2045,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>Union[Tuple[str, List[bytes]], Tuple[str, dict], Tuple[str]]</code></td>
+      <td><code>Union[Tuple[simplesockets._support_files.Events.Event, dict], Tuple[simplesockets._support_files.Events.Event, List[simplesockets.simple_sockets.Socket_Response]], Tuple[simplesockets._support_files.Events.Event]]</code></td>
       <td><p>Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)</p></td>
     </tr>
   </tbody>
@@ -1765,7 +2140,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.recv_data">
-<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1784,7 +2159,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>bytes</code></td>
+      <td><code>Socket_Response</code></td>
       <td><p>returns received data as bytes</p></td>
     </tr>
   </tbody>
@@ -1887,8 +2262,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Returns received data. They are returned as tuples, first containing the clientsocket, second it's address and
-third the informations/data</p>
+      <p>Returns received data. They are returned as Socket_Response objects</p>
 
 <p><strong>Returns:</strong></p>
 <table>
@@ -1900,8 +2274,8 @@ third the informations/data</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[Tuple[socket.socket, tuple, bytes]]</code></td>
-      <td><p>returns a list of tuples containing clientsocket, address and the received data</p></td>
+      <td><code>List[simplesockets.simple_sockets.Socket_Response]</code></td>
+      <td><p>returns a list of Socket_Response objects</p></td>
     </tr>
   </tbody>
 </table>
@@ -1916,14 +2290,14 @@ third the informations/data</p>
 
 
 <h3 class="doc doc-heading" id="simplesockets.simple_sockets.TCPServer.send_data">
-<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></code>
 
 
 </h3>
 
     <div class="doc doc-contents ">
 
-      <p>function for sending data to a specific clientsocket</p>
+      <p>function for sending data to a client,</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1938,14 +2312,14 @@ third the informations/data</p>
   <tbody>
       <tr>
         <td><code>data</code></td>
-        <td><code>bytes</code></td>
+        <td><code>Union[bytes, simplesockets.simple_sockets.Socket_Response]</code></td>
         <td><p>data which should be send</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>client_socket</code></td>
-        <td><code>socket</code></td>
-        <td><p>the clientsocket from to which the data should be send to</p></td>
+        <td><code>client</code></td>
+        <td><code>Server_Client</code></td>
+        <td><p>the client to which the data should be send to</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -1961,7 +2335,7 @@ third the informations/data</p>
   <tbody>
     <tr>
       <td><code>bool</code></td>
-      <td><p>returns True if the operation was successful</p></td>
+      <td><p>returns True if the operation was successful without an exception</p></td>
     </tr>
   </tbody>
 </table>

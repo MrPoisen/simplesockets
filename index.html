@@ -466,33 +466,35 @@ Now, you can use this library.  </p>
     <span class="kn">from</span> <span class="nn">simplesockets</span> <span class="kn">import</span> <span class="n">TCPClient</span>
 
     <span class="n">Client</span> <span class="o">=</span> <span class="n">TCPClient</span><span class="p">()</span>
-    <span class="n">Client</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">target_ip</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">target_port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span> <span class="c1">#prepares the Client</span>
-    <span class="n">Client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="c1">#connects the Client to the Server</span>
+    <span class="n">Client</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">target_ip</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">target_port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span>  <span class="c1"># prepares the Client</span>
+    <span class="n">Client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>  <span class="c1"># connects the Client to the Server</span>
 
-    <span class="n">Client</span><span class="o">.</span><span class="n">autorecv</span><span class="p">()</span>   <span class="c1">#enables autorecv: automaticle saves all incoming data in Client.recved_data,</span>
-                        <span class="c1"># return them with Client.return_recved_data()</span>
+    <span class="n">Client</span><span class="o">.</span><span class="n">autorecv</span><span class="p">()</span>  <span class="c1"># enables autorecv: automatically saves all incoming data in Client.recved_data,</span>
+    <span class="c1"># return them with Client.return_recved_data()</span>
 
-    <span class="n">Client</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span> <span class="c1">#sends the text to the Server</span>
+    <span class="n">Client</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>  <span class="c1"># sends the text to the Server</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">Client</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span> <span class="c1">#checks if any data recved</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span> <span class="c1">#returns the recved data as a list</span>
+        <span class="k">if</span> <span class="n">Client</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span>  <span class="c1"># checks if any data received</span>
+            <span class="n">data</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span>  <span class="c1"># returns the received data as a list</span>
             <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="c1">#should return b&#39;Test&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># should print b&#39;Test&#39;</span>
+            <span class="k">break</span>  <span class="c1"># ends the while loop</span>
 </code></pre></div>
 <p>A simple echo Server could look something like this:
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">simplesockets</span> <span class="kn">import</span> <span class="n">TCPServer</span>
 
     <span class="n">Server</span> <span class="o">=</span> <span class="n">TCPServer</span><span class="p">()</span>
-    <span class="n">Server</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span> <span class="c1">#prepares the server</span>
-    <span class="n">Server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="c1">#starts the server</span>
+    <span class="n">Server</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25567</span><span class="p">)</span>  <span class="c1"># prepares the server</span>
+    <span class="n">Server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  <span class="c1"># starts the server</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">Server</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span> <span class="c1">#checks if any data recved</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">Server</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span> <span class="c1">#returns the recved data as a list</span>
+        <span class="k">if</span> <span class="n">Server</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">new_data</span><span class="p">:</span>  <span class="c1"># checks if any data received</span>
+            <span class="n">data</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Server</span><span class="o">.</span><span class="n">return_recved_data</span><span class="p">()</span>  <span class="c1"># returns the received data as a list</span>
             <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-                <span class="n">client_socket</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">element</span> <span class="c1">#data is saved like this (client_socket,address,recved_data)</span>
-                <span class="n">Server</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">response</span>  <span class="c1"># element is a Socket_Response object,</span>
+                <span class="n">client</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">from_</span>  <span class="c1"># sets client to a Server_Client object</span>
+                <span class="n">Server</span><span class="o">.</span><span class="n">send_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </code></pre></div></p>
 <p>If you encounter any bugs, report them on <a href="https://github.com/MrPoisen/simplesockets">github</a></p>
 <p>Should you be interested in the changelog, you can find it <a href="Changelog/">here</a></p>

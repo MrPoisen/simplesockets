@@ -1070,7 +1070,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>tuple</code></td>
+      <td><code>Socket_Response</code></td>
       <td><p>tuple, first the target, second the type, third the data</p></td>
     </tr>
   </tbody>
@@ -1725,7 +1725,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.PyCryptodome_Socket.SecureServer.on_connect">
-<code class="highlight language-python"><span class="n">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1784,7 +1784,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.PyCryptodome_Socket.SecureServer.recv_data">
-<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">recv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1805,9 +1805,9 @@
   </thead>
   <tbody>
       <tr>
-        <td><code>client_socket</code></td>
-        <td><code>socket</code></td>
-        <td><p>client socket</p></td>
+        <td><code>client</code></td>
+        <td><code>Server_Client</code></td>
+        <td><p>client object</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -1822,8 +1822,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>tuple</code></td>
-      <td><p>tuple: first the target, second the type, third the data</p></td>
+      <td><code>Socket_Response</code></td>
+      <td><p>Socket_Response: Response contains as a tuple first the target, second the type, third the data</p></td>
     </tr>
   </tbody>
 </table>
@@ -1883,7 +1883,7 @@
 
 
 <h3 class="doc doc-heading" id="simplesockets.securesockets.PyCryptodome_Socket.SecureServer.send_data">
-<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_socket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encr_rest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">send_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encr_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encr_rest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
 </h3>
@@ -1934,9 +1934,9 @@
         <td><code>None</code></td>
       </tr>
       <tr>
-        <td><code>client_socket</code></td>
-        <td><code>Optional[socket.socket]</code></td>
-        <td><p>client socket,  if not given, you must give an username</p></td>
+        <td><code>client</code></td>
+        <td><code>Optional[simplesockets.simple_sockets.Server_Client]</code></td>
+        <td><p>client object,  if not given, you must give an username</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
