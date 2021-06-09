@@ -7,3 +7,4 @@ been fixed yet. Therefore, you should use the PyCryptodome Variant.
 The use of the SelfmadeCipher_Socket module is <span style="color:firebrick"> ***not*** </span> recommended. For real 
 secure communication, use the Pycryptodome variant.  
 Both variants already contain an `on_connect` function. The Server already contains an `on_disconnect` function.  
+The securesockets inherit from simplesockets.  

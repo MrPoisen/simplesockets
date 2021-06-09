@@ -12,6 +12,9 @@ from simplesockets._support_files.Events import Event, Event_System
 
 @dataclass(frozen=True)
 class Server_Client:
+    """
+    This client contains a socket and an address, optional also a key. This class is used for Servers
+    """
     socket: socket.socket
     address: tuple
     key: Any = None
@@ -23,7 +26,7 @@ class Server_Client:
 
     def recv(self):
         """
-        function collects incoming data.`
+        function collects incoming data.
 
         Returns:
             Socket_Response: returns received data as bytes
@@ -70,6 +73,10 @@ class Server_Client:
 
 @dataclass(frozen=True)
 class Socket_Response:
+    """
+    This class contains information's about a response from a socket. It contains the response itself, a datetime
+    object and optionally a Server_Client in the from_ variable, if it was received by a Server,default None.
+    """
     response: Union[bytes, Tuple[bytes]]
     time_: datetime
     from_: Server_Client = None
@@ -88,10 +95,13 @@ class Socket_Response:
         checks if the response is equal to the given information
 
         Args:
-            information(Union[bytes, Tuple[bytes], Socket_Response]): information which should be compared to the response
+            information (Union[bytes, Tuple[bytes], Socket_Response]): information which should be compared to the response
 
         Returns:
             Returns if the response and the information are equal
+
+        Raises:
+            TypeError: information isn't a Socket_Response object or bytes object or a tuple
 
         """
         if isinstance(information, Socket_Response):
@@ -198,7 +208,8 @@ class TCPClient:
 
         Args:
             timeout: time till timeout in milliseconds
-            disable_on_functions: If True, will set __connected and __disconnected flag to False
+            disable_on_functions: If True, will remove every EVENT_CONNECTED and EVENT_DISCONNECT Event from the
+                Event_System
 
         Returns:
             returns event and its value(s)
@@ -611,9 +622,20 @@ class TCPServer:
 
         Returns:
             returns True if the operation was successful without an exception
+
+        Raises:
+            TypeError: if data is a Socket_Response object and the type of data.response isn't bytes or tuple of bytes
+                or a string
         """
         if isinstance(data, Socket_Response):
-            data = data.response
+            if isinstance(data.response, tuple):
+                data = b''.join(data.response)
+            elif isinstance(data.response, bytes):
+                data = data.response
+            elif isinstance(data.response, str):
+                data = data.response.encode()
+            else:
+                raise TypeError(f"type {type(data.response)} of the data.response isn't supported")
 
         try:
             client.send(data)
@@ -631,7 +653,7 @@ class TCPServer:
         function collects incoming data
 
         Returns:
-            returns received data as bytes
+            returns received data as Socket_Response
         """
         return client.recv()
 

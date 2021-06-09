@@ -52,7 +52,7 @@ class Event_System:
             event: the event
 
         Raises:
-            TypeError: If the event isn't a Event
+            TypeError: If event isn't a Event
         """
         if isinstance(event, Event):
             self.events.append(event)
@@ -70,7 +70,7 @@ class Event_System:
         self.events.clear()
         self._lock.clear()
 
-    def first_event(self, pop: bool = True):
+    def first_event(self, pop: bool = True) -> Union[Event, None]:
         """
         returns the first event
 
@@ -78,6 +78,7 @@ class Event_System:
             pop: if True will remove the first element
 
         Returns:
+            Returns an event if one was collected else None
 
         """
         if self:
@@ -129,7 +130,7 @@ class Event_System:
             timeout: timeout in milliseconds
 
         Returns:
-            Returns True if an event occured
+            Returns True if an event occurred
 
         """
         while True:
@@ -155,6 +156,8 @@ class Event_System:
         Args:
             name: name
         """
-        for ev in self.events:
+        events = self.events.copy()
+        for ev in events:
             if ev.name == name:
                 self.remove(ev)
+        self.events = events

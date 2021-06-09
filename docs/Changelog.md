@@ -5,7 +5,16 @@
 - test for different python versions
 - test for different operating systems
 
-## Release 0.3.0:
+## Release 0.3.1:  
+
+- fixed some spelling mistakes
+- improved code documentation
+- a bit more Typehints
+- `send_data(data, client)` now raises TypeError if data is Socket_Response, and the type of data.response is not 
+    supported
+
+## Release 0.3.0:  
+
 - improved event system for `await_event()`  
 - new class Server_Client  
 - new class Socket_Response  
