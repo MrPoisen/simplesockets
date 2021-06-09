@@ -993,7 +993,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Server_Client(socket: socket.socket, address: tuple, key: Any = None, _thread: threading.Thread = None, _recv_buffer: int = 1024)</p>
+      <p>This client contains a socket and an address, optional also a key. This class is used for Servers</p>
 
 
 
@@ -1050,7 +1050,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>function collects incoming data.`</p>
+      <p>function collects incoming data.</p>
 
 <p><strong>Returns:</strong></p>
 <table>
@@ -1153,7 +1153,8 @@
 
     <div class="doc doc-contents ">
 
-      <p>Socket_Response(response: Union[bytes, Tuple[bytes]], time_: datetime.datetime, from_: simplesockets.simple_sockets.Server_Client = None)</p>
+      <p>This class contains information's about a response from a socket. It contains the response itself, a datetime
+object and optionally a Server_Client in the from_ variable, if it was received by a Server,default None.</p>
 
 
 
@@ -1206,8 +1207,8 @@
   </thead>
   <tbody>
       <tr>
-        <td><code>information(Union[bytes,</code></td>
-        <td><code>Tuple[bytes], Socket_Response]</code></td>
+        <td><code>information</code></td>
+        <td><code>Union[bytes, Tuple[bytes], Socket_Response]</code></td>
         <td><p>information which should be compared to the response</p></td>
         <td><em>required</em></td>
       </tr>
@@ -1226,6 +1227,21 @@
       <td><code>bool</code></td>
       <td><p>Returns if the response and the information are equal</p></td>
     </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>TypeError</code></td>
+        <td><p>information isn't a Socket_Response object or bytes object or a tuple</p></td>
+      </tr>
   </tbody>
 </table>
     </div>
@@ -1431,7 +1447,8 @@
       <tr>
         <td><code>disable_on_functions</code></td>
         <td><code>Optional[bool]</code></td>
-        <td><p>If True, will set __connected and __disconnected flag to False</p></td>
+        <td><p>If True, will remove every EVENT_CONNECTED and EVENT_DISCONNECT Event from the
+Event_System</p></td>
         <td><code>False</code></td>
       </tr>
   </tbody>
@@ -2160,7 +2177,7 @@
   <tbody>
     <tr>
       <td><code>Socket_Response</code></td>
-      <td><p>returns received data as bytes</p></td>
+      <td><p>returns received data as Socket_Response</p></td>
     </tr>
   </tbody>
 </table>
@@ -2337,6 +2354,22 @@
       <td><code>bool</code></td>
       <td><p>returns True if the operation was successful without an exception</p></td>
     </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>TypeError</code></td>
+        <td><p>if data is a Socket_Response object and the type of data.response isn't bytes or tuple of bytes
+or a string</p></td>
+      </tr>
   </tbody>
 </table>
     </div>
