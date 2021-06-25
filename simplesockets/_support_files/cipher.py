@@ -5,6 +5,8 @@ try:
 except ImportError:
     pass
 
+import hmac
+
 def gen_asym_keys(length: int = 2048):
     ''' Generates RSA keys
 
@@ -254,4 +256,4 @@ def compare_hash(to_compare: bytes, hash: bytes, hash_type: str = 'sha512', iter
     hash_text = hash[64:]
     testhash = gen_hash(to_compare, salt, hash_type=hash_type, iterations=iterations)
     test = testhash[64:]
-    return hash_text == test
+    return hmac.compare_digest(bytearray.fromhex(hash_text), bytearray.fromhex(test))
