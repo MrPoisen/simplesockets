@@ -5,6 +5,13 @@
 - test for different python versions
 - test for different operating systems
 
+## Release 0.4.0:
+- removed `disconnect()` methode from the TCPClient
+- made pycryptodome required
+- replaced secure_sockets
+- added typehints file
+- removed `restart()` methode from TCPServer
+
 ## Release 0.3.1:  
 
 - fixed some spelling mistakes

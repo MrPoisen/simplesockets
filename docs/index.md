@@ -3,13 +3,11 @@
 This is the simplesockets documentation. Here, you can learn how to use 
 [this](https://github.com/MrPoisen/simplesockets) library.  
 
-If you want to use the "unsecure" variant, use ``simplesockets``  
-If you want to use the "secure" variant, use `securesockets`. For this one, you will need 
-[pycryptodome](https://pypi.org/project/pycryptodome/) if you need real security. If you just need increased security, 
-use [this](Selfmade_Crypto_Socket-reference.md) one. For more information, read [here](Securesockets_selfwritten.md)  
+If you want to use the unsecure variant, use `TCPServer` and `TCPClient`  
+If you want to use the more secure variant, use `SecureServer` and `SecureClient`.  
 
-Here you can learn more about the [``simplesockets``](simple_sockets_selfwritten.md)
-Here you can learn more about the [`securesockets`](Securesockets_selfwritten.md)
+Here you can learn more about the [`simplesockets`](simple_sockets_manual.md)
+Here you can learn more about the [`securesockets`](secure_sockets_manual.md)
 
 If you need an example, you can find one in the example folder.
 
@@ -56,9 +54,9 @@ if __name__ == "__main__":
         if Server.event.new_data:  # checks if any data received
             data: list = Server.return_recved_data()  # returns the received data as a list
             for element in data:
-                data: bytes = element.response  # element is a Socket_Response object,
+                response: bytes = element.response  # element is a Socket_Response object,
                 client = element.from_  # sets client to a Server_Client object
-                Server.send_data(data, client)
+                Server.send_data(response, client)
 ````
 
 If you encounter any bugs, report them on [github](https://github.com/MrPoisen/simplesockets)

@@ -17,7 +17,7 @@ class Event:
         makes a copy of the event
 
         Args:
-            new_time: if the time of the original event should be used
+            new_time: if not the time of the original event should be used
 
         Returns:
             Event: Event

@@ -9,6 +9,9 @@
     <orderEntry type="module" module-name="FUN" />
     <orderEntry type="module" module-name="Testing" />
     <orderEntry type="module" module-name="unsecure_chat" />
+    <orderEntry type="module" module-name="Discord_Bot" />
+    <orderEntry type="module" module-name="Hacking_Tools" />
+    <orderEntry type="module" module-name="Webserver" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="" />

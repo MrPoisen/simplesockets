@@ -50,7 +50,7 @@ if __name__ == "__main__":
         if Server.event.new_data:  # checks if any data received
             data: list = Server.return_recved_data()  # returns the received data as a list
             for element in data:
-                data: bytes = element.response  # element is a Socket_Response object,
+                response: bytes = element.response  # element is a Socket_Response object,
                 client = element.from_  # sets client to a Server_Client object
-                Server.send_data(data, client)
+                Server.send_data(response, client)
 ````

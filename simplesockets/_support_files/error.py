@@ -5,37 +5,6 @@ class error(Exception):
     pass
 
 
-class RSAError(error):
-    pass
-
-
-class RSAImportKeyError(RSAError): pass
-
-
-class RSACalcKeyError(RSAError): pass
-
-
-class VeginerError(error):
-    pass
-
-
-class VPadError(VeginerError): pass
-
-class GenerationTypeError(VeginerError): pass
-
-
-class TranspositionError(error):
-    pass
-
-class NotEncryptedError(TranspositionError): pass
-
-class InvalidKeyError(TranspositionError): pass
-
-class RepeatingValueError(InvalidKeyError): pass
-
-class NoEffectError(InvalidKeyError): pass
-
-
 class SocketError(error):
     pass
 
@@ -49,7 +18,7 @@ class Better_Exception:
 
     def __eq__(self, other):
         if isinstance(other, self.__class__) is False:
-            raise NotImplementedError
+            raise TypeError()
 
         return (self._exception, self._traceback) == (other.exception, other.traceback)
 

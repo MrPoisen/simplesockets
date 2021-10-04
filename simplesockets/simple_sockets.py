@@ -5,6 +5,7 @@ import traceback
 from typing import Callable, Union, Tuple, List, Optional, Any
 from dataclasses import dataclass
 from datetime import datetime
+from Crypto.Cipher import AES
 
 from simplesockets._support_files.error import SetupError, Exception_Collection
 from simplesockets._support_files.Events import Event, Event_System
@@ -17,39 +18,67 @@ class Server_Client:
     """
     socket: socket.socket
     address: tuple
-    key: Any = None
-    _thread: threading.Thread = None
-    _recv_buffer: int = 1024
+    key: bytes = None
+    cipher: Any = None
+    thread: threading.Thread = None
+    recv_buffer: int = 1024
 
     def __str__(self):
         return str(self.socket)
 
-    def recv(self):
+    def recv(self, raw: bool = False):
         """
-        function collects incoming data.
+        function collects incoming data
+        if self.key is not None, this methode will automatically decrypt the received data
+
+        Args:
+            raw: if True, the received data will not be decrypted
 
         Returns:
             Socket_Response: returns received data as bytes
+
+        Raises:
+            AttributeError: if raw is False and self.key has no decrypt methode
         """
         chunks = []
         recv_data = True
         while recv_data:
-            chunk = self.socket.recv(self._recv_buffer)
+            chunk = self.socket.recv(self.recv_buffer)
             chunks.append(chunk)
-            if len(chunk) < self._recv_buffer:
+            if len(chunk) < self.recv_buffer:
                 recv_data = False
-        return Socket_Response(b''.join(chunks), _time(), self)
 
-    def send(self, data: bytes) -> None:
+        result = b''.join(chunks)
+        if self.key is not None and self.cipher is not None and raw is False:
+            try:
+                result = self.cipher.decrypt(result)
+                object.__setattr__(self, "cipher", AES.new(self.key, AES.MODE_EAX, self.cipher.nonce))
+                # self.cipher =
+            except AttributeError:
+                raise AttributeError("The key has no decrypt methode")
+
+        return Socket_Response(result, _time(), self)
+
+    def send(self, data: bytes, raw: bool = False) -> None:
         """
-        tries to send data to the Server
+        tries to send data to the server
+        if self.key is not None, it will encrypt the data
 
         Args:
             data: data that should be send
+            raw: if True, the received data will not be encrypted
 
         Raises:
             ConnectionError: if the sending failed
+            AttributeError: if raw is False and self.key has no encrypt methode
         """
+        if self.key is not None and self.cipher is not None and raw is False:
+            try:
+                data = self.cipher.encrypt(data)
+                object.__setattr__(self, "cipher", AES.new(self.key, AES.MODE_EAX, self.cipher.nonce))  #: self.cipher = ...
+            except AttributeError:  # if key has not function 'encrypt'
+                raise AttributeError("The key has no encrypt methode")
+
         data_length = len(data)
         sended_length = 0
         while sended_length < data_length:
@@ -58,17 +87,18 @@ class Server_Client:
                 raise ConnectionError("socket connection error")
             sended_length += sent
 
-    def disconnect(self):
+    def close(self) -> None:
         """
         closes the socket
         """
+        self.socket.shutdown(socket.SHUT_RDWR)
         self.socket.close()
 
     def _add_thread(self, thread: threading.Thread):
-        return Server_Client(self.socket, self.address, self.key, thread, self._recv_buffer)
+        return Server_Client(self.socket, self.address, self.key, self.cipher, thread, self.recv_buffer)
 
-    def _add_key(self, key):
-        return Server_Client(self.socket, self.address, key, self._thread, self._recv_buffer)
+    def _add_cipher(self, key, cipher):
+        return Server_Client(self.socket, self.address, key, self.thread, cipher, self.recv_buffer)
 
 
 @dataclass(frozen=True)
@@ -170,9 +200,9 @@ class TCPClient:
 
         self.__allthreads = [self.__autorecv_thread]
 
-        self.__target_ip = None
-        self.__target_port = None
-        self.__recv_buffer = None
+        self._target_ip = None
+        self._target_port = None
+        self._recv_buffer = None
 
         self.__start_taregt = None
 
@@ -180,13 +210,13 @@ class TCPClient:
         self.on_disconnect = None
         self.on_receive = None
 
-        self.__setup_flag = False
+        self._setup_flag = False
 
     def __str__(self):
-        return f'[socket : {str(self.socket)}, target address : ({self.__target_ip},{self.__target_port}), receive buffer: {self.__recv_buffer}]'
+        return f'[socket : {str(self.socket)}, target address : ({self._target_ip},{self._target_port}), receive buffer: {self._recv_buffer}]'
 
     def __repr__(self):
-        return f'[{str(self.socket)},({self.__target_ip},{self.__target_port}),{self.__recv_buffer}]'
+        return f'[{str(self.socket)},({self._target_ip},{self._target_port}),{self._recv_buffer}]'
 
     def __enter__(self):
         self.connect()
@@ -198,7 +228,7 @@ class TCPClient:
     @property
     def Address(self) -> tuple:
         """Address of the Client, containing it's ip and port"""
-        return (self.__target_ip, self.__target_port)
+        return (self._target_ip, self._target_port)
 
     def await_event(self, timeout: Optional[int] = 0, disable_on_functions: Optional[bool] = False,) -> Union[
         Tuple[Event, List[Socket_Response]], Tuple[Event, dict], Tuple[Event, None]]:
@@ -277,14 +307,14 @@ class TCPClient:
             on_receive: Function that will be executed on receive, it takes the received data as an argument
         """
 
-        self.__target_ip = target_ip
-        self.__target_port = target_port
-        self.__recv_buffer = recv_buffer
+        self._target_ip = target_ip
+        self._target_port = target_port
+        self._recv_buffer = recv_buffer
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
         self.on_receive = on_receive
 
-        self.__setup_flag = True
+        self._setup_flag = True
 
     def reconnect(self) -> bool:
         """
@@ -305,10 +335,10 @@ class TCPClient:
         Returns:
             returns a bool if the connecting was successful
         """
-        if self.__setup_flag is False:
+        if self._setup_flag is False:
             raise SetupError("Server isn't setup")
         try:
-            self.socket.connect((self.__target_ip, self.__target_port))
+            self.socket.connect((self._target_ip, self._target_port))
 
             self.event.is_connected = True
             self.event.connected = True
@@ -319,6 +349,9 @@ class TCPClient:
             if callable(self.on_connect):
                 self.on_connect()
             return True
+        except KeyboardInterrupt:
+            self.close()
+            raise
         except Exception as e:
             self.event.exception.occurred = True
             self.event.exception.exceptions.add(e, traceback.format_exc())
@@ -374,6 +407,10 @@ class TCPClient:
                     self.event.new_data = True
                     self._event_system.happened(self.EVENT_RECEIVED.copy())
 
+            except KeyboardInterrupt:
+                self.close()
+                raise
+
             except Exception as e:
                 self.event.exception.exceptions.add(e, traceback.format_exc())
                 self.event.exception.occurred = True
@@ -418,9 +455,9 @@ class TCPClient:
         chunks = []
         recv_data = True
         while recv_data:
-            chunk = self.socket.recv(self.__recv_buffer)
+            chunk = self.socket.recv(self._recv_buffer)
             chunks.append(chunk)
-            if len(chunk) < self.__recv_buffer:
+            if len(chunk) < self._recv_buffer:
                 recv_data = False
         return Socket_Response(b''.join(chunks), _time())
 
@@ -446,31 +483,11 @@ class TCPClient:
                     self._event_system.remove(ev)
         return exceptions
 
-    def disconnect(self) -> bool:
-        """
-        tries to disconnect from the Server
-
-        Returns:
-            returns true if the client disconnected without an exception
-        """
-        try:
-            self.socket.shutdown(1)
-            self.socket.close()
-            self.event.is_connected = False
-            self.event.disconnected = True
-            self._event_system.happened(self.EVENT_DISCONNECT.copy())
-            self.__init__()
-            return True
-        except Exception as e:
-            self.event.exception.occurred = True
-            self.event.exception.exceptions.add(e, traceback.format_exc())
-            self._event_system.happened(self.EVENT_DISCONNECT.copy())
-            return False
-
     def close(self):
         """
         Closes the socket
         """
+        self.socket.shutdown(socket.SHUT_RDWR)
         self.socket.close()
 
 
@@ -521,12 +538,12 @@ class TCPServer:
 
             return Events()
 
-        self.__kill = False
+        self._kill = False
         self.socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.clients = {}  # key: address, value : [client_thread,client_socket] / key: address, value: Server_Client
-        self.__recv_buffer = 2048
+        self._recv_buffer = 2048
 
-        self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
+        self.__accepting_thread = threading.Thread(target=self._accept_clients, daemon=True)
 
         self.recved_data = [] #Tuple: (client_socket, address, data)
 
@@ -536,9 +553,9 @@ class TCPServer:
 
         self.max_connections = max_connections
 
-        self.__allthreads = {}
+        self._allthreads = {}
 
-        self.__start_target = None
+        self._start_target = None
 
         self.on_connect = None
         self.on_disconnect = None
@@ -551,10 +568,10 @@ class TCPServer:
 
     def __str__(self):
         return f'[socket : {str(self.socket)}, address : ({self.__IP},{self.__PORT}), ' \
-               f'receive buffer: {self.__recv_buffer}]'
+               f'receive buffer: {self._recv_buffer}]'
 
     def __repr__(self):
-        return f'[{str(self.socket)},({self.__IP},{self.__PORT}),{self.__recv_buffer}]'
+        return f'[{str(self.socket)},({self.__IP},{self.__PORT}),{self._recv_buffer}]'
 
     def __enter__(self):
         self.start()
@@ -562,9 +579,9 @@ class TCPServer:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
-    def __perfom_disconnect(self, address: tuple):
+    def _perfom_disconnect(self, address: tuple):
         self.clients.pop(address)
-        self.__allthreads.pop(address)
+        self._allthreads.pop(address)
 
         if callable(self.on_disconnect):
             self.on_disconnect(address)
@@ -597,15 +614,15 @@ class TCPServer:
         self.socket.bind((ip, port))
         self.socket.listen(listen)
 
-        self.__recv_buffer = recv_buffer
+        self._recv_buffer = recv_buffer
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
         self.on_receive = on_receive
 
         if handle_client is not None:
-            self.__start_target = handle_client
+            self._start_target = handle_client
         else:
-            self.__start_target = self.__handle_client
+            self._start_target = self.__handle_client
 
         self.__accepting_thread.start()  # starts the accepting thread while the while loop is still false
 
@@ -677,15 +694,20 @@ class TCPServer:
             while True:
                 try:
                     recved = self.recv_data(client)
-                except ConnectionResetError:
+                except ConnectionResetError or BrokenPipeError:
                     return None
                 #recved = self.recv_data(client_socket)
                 if len(recved) > 0:
                     self.event.new_data = True
+                    self._event_system.happened(self.EVENT_RECEIVED.copy())
                     self.recved_data.append(recved)
 
                     if callable(self.on_receive):
                         self.on_receive(client, recved)
+
+        except KeyboardInterrupt:
+            self.close()
+            raise
 
         except Exception as e:
             self.event.exception.exceptions.add(e, traceback.format_exc())
@@ -693,20 +715,20 @@ class TCPServer:
 
             self._event_system.happened(self.EVENT_EXCEPTION.copy())
 
-            self.__perfom_disconnect(client.address)
+            self._perfom_disconnect(client.address)
 
-    def __accept_clients(self):
-        while self.__kill is False:
-            time.sleep(0.1)
+    def _accept_clients(self):
+        while self._kill is False:
+            #time.sleep(0.01)
             while self.event.accepting_thread.run:
                 try:
                     client_socket, address = self.socket.accept()
                 except OSError:
                     self.exit_accept()
                     return
-                server_client = Server_Client(client_socket, address, _recv_buffer=self.__recv_buffer)
+                server_client = Server_Client(client_socket, address, recv_buffer=self._recv_buffer)
 
-                ct = threading.Thread(target=self.__start_target, args=(server_client,), daemon=True)
+                ct = threading.Thread(target=self._start_target, args=(server_client,), daemon=True)
                 server_client = server_client._add_thread(ct)
                 #self.clients[address] = [ct, client_socket]
 
@@ -717,7 +739,7 @@ class TCPServer:
 
                 ct.start()
 
-                self.__allthreads[address] = ct  # add thread to all threads dict
+                self._allthreads[address] = ct  # add thread to all threads dict
 
                 if self.max_connections is not None and len(self.clients) >= self.max_connections:
                     self.run = False
@@ -731,9 +753,17 @@ class TCPServer:
             timeout: time till timeout in milliseconds. Zero means no timeout.
 
         Returns:
-            Union[Tuple[str, list], Tuple[str, None]]: returns event and its value(s)
+            returns event and:
+                a dict of time and a Better_Exception object for an error
+                a list of Socket_Response objects for received information
+                None for a timeout
+
+        Raises:
+            ValueError: if timeout is lower then 0
 
         """
+        if timeout < 0:
+            raise ValueError("timeout can't be lower then 0")
 
         event_: bool = self._event_system.await_event(timeout if timeout != 0 else None)
         if event_:
@@ -762,7 +792,7 @@ class TCPServer:
         """
 
     # starts the server
-    def start(self):
+    def start(self) -> None:
         """
         starts the accepting thread
 
@@ -775,33 +805,21 @@ class TCPServer:
         self.event.accepting_thread.run = True
 
     # stops the server
-    def stop(self):
+    def stop(self) -> None:
         """
         stops the accepting thread
         """
         self.event.accepting_thread.run = False
 
-    def restart(self):
-        """
-        function tries to restart the accepting thread
-        """
-        if self.__kill:
-            self.__kill = False
-            self.__accepting_thread = threading.Thread(target=self.__accept_clients, daemon=True)
-            self.__accepting_thread.start()
-
-        elif self.__kill is False:
-            raise Exception("Can't restart stopped or running thread")
-
     @property
     def killed(self) -> bool:
         """
 
-        Returns: returns if the accepting thread got killed or not
+        Returns: returns True if the accepting thread got killed/ended
 
         """
 
-        return self.__kill
+        return self._kill
 
     def disconnect(self, address: tuple):
         """
@@ -814,8 +832,8 @@ class TCPServer:
         try:
             client: Server_Client = self.clients.get(address)
             self.clients.pop(address)
-            self.__allthreads.pop(address)
-            client.disconnect()
+            self._allthreads.pop(address)
+            client.close()
         except Exception as e:
             self.event.exception.occurred = True
             self.event.exception.exceptions.add(e, traceback.format_exc())
@@ -851,7 +869,7 @@ class TCPServer:
         """
         stops and kills the accepting thread
         """
-        self.__kill = True
+        self._kill = True
         self.event.accepting_thread.run = False
 
     def close(self):
@@ -861,6 +879,6 @@ class TCPServer:
         self.socket.close()
         clients = list(self.clients.values())
         for client in clients:
-            client.disconnect()
-            client._thread.join()
-        self.__accepting_thread.join()
+            client.close()
+            client.thread.join(5)
+        self.__accepting_thread.join(5)

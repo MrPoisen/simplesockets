@@ -253,5 +253,6 @@ Thumbs.db
 # profiling data
 .prof
 
-
+# private information
+venv
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm
